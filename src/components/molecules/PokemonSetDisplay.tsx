@@ -1,4 +1,6 @@
+import type { PokemonType } from 'pokedex-promise-v2';
 import StatDisplay from '../atoms/StatDisplay.tsx';
+import TypeDisplay from '../atoms/TypeDisplay.tsx';
 import './pokemonDisplay.css'
 import WireSquare from '/wireSquare.svg'
 
@@ -13,14 +15,20 @@ interface Stats {
 
 interface PokemonSetDisplayProps extends Stats {
   name: string
+  typing: [string | null, string | null]
   nature: string
   ability: string
   item: string
 }
 
-export default function PokemonSetDisplay({ nature, name, ability, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
+export default function PokemonSetDisplay({name, typing, ability, nature, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
+ 
   return (
     <div className="set-display">
+      <div className="typing-header">
+        
+      </div>
+      <TypeDisplay/>
       <div className="info-column">
         <p className="name">{name}</p>
         <img className="sprite" src={WireSquare}/>

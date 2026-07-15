@@ -1,10 +1,12 @@
 .set-display{
-  width:200px;
   display:flex;
   flex-direction: row;
   background-color: white;
   gap: 1rem;
-  padding:0.25rem;
+  padding:0.5rem;
+  border-radius: 0.7rem;
+  width: fit-content;
+  height: fit-content;
 }
 
 /* Info stles*/
