@@ -1,0 +1,32 @@
+.set-display{
+  width:200px;
+  display:flex;
+  flex-direction: row;
+  background-color: white;
+  gap: 1rem;
+  padding:0.25rem;
+}
+
+/* Info stles*/
+.info-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.sprite{
+  width:100px;
+  height:100px;
+}
+
+/* Stat styles */
+.stat-column{
+  display: flex;
+  flex-direction: column;
+  gap:0.1rem;
+}
+
+.stat-display{
+  background-color: grey;
+  border-radius: 0.7rem;
+  padding:0.25rem;
+}
