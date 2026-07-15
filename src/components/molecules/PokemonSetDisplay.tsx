@@ -1,8 +1,8 @@
-import type { PokemonType } from 'pokedex-promise-v2';
 import StatDisplay from '../atoms/StatDisplay.tsx';
 import TypeDisplay from '../atoms/TypeDisplay.tsx';
 import './pokemonDisplay.css'
 import WireSquare from '/wireSquare.svg'
+import { useState, useEffect } from 'react';
 
 interface Stats {
   hp: number
@@ -15,20 +15,34 @@ interface Stats {
 
 interface PokemonSetDisplayProps extends Stats {
   name: string
-  typing: [string | null, string | null]
   nature: string
   ability: string
   item: string
 }
 
-export default function PokemonSetDisplay({name, typing, ability, nature, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
- 
+export default function PokemonSetDisplay({name, ability, nature, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
+  const [typing, setTyping] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // data.types looks like: [{ slot: 1, type: { name: "electric" } }]
+        const typeNames = data.types.map((t: { type: { name: string } }) => t.type.name);
+        setTyping(typeNames);
+        console.log(typeNames);
+      })
+      .catch((error) => {
+        console.log('There was an ERROR: ', error);
+      });
+  }, [name]);
+
   return (
     <div className="set-display">
       <div className="typing-header">
-        
+        <TypeDisplay />
+        <TypeDisplay />
       </div>
-      <TypeDisplay/>
       <div className="info-column">
         <p className="name">{name}</p>
         <img className="sprite" src={WireSquare}/>
