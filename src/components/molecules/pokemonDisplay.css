@@ -46,8 +46,7 @@
 /* Stat styles */
 .stat-column{
   display: grid;
-  grid-template-columns: 5fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 5fr 2fr;
   gap:0.1rem;
 }
 
@@ -67,4 +66,14 @@
   color: white;
   grid-column-start: span 2;
   grid-column-end: -1;
+}
+
+.nature-up{
+  font-size: x-large;
+  padding:0.25rem;
+}
+
+.nature-down{
+  font-size: x-large;
+  padding:0.25rem;
 }
