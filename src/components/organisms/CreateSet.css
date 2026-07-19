@@ -21,8 +21,10 @@ select{
   padding:0.5svh;
   border-radius: 0.5rem;
   font-size: large;
+  height:4svh;
 }
 
 #item-sprite{
-  
+  height:4svh;
+  aspect-ratio: 1 / 1;
 }
