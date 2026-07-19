@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <PokemonSetDisplay name={"charizard"}  ability={"lightning rod"} item={"life orb"} hp={100} atk={50} def={50} spAtk={50} spDef={50} spe={20} nature="adamant"/>
+      <PokemonSetDisplay name={"hawlucha-mega"}  ability={"lightning rod"} item={"life orb"} hp={100} atk={50} def={50} spAtk={50} spDef={50} spe={20} nature="timid"/>
     </>
   )
 }

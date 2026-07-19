@@ -1,8 +1,8 @@
 .set-display{
   display:flex;
   flex-direction: column;
-  background-color: rgb(219, 219, 219);
-  gap: 1rem;
+  background-color: rgb(85, 85, 85);
+  gap: 0.5rem;
   padding:0.25rem;
   border-radius: 1rem;
   width: fit-content;
@@ -16,12 +16,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width:60%;
 }
 
 .typing-header{
   display:flex;
   flex-direction: row;
-  gap:1rem;
+  gap:0.25rem;
   justify-content: space-evenly;
 }
 
@@ -29,6 +30,8 @@
   border: solid 1px black;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
   padding: 0.5rem;
   width: 100%;
 }
@@ -38,9 +41,26 @@
   flex-direction: row;
 }
 
+.name{
+  font-size: xx-large;
+  text-transform: capitalize;
+  margin:0.2rem;
+}
+
 .sprite{
-  width:60%;
+  width: 90%;
   aspect-ratio: 1 / 1;
+  padding:0.5rem;
+}
+
+.ability{
+  font-size: large;
+  color:white;
+}
+
+.item{
+  font-size: large;
+  color:white;
 }
 
 /* Stat styles */
@@ -48,10 +68,12 @@
   display: grid;
   grid-template-columns: 5fr 2fr;
   gap:0.1rem;
+  width:40%;
 }
 
 .stat-display{
   background-color: grey;
+  font-size: large;
   border-radius: 0.7rem;
   padding:0.25rem;
   color: white;
@@ -66,14 +88,17 @@
   color: white;
   grid-column-start: span 2;
   grid-column-end: -1;
+  text-transform: capitalize;
 }
 
 .nature-up{
   font-size: x-large;
   padding:0.25rem;
+  color:rgb(221, 0, 0);
 }
 
 .nature-down{
   font-size: x-large;
   padding:0.25rem;
+  color:rgb(0, 145, 230)
 }
