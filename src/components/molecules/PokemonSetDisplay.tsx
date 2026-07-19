@@ -1,7 +1,7 @@
 import StatDisplay from '../atoms/StatDisplay.tsx';
 import TypeDisplay from '../atoms/TypeDisplay.tsx';
+import '../atoms/TypeStyle.css'
 import './pokemonDisplay.css'
-import WireSquare from '/wireSquare.svg'
 import { useState, useEffect } from 'react';
 
 interface Stats {
@@ -22,12 +22,13 @@ interface PokemonSetDisplayProps extends Stats {
 
 export default function PokemonSetDisplay({name, ability, nature, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
   const [typing, setTyping] = useState<string[]>([]);
+  const [sprite, setSprite] = useState<string>();
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .then((response) => response.json())
       .then((data) => {
-        // data.types looks like: [{ slot: 1, type: { name: "electric" } }]
+        setSprite(data.sprites.other.home.front_default);
         const typeNames = data.types.map((t: { type: { name: string } }) => t.type.name);
         setTyping(typeNames);
         console.log(typeNames);
@@ -37,26 +38,36 @@ export default function PokemonSetDisplay({name, ability, nature, item, hp, atk,
       });
   }, [name]);
 
+  function outputBoost(){
+    if (nature == "bashful" || nature == "docile" || nature == "hardy" || nature == "quirky" || nature == "serious"){
+      return(
+        <div className="stat-column">
+          <StatDisplay label="HP" stat={hp} />
+          <StatDisplay label="Atk" stat={atk} />
+          <StatDisplay label="Def" stat={def} />
+          <StatDisplay label="SpAtk" stat={spAtk} />
+          <StatDisplay label="SpDef" stat={spDef} />
+          <StatDisplay label="Spe" stat={spe} />
+          <div className="nature">{nature}</div>
+        </div>
+      );
+    }
+  }
+
   return (
     <div className="set-display">
       <div className="typing-header">
-        <TypeDisplay />
-        <TypeDisplay />
+        <TypeDisplay type={typing[0]}/>
+        {typing.length > 1 && <TypeDisplay type={typing[1]}/>}
       </div>
-      <div className="info-column">
-        <p className="name">{name}</p>
-        <img className="sprite" src={WireSquare}/>
-        <p className="nature">{nature}</p>
-        <p className="ability">{ability}</p>
-        <p className="item">{item}</p>
-      </div>
-      <div className="stat-column">
-        <StatDisplay label="HP" stat={hp} />
-        <StatDisplay label="Atk" stat={atk} />
-        <StatDisplay label="Def" stat={def} />
-        <StatDisplay label="SpAtk" stat={spAtk} />
-        <StatDisplay label="SpDef" stat={spDef} />
-        <StatDisplay label="Spe" stat={spe} />
+      <div className="about-and-stats">
+        <div className="info-column">
+          <p className="name">{name}</p>
+          <img className="sprite" src={sprite}/>
+          <p className="ability">{ability}</p>
+          <p className="item">{item}</p>
+        </div>
+        {outputBoost()}
       </div>
     </div>
   )

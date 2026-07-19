@@ -1,9 +1,12 @@
 import React from 'react'
 
-type Props = {}
+interface TypeProp {
+  type: string
+}
 
-export default function TypeDisplay({}: Props) {
+export default function TypeDisplay({type}: TypeProp) {
+  const typeString = type;
   return (
-    <div>TypeDisplay</div>
+    <div className={"type-notch "+ typeString}>{typeString}</div>
   )
 }

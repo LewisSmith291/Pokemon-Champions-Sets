@@ -1,71 +1,107 @@
 .grass{
   background-color: #3fa12a;
+  color: black;
+  text-transform: capitalize;
 }
 
 .fire{
   background-color: #e62828;
+  color: white;
+  text-transform: capitalize;
 }
 
 .water{
   background-color: #2981ef;
+  color: black;
+  text-transform: capitalize;
 }
 
 .electric{
   background-color: #fabf00;
+  color: black;
+  text-transform: capitalize;
 }
 
 .flying{
   background-color: #81b8ee;
+  color: black;
+  text-transform: capitalize;
 }
 
 .normal{
   background-color: #9fa19e;
+  color: black;
+  text-transform: capitalize;
 }
 
 .ground{
   background-color: #915121;
+  color: white;
+  text-transform: capitalize;
 }
 
 .rock{
   background-color: #aea981;
+  color: black;
+  text-transform: capitalize;
 }
 
 .psychic{
   background-color: #ee4179;
+  color: white;
+  text-transform: capitalize;
 }
 
 .bug{
   background-color: #91a11a;
+  color: black;
+  text-transform: capitalize;
 }
 
 .poison{
   background-color: #9241cc;
+  color: white;
+  text-transform: capitalize;
 }
 
 .fighting{
   background-color: #ff7f00;
+  color: black;
+  text-transform: capitalize;
 }
 
 .ice{
   background-color: #3fd9ff;
+  color: black;
+  text-transform: capitalize;
 }
 
 .ghost{
   background-color: #704070;
+  color: white;
+  text-transform: capitalize;
 }
 
 .dark{
   background-color: #50413e;
+  color: white;
+  text-transform: capitalize;
 }
 
 .steel{
   background-color: #60a1b7;
+  color: black;
+  text-transform: capitalize;
 }
 
 .dragon{
   background-color: #5160e1;
+  color: white;
+  text-transform: capitalize;
 }
 
 .fairy{
   background-color: #ee70ee;
+  color: black;
+  text-transform: capitalize;
 }

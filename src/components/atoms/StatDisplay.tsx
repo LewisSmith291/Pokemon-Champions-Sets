@@ -9,5 +9,6 @@ export default function StatDisplay({ label, stat }: StatDisplayProps) {
       <span className="stat-label">{label}</span>
       <span className="stat-value">{stat}</span>
     </div>
+
   )
 }
