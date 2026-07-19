@@ -6,6 +6,7 @@ interface Props{
 
 export default function SpeciesSearch({}: Props) {
   const [speciesList, setSpeciesList] = useState<string[]>([]);
+  const [selectedPokemon, setSelectedPokemon] = useState<string>("");
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokedex/champions`)
@@ -22,7 +23,7 @@ export default function SpeciesSearch({}: Props) {
   }, []);
 
   return (
-    <select>
+    <select onChange={(val) => setSelectedPokemon(val)}>
       {speciesList.map((s:string, index:number) => 
       <option key={index}>{s}</option>
       )}
