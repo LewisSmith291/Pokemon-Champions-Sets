@@ -22,7 +22,7 @@ export default function SpeciesSearch({ value, onSelect }: Props) {
 
   return (
     <select value={value} onChange={(e) => onSelect(e.target.value)}>
-      <option value="">-- choose a Pokémon --</option>
+      <option disabled value="">-- choose a Pokémon --</option>
       {speciesList.map((s: string) => (
         <option key={s} value={s}>{s}</option>
       ))}
