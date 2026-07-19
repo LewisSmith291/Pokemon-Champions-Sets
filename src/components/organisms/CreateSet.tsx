@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import SpeciesSearch from '../atoms/SetCreation/SpeciesSearch';
+import ItemSearch from '../atoms/SetCreation/ItemSearch';
 import "./CreateSet.css"
 
 export default function CreateSet() {
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
   const [selectedForm, setSelectedForm] = useState<string>("");
+  const [selectedItem, setSelectedItem] = useState<string>("");
   const [sprite, setSprite] = useState<string>();
+  const [itemSprite, setItemSprite] = useState<string>();
 
 
   // Fill out list of forms (default and mega, and without filtering: gmax forms)
@@ -38,6 +41,24 @@ export default function CreateSet() {
     }
   }, [selectedForm])
 
+  // Set item sprite depending on selected item
+  useEffect(() => {
+    // check if an item has been selected
+    if (selectedItem !== ""){
+      fetch(`https://pokeapi.co/api/v2/item/${selectedItem}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setItemSprite(data.sprites.default);
+        })
+        .catch((error) => {
+          console.log('There was an ERROR: ', error);
+        });
+    }
+    else {
+      setItemSprite("");
+    }
+  }, [selectedItem])
+
   return (
     <div id="set-creation">
       <h1>Create Pokemon Set</h1>
@@ -50,9 +71,11 @@ export default function CreateSet() {
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
+          <ItemSearch value={selectedItem} onSelect={setSelectedItem} />
+          {itemSprite && <img src={itemSprite} alt={selectedItem} />}
         </div>
       </div>
-      <img src={sprite}/>
+      <img id="item-sprite" src={sprite} alt={selectedForm}/>
     </div>
   )
 }
