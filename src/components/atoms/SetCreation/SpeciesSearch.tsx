@@ -1,20 +1,18 @@
-import { useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-interface Props{
-  
+interface Props {
+  value: string;
+  onSelect: (species: string) => void;
 }
 
-export default function SpeciesSearch({}: Props) {
+export default function SpeciesSearch({ value, onSelect }: Props) {
   const [speciesList, setSpeciesList] = useState<string[]>([]);
-  const [selectedPokemon, setSelectedPokemon] = useState<string>("");
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokedex/champions`)
       .then((response) => response.json())
       .then((data) => {
-        setSpeciesList(data);
-
-        const species = data.pokemon_entries.map((s: {pokemon_species : {name:string}}) => s.pokemon_species.name);
+        const species = data.pokemon_entries.map((s: { pokemon_species: { name: string } }) => s.pokemon_species.name);
         setSpeciesList(species);
       })
       .catch((error) => {
@@ -23,10 +21,11 @@ export default function SpeciesSearch({}: Props) {
   }, []);
 
   return (
-    <select onChange={(val) => setSelectedPokemon(val)}>
-      {speciesList.map((s:string, index:number) => 
-      <option key={index}>{s}</option>
-      )}
+    <select value={value} onChange={(e) => onSelect(e.target.value)}>
+      <option value="">-- choose a Pokémon --</option>
+      {speciesList.map((s: string) => (
+        <option key={s} value={s}>{s}</option>
+      ))}
     </select>
   )
 }

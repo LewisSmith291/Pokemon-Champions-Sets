@@ -1,21 +1,14 @@
-import { useEffect, useState} from 'react'
+import { useState } from 'react'
 import SpeciesSearch from '../atoms/SetCreation/SpeciesSearch';
 
-interface Props{
-
-}
-
-export default function CreateSet({}: Props) {
-  const [pokemonName, setPokemonName] = useState<string>("");
-  const [pokemonList, setPokemonList] = useState<string[]>([]);
-  const [speciesList, setSpeciesList] = useState<Object>();
-  const [selectedPokemon, setSelectedPokemon] = useState("");
-
+export default function CreateSet() {
+  const [selectedPokemon, setSelectedPokemon] = useState<string>("");
 
   return (
     <div>
       <h1>Create Pokemon Set</h1>
-      <SpeciesSearch />
+      <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} />
+      <p>You picked: {selectedPokemon}</p>
     </div>
   )
 }
