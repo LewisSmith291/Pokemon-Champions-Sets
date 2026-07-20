@@ -11,6 +11,7 @@
 #species-form-select{
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap:1vw;
   background-color: #d6d6d6;
   padding:2svh;

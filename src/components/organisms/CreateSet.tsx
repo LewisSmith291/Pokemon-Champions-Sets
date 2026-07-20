@@ -106,14 +106,18 @@ export default function CreateSet() {
           </select>
           <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
           <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} isMega={itemType==="mega"} isHeld={itemType==="held"} isBerry={itemType==="berry"}/>
-          {itemSprite && (
-            <img
-              id="item-sprite"
-              src={itemSprite}
-              alt={selectedItem}
-              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
-            />
-          )}
+          {itemSprite ? 
+            (
+              <img
+                id="item-sprite"
+                src={itemSprite}
+                alt={selectedItem}
+                onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+              />
+            ) : (
+              <div id="item-sprite"></div>
+            )
+          }
         </div>
       </div>
       <img id="pokemon-sprite" src={sprite} alt={selectedForm}/>
