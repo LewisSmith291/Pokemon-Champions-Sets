@@ -15,6 +15,7 @@ export default function SpeciesSearch({ value, onSelect, setItemType }: Props) {
       .then((data) => {
         const species = data.pokemon_entries.map((s: { pokemon_species: { name: string } }) => s.pokemon_species.name);
         setSpeciesList(species);
+        setItemType("held");
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
