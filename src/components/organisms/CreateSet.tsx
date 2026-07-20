@@ -2,19 +2,28 @@ import { useEffect, useState } from 'react'
 import SpeciesSearch from '../atoms/SetCreation/SpeciesSearch';
 import ItemSearch from '../atoms/SetCreation/ItemSearch';
 import "./CreateSet.css"
+import ItemRadio from '../atoms/SetCreation/ItemRadio';
 
 // Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
 // which have no /item/{slug} endpoint). Served from public/wireSquare.svg.
 const PLACEHOLDER_SPRITE = "/wireSquare.svg";
 
 export default function CreateSet() {
+  // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
   const [selectedForm, setSelectedForm] = useState<string>("");
-  const [selectedItem, setSelectedItem] = useState<string>("");
+  // sprite
   const [sprite, setSprite] = useState<string>();
+  // items
+  const [selectedItem, setSelectedItem] = useState<string>("");
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
+  const [itemType, setItemType] = useState<string>("held");
+  const [isHeld, setIsHeld] = useState<boolean>(true);
+  const [isMega, setIsMega] = useState<boolean>(false);
+  const [isBerry, setIsBerry] = useState<boolean>(false);
+
 
   // Fill out list of forms (default and mega, and without filtering: gmax forms)
   useEffect(() => {
@@ -23,9 +32,21 @@ export default function CreateSet() {
     fetch(`https://pokeapi.co/api/v2/pokemon-species/${selectedPokemon}`)
       .then((response) => response.json())
       .then((data) => {
-        const varieties = data.varieties.map((v: {pokemon: {name: string}}) => v.pokemon.name)
+        const varieties:string[] = data.varieties.map((v: {pokemon: {name: string}}) => v.pokemon.name)
         // Remove gmax forms
-        const filteredVarieties = varieties.filter((name:string) => !name.includes("-gmax"));
+        const filteredVarieties:string[] = varieties.filter((name:string) => !name.includes("-gmax"));
+
+        // Enable mega stone selection if mega forms
+        filteredVarieties.forEach(e => {
+        if (e.includes("mega")){
+          setCanMega(true);
+        }
+        else {
+          setCanMega(false);
+        }
+        });
+
+        // Set forms
         setPokemonForms(filteredVarieties);
         setSelectedForm(filteredVarieties[0]);
       })
@@ -83,7 +104,8 @@ export default function CreateSet() {
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
-          <ItemSearch value={selectedItem} onSelect={setSelectedItem} />
+          <ItemRadio canMega={canMega} get={itemType} set={setItemType} />
+          <ItemSearch value={selectedItem} onSelect={setSelectedItem} isMega={itemType==="mega"} isHeld={itemType==="held"} isBerry={itemType==="berry"}/>
           {itemSprite && (
             <img
               id="item-sprite"

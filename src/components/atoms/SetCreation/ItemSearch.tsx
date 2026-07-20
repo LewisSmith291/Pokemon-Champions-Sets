@@ -1,11 +1,15 @@
 interface Props {
   value: string;
   onSelect: (item: string) => void;
+  isMega: boolean;
+  isHeld: boolean;
+  isBerry: boolean;
 }
 
 // Curated list of competitively relevant held items (PokeAPI slugs).
 // PokeAPI has no Champions-specific item list, so this is maintained by hand.
 // Add/remove slugs here as needed — each must match an /item/{name} endpoint.
+// (source: serebii.net/pokemonchampions/items.shtml).
 const HELD_ITEMS: string[] = [
   "big-root",
   "black-belt",
@@ -51,12 +55,38 @@ const HELD_ITEMS: string[] = [
   "wide-lens",
   "wise-glasses",
   "zoom-lens",
-  "sablenite",
-  "greninjite"
 ];
 
+// Pokemon Champions berry list (source: serebii.net/pokemonchampions/items.shtml).
 const BERRIES: string[] = [
-
+  "aspear-berry",
+  "babiri-berry",
+  "charti-berry",
+  "cheri-berry",
+  "chesto-berry",
+  "chilan-berry",
+  "chople-berry",
+  "coba-berry",
+  "colbur-berry",
+  "haban-berry",
+  "kasib-berry",
+  "kebia-berry",
+  "leppa-berry",
+  "lum-berry",
+  "occa-berry",
+  "oran-berry",
+  "passho-berry",
+  "payapa-berry",
+  "pecha-berry",
+  "persim-berry",
+  "rawst-berry",
+  "rindo-berry",
+  "roseli-berry",
+  "shuca-berry",
+  "sitrus-berry",
+  "tanga-berry",
+  "wacan-berry",
+  "yache-berry",
 ]
 
 // Full Pokemon Champions Mega Stone list (source: serebii.net/pokemonchampions/items.shtml).
@@ -149,11 +179,17 @@ function toLabel(slug: string): string {
     .join(" ");
 }
 
-export default function ItemSearch({ value, onSelect }: Props) {
+export default function ItemSearch({ value, onSelect, isMega, isHeld, isBerry }: Props) {
   return (
     <select value={value} onChange={(e) => onSelect(e.target.value)}>
       <option value="">Empty</option>
-      {HELD_ITEMS.map((item: string) => (
+      {isHeld && HELD_ITEMS.map((item: string) => (
+        <option key={item} value={item}>{toLabel(item)}</option>
+      ))}
+      {isMega && MEGA_STONES.map((item: string) => (
+        <option key={item} value={item}>{toLabel(item)}</option>
+      ))}
+      {isBerry && BERRIES.map((item: string) => (
         <option key={item} value={item}>{toLabel(item)}</option>
       ))}
     </select>
