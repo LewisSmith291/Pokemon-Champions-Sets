@@ -21,18 +21,25 @@ function toLabel(slug: string): string {
 }
 
 export default function ItemSearch({ value, onSelect, name, isMegaForm, isMega, isHeld, isBerry }: Props) {
+  const [megaStones, setMegaStones] = useState<string[]>([]);
+  
   // Reset sprite when item category is changed 
   useEffect(()=>{
     onSelect("");
   },[isMega,isHeld,isBerry, name, isMegaForm])
   
+  // Update the mega stones list when different species is chosen 
+  useEffect(() => {
+    setMegaStones(GetMegaStones(name as "string"))
+  },[name])
+
   return (
     <select value={value} onChange={(e) => onSelect(e.target.value)}>
-      <option value="">None</option>
+      {!isMegaForm && <option value="">None</option>}
       {isHeld && HELD_ITEMS.map((item: string, index: number) => (
         <option key={index} value={item}>{toLabel(item)}</option>
       ))}
-      {isMega && GetMegaStones(name as "string").map((item: string, index: number) => (
+      {isMega && megaStones.map((item: string, index: number) => (
         <option key={index} value={item}>{toLabel(item)}</option>
       ))}
 

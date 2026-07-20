@@ -89,7 +89,7 @@ export default function CreateSet() {
     else {
       setItemSprite("");
     }
-  }, [selectedItem])
+  }, [selectedItem, selectedForm])
 
   return (
     <div id="set-creation">
@@ -106,6 +106,7 @@ export default function CreateSet() {
           </select>
           <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
           <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} isMega={itemType==="mega"} isHeld={itemType==="held"} isBerry={itemType==="berry"}/>
+          <p>{selectedItem}</p>
           {itemSprite ? 
             (
               <img
