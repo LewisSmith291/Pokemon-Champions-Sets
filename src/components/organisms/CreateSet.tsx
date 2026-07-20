@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import SpeciesSearch from '../atoms/SetCreation/SpeciesSearch';
-import ItemSearch from '../atoms/SetCreation/ItemSearch';
+import SpeciesSearch from '../atoms/setCreation/SpeciesSearch';
+import ItemSearch from '../atoms/setCreation/ItemSearch';
 import "./CreateSet.css"
-import ItemRadio from '../atoms/SetCreation/ItemRadio';
+import ItemRadio from '../atoms/setCreation/ItemRadio';
 
 // Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
 // which have no /item/{slug} endpoint). Served from public/wireSquare.svg.
@@ -13,6 +13,7 @@ export default function CreateSet() {
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
   const [selectedForm, setSelectedForm] = useState<string>("");
+  const [isMegaForm, setIsMegaForm] = useState<boolean>(false);
   // sprite
   const [sprite, setSprite] = useState<string>();
   // items
@@ -20,9 +21,6 @@ export default function CreateSet() {
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
-  const [isHeld, setIsHeld] = useState<boolean>(true);
-  const [isMega, setIsMega] = useState<boolean>(false);
-  const [isBerry, setIsBerry] = useState<boolean>(false);
 
 
   // Fill out list of forms (default and mega, and without filtering: gmax forms)
@@ -64,6 +62,7 @@ export default function CreateSet() {
         .then((response) => response.json())
         .then((data) => {
           setSprite(data.sprites.other.home.front_default);
+          setIsMegaForm(data.name.includes("mega"));
         })
     }
   }, [selectedForm])
@@ -94,18 +93,19 @@ export default function CreateSet() {
 
   return (
     <div id="set-creation">
+      <p>{""+isMegaForm}</p>
       <h1>Create Pokemon Set</h1>
       <div id="">
         <div id="species-form-select">
-          <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon}/>
+          <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} setItemType={setItemType}/>
           <select value={selectedForm} onChange={(e) => setSelectedForm(e.target.value)}>
             <option disabled value="">-- Form --</option>
             {pokemonForms.map((s: string) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
-          <ItemRadio canMega={canMega} get={itemType} set={setItemType} />
-          <ItemSearch value={selectedItem} onSelect={setSelectedItem} isMega={itemType==="mega"} isHeld={itemType==="held"} isBerry={itemType==="berry"}/>
+          <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
+          <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} isMega={itemType==="mega"} isHeld={itemType==="held"} isBerry={itemType==="berry"}/>
           {itemSprite && (
             <img
               id="item-sprite"

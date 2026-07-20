@@ -1,6 +1,6 @@
-import NatureBoost from '../atoms/SetDIsplay/NatureBoost.tsx';
-import StatDisplay from '../atoms/SetDIsplay/StatDisplay.tsx';
-import TypeDisplay from '../atoms/SetDIsplay/TypeDisplay.tsx';
+import NatureBoost from '../atoms/setDIsplay/NatureBoost.tsx';
+import StatDisplay from '../atoms/setDIsplay/StatDisplay.tsx';
+import TypeDisplay from '../atoms/setDIsplay/TypeDisplay.tsx';
 import '../atoms/SetDisplay/TypeStyle.css'
 import './pokemonDisplay.css'
 import { useState, useEffect } from 'react';

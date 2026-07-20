@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react'
 interface Props {
   value: string;
   onSelect: (species: string) => void;
+  setItemType:(item: string) => void;
 }
 
-export default function SpeciesSearch({ value, onSelect }: Props) {
+export default function SpeciesSearch({ value, onSelect, setItemType }: Props) {
   const [speciesList, setSpeciesList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function SpeciesSearch({ value, onSelect }: Props) {
         console.log('There was an ERROR: ', error);
       });
   }, []);
+
 
   return (
     <select value={value} onChange={(e) => onSelect(e.target.value)}>

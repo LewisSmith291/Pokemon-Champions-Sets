@@ -25,6 +25,6 @@ select{
 }
 
 #item-sprite{
-  height:4svh;
+  height:4rem;
   aspect-ratio: 1 / 1;
 }
