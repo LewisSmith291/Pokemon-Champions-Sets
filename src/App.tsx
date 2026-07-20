@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import './App.css'
 import PokemonSetDisplay from './components/molecules/PokemonSetDisplay.tsx'
 import CreateSet from './components/organisms/CreateSet.tsx'

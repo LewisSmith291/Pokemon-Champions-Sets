@@ -29,3 +29,8 @@ select{
   height:4rem;
   aspect-ratio: 1 / 1;
 }
+
+#sprite-and-stats{
+  display: flex;
+  flex-direction: row;
+}

@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface Props{
   currentForm: string;
   setSelectedForm: (form: string) => void;

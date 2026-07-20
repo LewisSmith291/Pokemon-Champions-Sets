@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../atoms/setCreation/SpeciesSearch.tsx';
 import FormSearch from '../atoms/setCreation/FormSearch.tsx'
-import ItemSearch from '../atoms/setCreation/ItemSearch';
-import ItemRadio from '../atoms/setCreation/ItemRadio';
+import ItemSearch from '../atoms/setCreation/ItemSearch.tsx';
+import ItemRadio from '../atoms/setCreation/ItemRadio.tsx';
+import StatsConfig from '../molecules/setCreation/StatsConfig.tsx';
 
 // Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
 // which have no /item/{slug} endpoint). Served from public/wireSquare.svg.
@@ -131,7 +132,10 @@ export default function CreateSet() {
           }
         </div>
       </div>
-      <img id="pokemon-sprite" src={sprite} alt={selectedForm}/>
+      <div id="sprite-and-stats">
+        <img id="pokemon-sprite" src={sprite} alt={selectedForm}/>
+        <StatsConfig species={selectedForm}/>
+      </div>
     </div>
   )
 }
