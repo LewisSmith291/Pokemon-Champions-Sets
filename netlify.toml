@@ -1,0 +1,14 @@
+# Netlify build settings. Keeping these in the repo means the dashboard does not
+# need configuring by hand, and the settings are reviewable like any other change.
+
+[build]
+  # The app lives in client/, so npm install and the build run from there.
+  base = "client"
+  command = "npm run build"
+  # Relative to base — resolves to client/dist.
+  publish = "dist"
+
+[build.environment]
+  # Vite 8 requires Node ^20.19 or >=22.12. Pinning avoids depending on
+  # whatever default Netlify happens to assign the site.
+  NODE_VERSION = "22"
