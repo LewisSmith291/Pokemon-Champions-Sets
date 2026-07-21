@@ -10,7 +10,6 @@ interface ApiStat {
   stat: { name: string };
 }
 
-// The shape we actually care about, flattened out of ApiStat
 interface BaseStat {
   name: string;
   value: number;
