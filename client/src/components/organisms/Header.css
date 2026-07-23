@@ -2,9 +2,11 @@ header{
   max-width: 100%;
   background-color: rgb(73, 92, 92);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding:0.5svh;
+  padding: 1svh;
+  padding-left: 1svw;
+  padding-right: 1svw;
 }
 
 #logo{
