@@ -1,0 +1,13 @@
+header{
+  max-width: 100%;
+  background-color: rgb(73, 92, 92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:0.5svh;
+}
+
+#logo{
+  image-rendering: pixelated;
+  height: 96px;
+}
