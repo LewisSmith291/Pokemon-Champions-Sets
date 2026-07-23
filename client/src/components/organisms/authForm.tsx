@@ -3,9 +3,10 @@ import { signIn, signUp } from "../../services/authClient";
 
 interface Props {
   authMode: "signin" | "signup";
+  onSuccess?: () => void;
 }
 
-export default function AuthForm({authMode}:Props) {
+export default function AuthForm({authMode, onSuccess}:Props) {
   // If auth mode is either null or sign in, use the signing in mode, otherwise use sign up mode
   // 'signin' is used so that if the user clicks from a link that says sign in, they are taken to the sign in page
   // alternatively if they click from a link that says register or sign up, they are taking to the sign up page
@@ -28,8 +29,13 @@ export default function AuthForm({authMode}:Props) {
         : await signIn.email({ email, password });
 
     setLoading(false);
-    if (error) setError(error.message ?? "Something went wrong");
-    // On success, useSession() in App re-renders — nothing to do here.
+    if (error) {
+      setError(error.message ?? "Something went wrong");
+      return;
+    }
+    // On success, useSession() in App re-renders
+    onSuccess?.();
+    
   }
 
   return (
