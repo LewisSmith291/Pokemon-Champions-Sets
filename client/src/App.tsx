@@ -1,20 +1,33 @@
 import './App.css'
-import { useState } from 'react'
-import PokemonSetDisplay from './components/molecules/PokemonSetDisplay.tsx'
+import {useSession, signOut} from './services/authClient.ts'
 import AuthForm from './components/organisms/authForm.tsx'
 import CreateSet from './components/organisms/CreateSet.tsx'
 
 
 function App() {
-  const [answer, setAnswer] = useState<string>("answer");
+  const {data: session, isPending} = useSession(); // datta:session renames the 'data' element in useSession to 'session'
+
+  // If there is a session check running (check before seeing if there is a session to avoid flashing elements)
+  if (isPending){
+    return <p>Loading...</p>
+  }
+
+  // If there is no session
+  if (!session){
+    return <AuthForm authMode="signin"/>
+  }
+
+  // Finally, the user is logged in and there is a session
   return (
-    <>
-      <h1>{answer}</h1>
-      <AuthForm authMode="signin" onSuccess={() => setAnswer("successful login")}/>
+    <div>
+      <header>
+        <span>Signed in as {session.user.name}</span>
+        <button onClick={() => signOut()}>Sign Out</button>
+      </header>
       <CreateSet />
-      {false && <PokemonSetDisplay name={"hawlucha-mega"}  ability={"lightning rod"} item={"life orb"} hp={100} atk={50} def={50} spAtk={50} spDef={50} spe={20} nature="timid"/>}
-    </>
+    </div>
   )
+
 }
 
 export default App
