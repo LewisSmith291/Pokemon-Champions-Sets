@@ -31,6 +31,6 @@ app.get("/health", (_req, res)=> {
 
 // app.listen starts accepting connections on the 'PORT' port number
 app.listen(PORT, () => {
-  console.log(`API listening on https://localhost:${PORT}`);
+  console.log(`API listening on http://localhost:${PORT}`);
   console.log(`Trusting client origin: ${CLIENT_URL}`);
 })
