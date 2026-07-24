@@ -17,5 +17,5 @@ export const auth = betterAuth({
   },
   // The client sends cookies cross-origin (Netlify -> API host), so the API
   // must explicitly trust the frontend's origin.
-  trustedOrigins: [process.env.CLIENT_URL ?? "http://localhost:5173"],
+  trustedOrigins: [process.env.CLIENT_URL ?? "http://localhost:5173", process.env.LIVE_URL ?? "https://championsets.netlify.app/"],
 });

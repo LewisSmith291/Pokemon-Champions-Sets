@@ -7,12 +7,16 @@ import { auth } from "./auth"
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001); // Falls back to port 3001 if .env.PORT is null. Convert string into port number
 const CLIENT_URL = process.env.CLIENT_URL ?? "http://localhost:5173"
+const LIVE_URL = process.env.LIVE_URL ?? "https://championsets.netlify.app/"
+
+const allowedOrigins = [CLIENT_URL, LIVE_URL].filter(Boolean);
 
 // Set up CORS
 app.use(
   cors({
-    origin: CLIENT_URL, // Dev url
+    origin: allowedOrigins,
     credentials: true, // Session cookiues can be sent across origins
+    
   }),
 );
 
