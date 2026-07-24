@@ -12,3 +12,4 @@
   # Vite 8 requires Node ^20.19 or >=22.12. Pinning avoids depending on
   # whatever default Netlify happens to assign the site.
   NODE_VERSION = "22"
+  NPM_FLAGS = "--include=dev"
