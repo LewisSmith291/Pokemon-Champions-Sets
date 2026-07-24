@@ -6,6 +6,8 @@ import { db } from "./db/index.js";
 // can map its model names to real tables.
 import * as schema from "./db/auth-schema.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // Configures Better Auth
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -17,5 +19,16 @@ export const auth = betterAuth({
   },
   // The client sends cookies cross-origin (Netlify -> API host), so the API
   // must explicitly trust the frontend's origin.
-  trustedOrigins: [process.env.CLIENT_URL ?? "http://localhost:5173", process.env.LIVE_URL ?? "https://championsets.netlify.app/"],
+  trustedOrigins: [process.env.CLIENT_URL ?? "http://localhost:5173", 
+    process.env.LIVE_URL ?? "https://championsets.netlify.app"
+  ],
+  advanced: {
+    defaultCookieAttributes: isProduction ? 
+    {
+      sameSite: "none", secure: true, // cross-site over https
+    } :
+    {
+      sameSite: "lax", secure: false // localhost uses http
+    },
+  }
 });
