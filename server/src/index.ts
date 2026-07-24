@@ -8,8 +8,9 @@ const app = express();
 const PORT = Number(process.env.PORT ?? 3001); // Falls back to port 3001 if .env.PORT is null. Convert string into port number
 const CLIENT_URL = process.env.CLIENT_URL ?? "http://localhost:5173"
 const LIVE_URL = process.env.LIVE_URL ?? "https://championsets.netlify.app"
+const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL ?? "http://localhost:3001"
 
-const allowedOrigins = [CLIENT_URL, LIVE_URL].filter(Boolean);
+const allowedOrigins = [CLIENT_URL, LIVE_URL, BETTER_AUTH_URL].filter(Boolean);
 
 // Set up CORS
 app.use(
