@@ -7,7 +7,6 @@ export default function Header() {
     <header>
       <Logo/>
       <HeaderLinks/>
-      
     </header>
   )
 }
