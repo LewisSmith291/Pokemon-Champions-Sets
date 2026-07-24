@@ -1,11 +1,13 @@
-import Logo from '/Logo.png'
 import './Header.css'
+import HeaderLinks from '../molecules/header/HeaderLinks'
+import Logo from '../atoms/header/Logo'
 
 export default function Header() {
   return (
     <header>
-      <img id="logo" src={Logo}/>
-      <h1>Log in</h1>
+      <Logo/>
+      <HeaderLinks/>
+      
     </header>
   )
 }

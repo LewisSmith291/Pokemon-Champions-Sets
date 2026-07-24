@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set — copy .env.example to .env and fill it in");
+  throw new Error("DATABASE_URL is not set ");
 }
 
 // Neon over a normal TCP pool. Use the pooled connection string from the Neon dashboard (its host contains "-pooler") 
