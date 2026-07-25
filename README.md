@@ -1,32 +1,35 @@
-# React + TypeScript + Vite
+# Champion Sets
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+![Static Badge](https://img.shields.io/badge/HTML-white?logo=html5&color=%2318191b)
+![Static Badge](https://img.shields.io/badge/CSS-white?logo=css&color=%2318191b)
+![Static Badge](https://img.shields.io/badge/TypeScript-white?logo=typescript&logoColor=white&color=%233178c6)
+![Static Badge](https://img.shields.io/badge/React-blue?logo=react&color=%2323272f) 
+![Static Badge](https://img.shields.io/badge/Node.js-white?logo=node.js&color=%230d121c) 
+![Static Badge](https://img.shields.io/badge/PostgreSQL-white?logo=postgresql&logoColor=%23699eca&color=%23212121)
+![Static Badge](https://img.shields.io/badge/Render-white?logo=render&color=%23141414) 
+![Static Badge](https://img.shields.io/badge/TailwindCSS-white?logo=tailwindcss&logoColor=blue&color=%23030712)
+![Static Badge](https://img.shields.io/badge/Netlify-white?logo=netlify&color=%2312181f)
+![Static Badge](https://img.shields.io/badge/Neon-white?logo=neon&color=%23262626)
+![Static Badge](https://img.shields.io/badge/drizzle-white?logo=drizzle&color=%23111111)
+![Static Badge](https://img.shields.io/badge/BetterAuth-white?logo=betterauth&color=black)
 
-Currently, two official plugins are available:
+This WebApp serves as a companion for the newly released and popular game Pokemon Champions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+While playing the popular new Pokemon Champions game, I noticed that there was no website used to share pokemon/team builds with others, just non-specific statistical websites showing what is commonly used, which lacked detail. I decided to make what I was looking for myself.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A pokemon 'set' is information about how a pokemon is trained which dictates how it performs when being used to play against other players. 
 
-## Expanding the Oxlint configuration
+The website is still in production, but will eventually have the features of:
+- set creation
+- set browsing/discovery
+- pokemon stat calculator (can be used during set creation to optimise stat spreads for specific scenarios)
+- user profile
+- upvoting sets
+- tagging sets so search filters can be applied
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+This is my most ambitious project as it is very much one fueld by passion and a genuine curiosity for how well this product can perform in terms of active monthly users.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+It uses api calls to fetch data about pokemon (sprite, name, forms, etc.) using the [PokeApi](https://pokeapi.co/) RESTful Pokemon APi, and will use the [Smogon Damage Calculator](https://github.com/smogon/damage-calc) API for assistance in optimising pokemon stats.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+It also leverages BetterAuth for handling of signing in/out/up and sessions.

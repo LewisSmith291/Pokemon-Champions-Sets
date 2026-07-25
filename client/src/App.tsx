@@ -10,7 +10,12 @@ function App() {
 
   // If there is a session check running (check before seeing if there is a session to avoid flashing elements)
   if (isPending){
-    return <p>Loading...</p>
+    return (
+      <>
+        <Header />
+        <p>Loading...</p>
+      </>
+    )
   }
 
   // If there is no session
