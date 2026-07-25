@@ -1,12 +1,18 @@
-@import "tailwindcss";
+#logo{
+  max-width:20vw;
+  max-height: 5vw;
+  min-width: 160px;
+  min-height: 40px;
+}
 
-header{
-  max-width: 100%;
-  background-color: #302046;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1svh;
-  padding-left: 1svw;
-  padding-right: 1svw;
+a{
+  font-size: 2vw;
+  max-height: 5vw;
+}
+
+#profile-icon{
+  width:5vw;
+  height:5vw;
+  min-width:40px;
+  min-height: 40px;
 }

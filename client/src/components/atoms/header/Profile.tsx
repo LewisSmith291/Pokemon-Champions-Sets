@@ -9,8 +9,9 @@ export default function Profile({url}: Props) {
   return (
     <div>
       <img 
+        id="profile-icon"
         src={url !== null ? url : emptyProfile}
-        className="bg-(--color-bg) rounded-full w-32"
+        className="rounded-full"
       /> 
     </div>
   )
