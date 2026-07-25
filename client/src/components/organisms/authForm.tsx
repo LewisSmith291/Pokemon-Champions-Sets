@@ -39,43 +39,45 @@ export default function AuthForm({authMode, onSuccess}:Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 m-2">
       <h2>{mode === "signup" ? "Create account" : "Log in"}</h2>
-
-      { // Sign up mode includes a first name field that log in mode doesn't
-      mode === "signup" && (
+      <div className="flex flex-row gap-2 align-items-center justify-center">
+        { // Sign up mode includes a first name field that log in mode doesn't
+        mode === "signup" && (
+          <input
+            placeholder="First Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        )}
         <input
-          placeholder="First Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          className="bg-white text-black border border-(--color-border) rounded-md px-3 py-2"
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-      )}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-      { // Output the error message 
-      error && <p style={{ color: "#fd5d00" }}>{error}</p>}
+        { // Output the error message 
+        error && <p style={{ color: "#fd5d00" }}>{error}</p>}
 
-      <button type="submit" disabled={loading}>
-        {loading ? "…" : mode === "signup" ? "Sign up" : "Log in"}
-      </button>
+        <button type="submit" disabled={loading}>
+          {loading ? "…" : mode === "signup" ? "Sign up" : "Log in"}
+        </button>
 
-      <button type="button" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setError(null); }}>
-        {mode === "signup" ? "Have an account? Log in" : "Sign up"}
-      </button>
+        <button type="button" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setError(null); }}>
+          {mode === "signup" ? "Have an account? Log in" : "Sign up"}
+        </button>
+      </div>
     </form>
   );
 }

@@ -13,7 +13,7 @@
 
 :root {
   --text: #6b6375;
-  --text-h: #08060d;
+  --text-h: #ffffff;
   --bg: #fff;
   --border: #e5e4e7;
   --accent: #aa3bff;
@@ -39,7 +39,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
-    --text-h: #f3f4f6;
+    --text-h: #ffffff;
     --bg: #5a4d79;
     --border: #2e303a;
     --accent: #c084fc;
@@ -76,4 +76,44 @@ h1 {
 }
 p {
   margin: 0;
+}
+
+input, select, textarea {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--color-header);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+button {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
