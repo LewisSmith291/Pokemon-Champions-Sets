@@ -8,7 +8,7 @@ interface Props {
 export default function ProfileDropdown({isSignedIn, isOpen}: Props) {
   
   return (
-    <div id="profile-dropdown" className={(isOpen ? "invisible hidden" : "visible absolute")}>
+    <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
       <ul className="flex flex-col relative">
         {isSignedIn ? (
           <>

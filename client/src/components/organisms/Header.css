@@ -1,9 +1,10 @@
 header{
   height:12svh;
+  min-height: 40px;
 }
 
 #header-gap{
-  height:15vw;
+  height:12svh;
   min-height: 40px;
 }
 

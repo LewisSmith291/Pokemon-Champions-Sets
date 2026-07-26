@@ -3,7 +3,7 @@ import NavDestination from '../../atoms/header/NavDestination'
 export default function HeaderLinks() {
 
   return (
-    <nav className="flex flex-row place-content-evenly w-full px-4 ">
+    <nav className="md:flex md:flex-row md:place-content-evenly grid  grid-rows-2 grid-cols-3 grid-flow-row w-full px-4 ">
       <NavDestination name={"Home"} link="#home" />
       <NavDestination name={"Create"} link="#create"/>
       <NavDestination name={"Browse"} link="#browse"/>
