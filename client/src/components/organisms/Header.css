@@ -1,3 +1,12 @@
+header{
+  height:12svh;
+}
+
+#header-gap{
+  height:15vw;
+  min-height: 40px;
+}
+
 #logo{
   max-width:20vw;
   max-height: 5vw;
@@ -15,4 +24,20 @@ a{
   height:5vw;
   min-width:40px;
   min-height: 40px;
+}
+
+#profile-dropdown{
+  flex-direction: column;
+  gap:1svh;
+  right:0;
+  top: 12svh;
+} 
+
+#profile-dropdown ul li{
+  background-color: var(--color-header);
+  padding:2svh;
+  color: white;
+  border: solid 1px black;
+  font-size: 2vw;
+
 }

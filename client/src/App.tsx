@@ -1,6 +1,5 @@
 import './App.css'
-import {useSession, signOut} from './services/authClient.ts'
-import AuthForm from './components/organisms/authForm.tsx'
+import {useSession} from './services/authClient.ts'
 import CreateSet from './components/organisms/CreateSet.tsx'
 import Header from './components/organisms/Header.tsx';
 
@@ -8,6 +7,7 @@ import Header from './components/organisms/Header.tsx';
 function App() {
   const {data: session, isPending} = useSession(); // datta:session renames the 'data' element in useSession to 'session'
 
+  /*
   // If there is a session check running (check before seeing if there is a session to avoid flashing elements)
   if (isPending){
     return (
@@ -19,7 +19,9 @@ function App() {
       </>
     )
   }
+  */
 
+  /*
   // If there is no session
   if (!session){
     return (
@@ -29,15 +31,12 @@ function App() {
       </>
     )
   }
+  */
 
-  // Finally, the user is logged in and there is a session
   return (
     <div>
-      <Header />
-      <header>
-        <span>Signed in as {session.user.name}</span>
-        <button onClick={() => signOut()}>Sign Out</button>
-      </header>
+      {!session ? <Header isSignedIn={true}/> : <Header isSignedIn={false}/> }
+      <div id="header-gap" className="py-2"></div>
       <CreateSet />
     </div>
   )
