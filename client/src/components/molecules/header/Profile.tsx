@@ -25,7 +25,7 @@ export default function Profile({url, isSignedIn}: Props) {
         src={url !== null ? url : emptyProfile}
         className=" hover:cursor-pointer hover:brightness-120"
       /> 
-      <ProfileDropdown isSignedIn={isSignedIn} isOpen={isOpen}/>
+      <ProfileDropdown isSignedIn={isSignedIn} isOpen={isOpen} setIsOpen={clickProfile}/>
     </div>
   )
 }

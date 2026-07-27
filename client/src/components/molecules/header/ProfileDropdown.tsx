@@ -1,28 +1,27 @@
 import { signOut } from "../../../services/authClient";
+import { Link } from "react-router";
 
 interface Props {
   isSignedIn:boolean;
-  isOpen:boolean
+  isOpen:boolean;
+  setIsOpen?: () => void;
 }
 
-export default function ProfileDropdown({isSignedIn, isOpen}: Props) {
+export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) {
   
   return (
     <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
       <ul className="flex flex-col relative invisible-pre-wrap">
         {isSignedIn ? (
           <>
-            <li>Profile</li>
+            <li onClick={() => setIsOpen?.()}><Link to="/profile">Profile</Link></li>
             <li className="rounded-bl-xl" 
-            onClick={() => {
-              signOut(); 
-              console.log(isOpen);
-            }}>Sign Out</li>
+                onClick={() => {signOut(); setIsOpen?.()}}>Sign Out</li>
           </>
         ) : (
           <>
-          <li>Sign In</li>
-          <li className="rounded-bl-xl">Sign Up</li>
+          <li onClick={() => setIsOpen?.()}><Link to="/signin">Sign In</Link></li>
+          <li onClick={() => setIsOpen?.()} className="rounded-bl-xl"><Link to="/signup">Sign Up</Link></li>
           </>
         )}
       </ul>
