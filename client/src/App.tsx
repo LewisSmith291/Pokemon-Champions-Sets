@@ -5,7 +5,8 @@ import Header from './components/organisms/Header.tsx';
 
 
 function App() {
-  const {data: session, isPending} = useSession(); // datta:session renames the 'data' element in useSession to 'session'
+  const {data: session} = useSession(); // datta:session renames the 'data' element in useSession to 'session'
+  //const {data: session, isPending} = useSession(); 
 
   /*
   // If there is a session check running (check before seeing if there is a session to avoid flashing elements)
