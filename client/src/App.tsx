@@ -48,7 +48,7 @@ function App() {
         <Route path="/create" element={<CreateSetPage/>} />
         <Route path="/signin" element={<AuthPage signType="signin"/>}></Route>
         <Route path="/signup" element={<AuthPage signType="signup"/>}></Route>
-        <Route path="/*" element={<p className="m-4">Coming Soon</p>} />
+        <Route path="/*" element={<p className="m-4">Site Not Found</p>} />
         </Routes>
     </div>
   )

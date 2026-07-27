@@ -13,3 +13,10 @@
   # whatever default Netlify happens to assign the site.
   NODE_VERSION = "22"
   NPM_FLAGS = "--include=dev"
+
+[[redirects]]
+## SPA fallback: React Router owns routing, 
+## so any path that is not a real file must return to index.html with a 200 and let client match it
+  from = "/*"
+  to = "/index.html"
+  status = 200
