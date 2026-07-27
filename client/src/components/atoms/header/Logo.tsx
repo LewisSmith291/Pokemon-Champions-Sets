@@ -1,9 +1,10 @@
 import logo from '/Logo.png'
+import { Link } from 'react-router'
 
 export default function Logo() {
   return (
-    <a 
-      href="#home"
+    <Link 
+      to="/"
       className="flex items-center hover:brightness-110">
       <img 
         id="logo"
@@ -11,6 +12,6 @@ export default function Logo() {
         alt="Champion Sets Logo"
         className="h-[96px] w-auto [image-rendering:pixelated]"
       />
-    </a>
+    </Link>
   )
 }
