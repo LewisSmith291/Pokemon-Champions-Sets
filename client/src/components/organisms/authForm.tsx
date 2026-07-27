@@ -3,14 +3,11 @@ import { signIn, signUp } from "../../services/authClient";
 
 interface Props {
   authMode: "signin" | "signup";
+  toggleMode?: () => void;
   onSuccess?: () => void;
 }
 
-export default function AuthForm({authMode, onSuccess}:Props) {
-  // If auth mode is either null or sign in, use the signing in mode, otherwise use sign up mode
-  // 'signin' is used so that if the user clicks from a link that says sign in, they are taken to the sign in page
-  // alternatively if they click from a link that says register or sign up, they are taking to the sign up page
-  const [mode, setMode] = useState<"signin" | "signup">(authMode === "signin" ? "signin" : "signup");
+export default function AuthForm({authMode, toggleMode, onSuccess}:Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +21,7 @@ export default function AuthForm({authMode, onSuccess}:Props) {
 
     // Better Auth returns { error } rather than throwing.
     const { error } =
-      mode === "signup"
+      authMode === "signup"
         ? await signUp.email({ name, email, password })
         : await signIn.email({ email, password });
 
@@ -33,17 +30,16 @@ export default function AuthForm({authMode, onSuccess}:Props) {
       setError(error.message ?? "Something went wrong");
       return;
     }
-    // On success, useSession() in App re-renders
+
     onSuccess?.();
-    
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 m-2">
-      <h2>{mode === "signup" ? "Create account" : "Log in"}</h2>
+      <h2>{authMode === "signup" ? "Create account" : "Log in"}</h2>
       <div className="flex flex-row gap-2 align-items-center justify-center">
         { // Sign up mode includes a first name field that log in mode doesn't
-        mode === "signup" && (
+        authMode === "signup" && (
           <input
             placeholder="First Name"
             value={name}
@@ -71,11 +67,11 @@ export default function AuthForm({authMode, onSuccess}:Props) {
         error && <p style={{ color: "#fd5d00" }}>{error}</p>}
 
         <button type="submit" disabled={loading}>
-          {loading ? "…" : mode === "signup" ? "Sign up" : "Log in"}
+          {loading ? "…" : authMode === "signup" ? "Sign up" : "Log in"}
         </button>
 
-        <button type="button" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setError(null); }}>
-          {mode === "signup" ? "Have an account? Log in" : "Sign up"}
+        <button type="button" onClick={() => { toggleMode?.(); setError(null); }}>
+          {authMode === "signup" ? "Have an account? Log in" : "Sign up"}
         </button>
       </div>
     </form>
