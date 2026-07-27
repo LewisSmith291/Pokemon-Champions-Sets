@@ -18,8 +18,9 @@ export default function Profile({url, isSignedIn}: Props) {
 
   return (
     <div>
-      <img 
+      <img
         id="profile-icon"
+        alt="profile picture icon"
         onClick={() => clickProfile()}
         src={url !== null ? url : emptyProfile}
         className=" hover:cursor-pointer hover:brightness-120"
