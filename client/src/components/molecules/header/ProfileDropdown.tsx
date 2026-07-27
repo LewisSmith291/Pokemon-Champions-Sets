@@ -26,12 +26,12 @@ export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) 
           </>
         ) : (
           <>
-          <li onClick={() => setIsOpen?.()}>
-            <Link to="/signin" state={{from:location.pathname}}>Sign In</Link>
-          </li>
-          <li onClick={() => setIsOpen?.()} className="rounded-bl-xl">
-            <Link to="/signup" state={{from:location.pathname}}>Sign Up</Link>
-          </li>
+            <li onClick={() => setIsOpen?.()}>
+              <Link to="/signin" state={{from:location.pathname}}>Sign In</Link>
+            </li>
+            <li onClick={() => setIsOpen?.()} className="rounded-bl-xl">
+              <Link to="/signup" state={{from:location.pathname}}>Sign Up</Link>
+            </li>
           </>
         )}
       </ul>

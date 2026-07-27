@@ -1,13 +1,9 @@
-import type {ReactNode} from "react";
-import { Navigate, useLocation } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import { useSession } from "../../services/authClient";
 import Loading from "../atoms/Loading";
 
-interface Props{
-  children: ReactNode
-}
 
-export default function RequireAuth({children}:Props) {
+export default function RequireAuth() {
   const {data: session, isPending} = useSession();
   const location = useLocation();
 
@@ -21,7 +17,7 @@ export default function RequireAuth({children}:Props) {
   }
 
   return (
-    <>{children}</>
+    <Outlet/>
   )
 
 }
