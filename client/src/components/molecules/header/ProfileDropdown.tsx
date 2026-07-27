@@ -1,4 +1,4 @@
-import { signOut } from "better-auth/api";
+import { signOut } from "../../../services/authClient";
 
 interface Props {
   isSignedIn:boolean;
@@ -10,7 +10,7 @@ export default function ProfileDropdown({isSignedIn, isOpen}: Props) {
   return (
     <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
       <ul className="flex flex-col relative invisible-pre-wrap">
-        {!isSignedIn ? (
+        {isSignedIn ? (
           <>
             <li>Profile</li>
             <li className="rounded-bl-xl" 

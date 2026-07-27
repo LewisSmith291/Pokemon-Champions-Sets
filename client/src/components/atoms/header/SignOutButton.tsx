@@ -1,4 +1,4 @@
-import { signOut } from "better-auth/api";
+import { signOut } from "../../../services/authClient"
 
 export default function SignOutButton() {
   return (
