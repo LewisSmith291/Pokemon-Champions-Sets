@@ -36,9 +36,18 @@ a{
 
 #profile-dropdown ul li{
   background-color: var(--color-header);
-  padding:2svh;
+  padding:1.5vw;
   color: white;
   border: solid 1px black;
   font-size: 2vw;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.1s;
+}
 
+#profile-dropdown ul li:hover{
+  cursor: pointer;
+  background-color: var(--accent);
+  color:var(--link-color);
 }

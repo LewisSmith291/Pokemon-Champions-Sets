@@ -7,7 +7,7 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-header: #22004e;   /* header bar — same in light/dark */
-  --color-link-text: #f9f962;
+  --color-link-text: var(--link-color);
 }
 
 
@@ -16,7 +16,7 @@
   --text-h: #ffffff;
   --bg: #fff;
   --border: #e5e4e7;
-  --accent: #aa3bff;
+  --accent: #f6339a;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -26,8 +26,6 @@
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -42,7 +40,8 @@
     --text-h: #ffffff;
     --bg: #5a4d79;
     --border: #2e303a;
-    --accent: #c084fc;
+    --accent: #f6339a;
+    --link-color: #f9f962;
   }
 }
 
@@ -86,34 +85,4 @@ input, select, textarea {
   border-radius: 8px;
   padding: 8px 12px;
 
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--text);
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-button {
-  font: inherit;
-  color: var(--text-h);
-  background: var(--accent);
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }

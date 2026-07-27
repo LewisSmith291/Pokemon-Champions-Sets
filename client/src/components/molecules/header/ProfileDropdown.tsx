@@ -9,19 +9,20 @@ export default function ProfileDropdown({isSignedIn, isOpen}: Props) {
   
   return (
     <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
-      <ul className="flex flex-col relative">
-        {isSignedIn ? (
+      <ul className="flex flex-col relative invisible-pre-wrap">
+        {!isSignedIn ? (
           <>
             <li>Profile</li>
-            <li onClick={() => {
+            <li className="rounded-bl-xl" 
+            onClick={() => {
               signOut(); 
               console.log(isOpen);
             }}>Sign Out</li>
           </>
         ) : (
           <>
-          <li></li>
           <li>Sign In</li>
+          <li className="rounded-bl-xl">Sign Up</li>
           </>
         )}
       </ul>
