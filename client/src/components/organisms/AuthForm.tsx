@@ -4,10 +4,9 @@ import { signIn, signUp } from "../../services/authClient";
 interface Props {
   authMode: "signin" | "signup";
   toggleMode?: () => void;
-  onSuccess?: () => void;
 }
 
-export default function AuthForm({authMode, toggleMode, onSuccess}:Props) {
+export default function AuthForm({authMode, toggleMode}:Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,8 +29,6 @@ export default function AuthForm({authMode, toggleMode, onSuccess}:Props) {
       setError(error.message ?? "Something went wrong");
       return;
     }
-
-    onSuccess?.();
   }
 
   return (

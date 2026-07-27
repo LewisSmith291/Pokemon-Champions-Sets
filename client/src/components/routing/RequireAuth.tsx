@@ -8,7 +8,7 @@ interface Props{
 }
 
 export default function RequireAuth({children}:Props) {
-  const {data: sesison, isPending} = useSession();
+  const {data: session, isPending} = useSession();
   const location = useLocation();
 
   // Session check is async. Rendering anything decisive before it settles will bounce signed-in users to login page on refresh
@@ -16,8 +16,12 @@ export default function RequireAuth({children}:Props) {
     return <Loading />
   }
 
+  if (!session){
+    return <Navigate to="/signin" state={{from:location.pathname}} replace />
+  }
 
   return (
     <>{children}</>
   )
+
 }

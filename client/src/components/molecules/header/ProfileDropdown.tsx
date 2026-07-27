@@ -1,5 +1,6 @@
 import { signOut } from "../../../services/authClient";
 import { Link } from "react-router";
+import { useLocation } from "react-router";
 
 interface Props {
   isSignedIn:boolean;
@@ -8,7 +9,8 @@ interface Props {
 }
 
 export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) {
-  
+  const location = useLocation();
+
   return (
     <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
       <ul className="flex flex-col relative invisible-pre-wrap">
@@ -20,7 +22,7 @@ export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) 
           </>
         ) : (
           <>
-          <li onClick={() => setIsOpen?.()}><Link to="/signin">Sign In</Link></li>
+          <li onClick={() => setIsOpen?.()}><Link to="/signin" state={{from:location.pathname}}>Sign In</Link></li>
           <li onClick={() => setIsOpen?.()} className="rounded-bl-xl"><Link to="/signup">Sign Up</Link></li>
           </>
         )}
