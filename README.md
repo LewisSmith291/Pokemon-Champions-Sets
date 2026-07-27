@@ -15,6 +15,7 @@
 
 This WebApp serves as a companion for the newly released and popular game Pokemon Champions.
 
+It is currently a work in progress, and will be edited for a while before it is officially released. In the meantime the development process will be documented here.
 
 While playing the popular new Pokemon Champions game, I noticed that there was no website used to share pokemon/team builds with others, just non-specific statistical websites showing what is commonly used, which lacked detail. I decided to make what I was looking for myself.
 
