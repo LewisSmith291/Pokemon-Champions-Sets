@@ -37,8 +37,6 @@ function App() {
   }
   */
 
-
-
   return (
     <div>
       <Header isSignedIn={!!session}/>

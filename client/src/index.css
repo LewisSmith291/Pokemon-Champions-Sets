@@ -9,7 +9,24 @@
   --color-header: #22004e;   /* header bar — same in light/dark */
   --color-link-text: var(--link-color);
 }
-
+/* 
+  custom wiggle animation for pokebal loading icon
+  supposed to look like when attempting to catch a pokemon in game
+*/
+@theme {
+  --animate-wiggle: wiggle 1s ease-out infinite;
+  @keyframes wiggle {
+    0%, 100% {
+      transform: rotate(-5deg);
+    }
+    50% {
+      transform: rotate(15deg);
+    }
+    80%{
+      transform: rotate(15deg);
+    }
+  }
+}
 
 :root {
   --text: #6b6375;
