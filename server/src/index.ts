@@ -3,6 +3,7 @@ import express from "express"
 import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "./auth.js"
+//import { requireAuth } from "./middleware/requireAuth.js"
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001); // Falls back to port 3001 if .env.PORT is null. Convert string into port number

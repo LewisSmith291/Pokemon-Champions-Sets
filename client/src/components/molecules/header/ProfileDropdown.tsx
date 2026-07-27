@@ -16,14 +16,22 @@ export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) 
       <ul className="flex flex-col relative invisible-pre-wrap">
         {isSignedIn ? (
           <>
-            <li onClick={() => setIsOpen?.()}><Link to="/profile">Profile</Link></li>
-            <li className="rounded-bl-xl" 
-                onClick={() => {signOut(); setIsOpen?.()}}>Sign Out</li>
+            <li onClick={() => setIsOpen?.()}>
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li 
+              className="rounded-bl-xl" 
+              onClick={() => {signOut(); setIsOpen?.()}}>Sign Out
+            </li>
           </>
         ) : (
           <>
-          <li onClick={() => setIsOpen?.()}><Link to="/signin" state={{from:location.pathname}}>Sign In</Link></li>
-          <li onClick={() => setIsOpen?.()} className="rounded-bl-xl"><Link to="/signup">Sign Up</Link></li>
+          <li onClick={() => setIsOpen?.()}>
+            <Link to="/signin" state={{from:location.pathname}}>Sign In</Link>
+          </li>
+          <li onClick={() => setIsOpen?.()} className="rounded-bl-xl">
+            <Link to="/signup" state={{from:location.pathname}}>Sign Up</Link>
+          </li>
           </>
         )}
       </ul>
