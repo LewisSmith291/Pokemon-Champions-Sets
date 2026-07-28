@@ -1,0 +1,39 @@
+
+@media (min-width:400px){
+  #home-canvas{
+    height: 400px;
+    width: 400px;
+    grid-template-columns: 1rem 1rem 1rem 1rem;
+    grid-template-rows: 1rem 1rem 1rem 1rem;
+  }
+
+}
+
+@media (min-width: 600px){
+  #home-canvas{
+    height:600px;
+    width:600px;
+    grid-template-columns: 1rem 1rem 1rem 1rem 1rem 1rem;
+    grid-template-rows: 1rem 1rem 1rem 1rem 1rem 1rem;
+  }
+
+  #create{
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end:4;
+  }
+}
+
+@media (min-width: 700px){
+  #home-canvas{
+    height:600px;
+    width:600px;
+  }
+}
+@media (min-width: 800px){
+  #home-canvas{
+    height:800px;
+    width:800px;
+  }
+}
