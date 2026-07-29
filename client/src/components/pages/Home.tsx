@@ -1,4 +1,5 @@
 import HomeButton from "../atoms/home/HomeButton";
+import Hero from "../molecules/Hero";
 import SetShowcase from "../organisms/SetShowcase";
 import "./Home.css"
 
@@ -7,9 +8,7 @@ export default function Home() {
 
   return (
     <div id="home-menu">
-      <div id="hero">
-        <h1>This is the hero</h1>
-      </div>
+      <Hero />
       <div id="showcase">
         <h2>Hot Pokemon Sets</h2>
         <div id="showcase-items">
