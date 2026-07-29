@@ -1,11 +1,15 @@
 #home-menu{
   flex: 1;
   display: grid;
-  gap: clamp(0.5rem, 1.5vw, 1rem);
-  padding: clamp(0.5rem, 1.5vw, 1rem);
   box-sizing: border-box;
-
+  place-content: center;
+  padding:0;
+  margin-top: 6.25svh;
+  margin-bottom: 6.25svh;
+  margin-left: 12.5vw;
+  margin-right: 12.5vw;
   /* For Mobile */
+  /*
   grid-template-columns: 1.4fr 1fr;
   grid-template-rows: auto repeat(4, 1fr);
   grid-template-areas: 
@@ -15,7 +19,28 @@
     "showcase   search"
     "profile    discover"
   ;
+  */
+  grid-template-columns: repeat(6, 12.5vw);
+  grid-template-rows: repeat(14,6.25svh);
+  grid-template-areas:
+  "hero hero hero hero hero hero"
+  "hero hero hero hero hero hero"
+  ". . . . . ."
+  "showcase showcase showcase . browse browse"
+  "showcase showcase showcase . browse browse"
+  "showcase showcase showcase . . ."
+  "showcase showcase showcase . create create"
+  "showcase showcase showcase . create create"
+  "showcase showcase showcase . . ."
+  "showcase showcase showcase . search search"
+  ". . . . search search"
+  "profile profile profile . . ."
+  "profile profile profile . discover discover"
+  "profile profile profile . discover discover";
 }
+
+
+
 
 /* For tablet */
 @media (min-width: 768px){
@@ -53,7 +78,6 @@
 #discover  { grid-area: discover; }
 #profile   { grid-area: profile; }
 
-
 #showcase{
   display: grid;
   grid-template-rows: auto 1fr;
@@ -74,10 +98,18 @@
   border-radius: 0.75rem;
   text-decoration: none;
   font-size: clamp(0.875rem, 1.5vw, 1.5rem);
-  transition: filter 0.15s ease, transform 0.15s ease
+  transition: filter 0.15s ease, transform 0.15s ease;
+  color: black;
+  justify-content: center;
+  align-items: center;
+  padding:0.5rem;
 }
 
 .home-tile:hover{
   filter: brightness(1.15);
   transform: scale(1.02);
+}
+
+#hero{
+  height:fit-content
 }

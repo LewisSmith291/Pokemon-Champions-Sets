@@ -6,6 +6,6 @@ interface Props {
 
 export default function SetShowcase({displayNumber}: Props) {
   return (
-    <div>NA</div>
+    <div className="flex bg-red-600">{displayNumber}</div>
   )
 }

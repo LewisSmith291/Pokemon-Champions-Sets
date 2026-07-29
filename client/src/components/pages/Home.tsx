@@ -10,7 +10,6 @@ export default function Home() {
       <div id="hero">
         <h1>This is the hero</h1>
       </div>
-
       <div id="showcase">
         <h2>Hot Pokemon Sets</h2>
         <div id="showcase-items">
