@@ -1,29 +1,28 @@
-import { Link } from "react-router";
-import { useLocation } from "react-router";
+import HomeButton from "../atoms/home/HomeButton";
+import SetShowcase from "../organisms/SetShowcase";
 import "./Home.css"
 
 export default function Home() {
-  const location = useLocation();
+
+
   return (
-    <div
-      id="home-canvas"
-      className=" bg-blue-400 border-2 grid"
-    >
-        <Link 
-          id="create"
-          to="/create" state={{from:location.pathname}}
-          className="flex flex-1 bg-red-400 
-          "
-        >
-          Create
-        </Link>
-        <Link 
-          id="browse"
-          to="/browse" state={{from:location.pathname}}
-          className="flex bg-red-400" 
-        >
-          Browse
-        </Link>
+    <div id="home-menu">
+      <div id="hero">
+        <h1>This is the hero</h1>
+      </div>
+
+      <div id="showcase">
+        <h2>Hot Pokemon Sets</h2>
+        <div id="showcase-items">
+          <SetShowcase displayNumber={1}/>
+        </div>
+      </div>
+
+      <HomeButton name="create" colour="#C6EFCE" />
+      <HomeButton name="browse" colour="#FFE699" />
+      <HomeButton name="search" colour="#C198E0" />
+      <HomeButton name="discover" colour="#F4B084" />
+      <HomeButton name="profile" colour="#FF8FC7" />
     </div>
   )
 }

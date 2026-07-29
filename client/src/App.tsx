@@ -15,6 +15,7 @@ import ProfilePage from './components/pages/ProfilePage.tsx';
 function App() {
   const {data: session} = useSession(); // data:session renames the 'data' element in useSession to 'session'
   
+  // Home page doesn't have header, but rather a grid of traversial buttons
   return(
     <div className="w-screen h-screen flex justify-center items-center">
       
@@ -37,6 +38,7 @@ function App() {
     </div>
   )
 
+  // With Header
   return (
     <div>
       <Header isSignedIn={!!session}/>

@@ -1,39 +1,83 @@
+#home-menu{
+  flex: 1;
+  display: grid;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+  box-sizing: border-box;
 
-@media (min-width:400px){
-  #home-canvas{
-    height: 400px;
-    width: 400px;
-    grid-template-columns: 1rem 1rem 1rem 1rem;
-    grid-template-rows: 1rem 1rem 1rem 1rem;
-  }
-
+  /* For Mobile */
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-rows: auto repeat(4, 1fr);
+  grid-template-areas: 
+    "hero       hero"
+    "showcase   browse"
+    "showcase   create"
+    "showcase   search"
+    "profile    discover"
+  ;
 }
 
-@media (min-width: 600px){
-  #home-canvas{
-    height:600px;
-    width:600px;
-    grid-template-columns: 1rem 1rem 1rem 1rem 1rem 1rem;
-    grid-template-rows: 1rem 1rem 1rem 1rem 1rem 1rem;
-  }
-
-  #create{
-    grid-column-start: 3;
-    grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end:4;
+/* For tablet */
+@media (min-width: 768px){
+  #home-menu{
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr 1fr auto;
+    grid-template-areas: 
+      "hero       hero        hero"
+      "showcase   showcase    browse"
+      "showcase   showcase    create"
+      "search     discover    profile"
+    ;
   }
 }
 
-@media (min-width: 700px){
-  #home-canvas{
-    height:600px;
-    width:600px;
+/* For desktop */
+@media (min-width: 1024){
+  #home-menu{
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+      "hero       hero        hero        hero        hero      hero"
+      "showcase   showcase    showcase    showcase    browse    create"
+      "search     search      discover    discover    profile   profile"
+    ;
   }
 }
-@media (min-width: 800px){
-  #home-canvas{
-    height:800px;
-    width:800px;
-  }
+
+/* Item grid placements */
+#hero      { grid-area: hero; }
+#showcase  { grid-area: showcase; }
+#browse    { grid-area: browse; }
+#create    { grid-area: create; }
+#search    { grid-area: search; }
+#discover  { grid-area: discover; }
+#profile   { grid-area: profile; }
+
+
+#showcase{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+#showcase-items{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.home-tile{
+  display: flex;
+  align-items: center;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  font-size: clamp(0.875rem, 1.5vw, 1.5rem);
+  transition: filter 0.15s ease, transform 0.15s ease
+}
+
+.home-tile:hover{
+  filter: brightness(1.15);
+  transform: scale(1.02);
 }
