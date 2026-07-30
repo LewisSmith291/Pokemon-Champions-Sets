@@ -54,7 +54,7 @@
   --rounded: 0.5rem; /* Border Radius measurement */
   --rounded-small: 0.2rem;
 
-  @media screen and (min-width:1024px){
+  @media screen and (min-width:1200px){
     --header-height: 120px;
   }
 }
@@ -73,10 +73,10 @@
 #root {
   text-align: center;
   min-height: 100svh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  max-width: 1024px;
+  align-items: center;
 }
 
 /* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
@@ -101,14 +101,10 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
-  @media (max-width: 1023px) {
+  @media (max-width: 1200px) {
     font-size: 36px;
     margin: 20px 0;
   }
-}
-
-#headers a h2 {
-  
 }
 
 p {

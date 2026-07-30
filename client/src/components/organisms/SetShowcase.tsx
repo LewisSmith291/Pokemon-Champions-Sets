@@ -24,7 +24,7 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
   }
 
   return (
-    <div id="showcase" className="flex w-full h-full flex-col items-center bg-(--color-header) p-2 rounded-(--rounded)">
+    <div id="showcase" className="flex h-full flex-col items-center bg-(--color-header) p-2 rounded-(--rounded)">
       <div id="headers" className="flex justify-between items-center">
         <a onClick={() => setAlgoType("hot")} className="flex-1">
           <h2 id="header-hot" className={(algoType === "hot" ? "text-(--color-link-text)" : "text-(--color-text)")+

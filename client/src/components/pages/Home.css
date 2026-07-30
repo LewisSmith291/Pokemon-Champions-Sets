@@ -3,9 +3,11 @@
   flex: 1;
   display: grid;
   box-sizing: border-box;
+  max-width: 1278px;
 
   align-items: start;
-  margin:min(2.5vw,1.5svh);
+  justify-content: center;
+  padding:calc(var(--gap) * 0.5);
   
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
@@ -13,7 +15,7 @@
   "hero"
   "showcase"
   "actions" ;
-  gap:var(--gap);
+  gap: var(--gap);
 }
 
 #home-actions{
@@ -26,30 +28,37 @@
 /* For tablet */
 @media (min-width: 768px){
   #home-menu{
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 0.5fr 1fr 1fr 1fr;
     grid-template-areas: 
-      "hero       hero          hero"
-      "showcase   showcase      actions"
-      "showcase   showcase      actions"
-      "showcase   showcase      actions"
+      "hero       hero      hero      hero    hero"
+      "showcase   showcase  showcase  actions actions"
+      "showcase   showcase  showcase  actions actions"
+      "showcase   showcase  showcase  actions actions"
     ;
+    width:100%;
+    padding:var(--gap);
+  }
+
+  #hero{
+    font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   }
 
   #home-actions{
     justify-content: space-evenly;
     padding:var(--gap);
+    width:80%;
+    align-items: center;
   }
+  
   #home-actions *{
-    flex-grow: 1;
+    height:90%;
+    width:100%;
   }
 }
 
 /* For desktop */
-@media (min-width: 1024){
-  #home-menu{
-    max-width:1024px;
-  }
+@media (min-width: 1200px){
 }
 
 /* Item grid placements */
