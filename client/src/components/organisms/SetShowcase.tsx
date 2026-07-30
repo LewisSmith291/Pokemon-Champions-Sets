@@ -9,6 +9,13 @@ interface Props {
 }
 
 export default function SetShowcase({displayNumber, algoType, setAlgoType}: Props) {
+  /*
+  const [loadedNumber, setLoadedNumber] = useState(Clamp(displayNumber,1,3));
+
+  function Clamp(input:number, min:number, max:number):number{
+    return input < min ? min : (input > max? max : input);
+  }
+    */
 
   // Update algo type headers on algoType change
   useEffect(() => {
@@ -16,8 +23,8 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
   },[algoType]);
 
   return (
-    <div className="flex w-full flex-col gap-2 justify-center items-center bg-(--color-header) p-2 rounded-(--rounded)">
-      <div id="headers" className="flex w-full flex-row justify-around items-center">
+    <div id="showcase" className="flex w-full h-full flex-col items-center bg-(--color-header) p-2 rounded-(--rounded)">
+      <div id="headers" className="flex justify-between items-center">
         <a onClick={() => setAlgoType("hot")} className="flex-1">
           <h2 id="header-hot" className={(algoType === "hot" ? "text-(--color-link-text)" : "text-(--color-text)")+
             " showcase-header"}>Hot Pokemon Sets</h2>
@@ -31,11 +38,11 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
             " showcase-header"}>New Pokemon Sets</h2>
         </a>
       </div>
-      <div className="flex flex-5 flex-row">
-
+      <div className="flex flex-row h-full gap-2">
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
       </div>
-
-      <div className="flex h-full bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
     </div>
   )
 }

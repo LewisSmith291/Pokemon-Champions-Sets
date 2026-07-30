@@ -13,13 +13,7 @@ export default function Home() {
   return (
     <div id="home-menu">
       <Hero />
-      <div id="showcase" className="flex flex-col">
-        <div className="flex flex-row flex-1 justify-around items-center">
-        </div>
-        <div id="showcase-items">
-          <SetShowcase displayNumber={1} algoType={showcaseAlgo} setAlgoType={setShowcaseAlgo}/>
-        </div>
-      </div>
+      <SetShowcase displayNumber={1} algoType={showcaseAlgo} setAlgoType={setShowcaseAlgo}/>
 
       <div id="home-actions">
         <HomeButton name="create" colour="#C6EFCE" />

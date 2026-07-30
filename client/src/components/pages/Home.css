@@ -7,18 +7,15 @@
   place-content: center;
   justify-content: center;
   align-items: center;
-  margin-left:2.5vw;
-  margin-right:2.5vw;
-
-
-  gap:min(6.25svh, 12.5vw);
+  margin:min(2.5vw,1.5svh);
   
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   grid-template-areas: 
   "hero"
   "showcase"
   "actions" ;
+  gap:var(--gap);
 }
 
 #home-actions{
@@ -31,12 +28,12 @@
 @media (min-width: 768px){
   #home-menu{
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto 1fr 1fr auto;
+    grid-template-rows: 0.5fr 1fr 1fr 1fr;
     grid-template-areas: 
-      "hero       hero        hero"
-      "showcase   showcase    browse"
-      "showcase   showcase    create"
-      "search     discover    profile"
+      "hero       hero          hero"
+      "showcase   showcase      actions"
+      "showcase   showcase      actions"
+      "showcase   showcase      actions"
     ;
   }
 }

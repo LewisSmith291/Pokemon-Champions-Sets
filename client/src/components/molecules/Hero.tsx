@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div id="hero" className="flex flex-col">
+    <div id="hero" className="flex flex-col justify-center items-center">
       <h1>Champion Sets</h1>
       <p>Here you can create and share pokemon sets for the game Pokemon Champions. 
         We also have stat-optimisation tools for assistance in set creation!</p>
