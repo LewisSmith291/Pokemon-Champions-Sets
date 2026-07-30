@@ -1,7 +1,6 @@
 import emptyProfile from "../../../assets/images/profile-circle-gengar.svg"
 import ProfileDropdown from "../../molecules/header/ProfileDropdown";
 import { useState } from "react";
-import { Link } from "react-router";
 
 interface Props{
   url:string | null;
