@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { AlgoType } from "../pages/Home";
 import "./SetShowcase.css"
 
@@ -17,10 +16,12 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
   }
     */
 
-  // Update algo type headers on algoType change
-  useEffect(() => {
-    console.log(algoType);
-  },[algoType]);
+  const displayItems = []
+  for (let i = 0; i < displayNumber; i++){
+    displayItems.push(
+      <div key={i+1} className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
+    );
+  }
 
   return (
     <div id="showcase" className="flex w-full h-full flex-col items-center bg-(--color-header) p-2 rounded-(--rounded)">
@@ -39,9 +40,9 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
         </a>
       </div>
       <div className="flex flex-row h-full gap-2">
-        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
-        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
-        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">{displayNumber}</div>
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
+        <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
       </div>
     </div>
   )

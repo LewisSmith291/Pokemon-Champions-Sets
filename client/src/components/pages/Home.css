@@ -17,8 +17,10 @@
 }
 
 #home-actions{
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--gap);
+  height:100%;
 }
 
 /* For tablet */
@@ -32,6 +34,14 @@
       "showcase   showcase      actions"
       "showcase   showcase      actions"
     ;
+  }
+
+  #home-actions{
+    justify-content: space-evenly;
+    padding:var(--gap);
+  }
+  #home-actions *{
+    flex-grow: 1;
   }
 }
 
@@ -56,6 +66,7 @@
 #hero{
   justify-content: center;
 }
+
 
 #showcase{
   display: grid;

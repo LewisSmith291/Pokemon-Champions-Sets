@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div id="home-menu">
       <Hero />
-      <SetShowcase displayNumber={1} algoType={showcaseAlgo} setAlgoType={setShowcaseAlgo}/>
+      <SetShowcase displayNumber={3} algoType={showcaseAlgo} setAlgoType={setShowcaseAlgo}/>
 
       <div id="home-actions">
         <HomeButton name="create" colour="#C6EFCE" />
