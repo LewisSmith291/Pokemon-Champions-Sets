@@ -76,6 +76,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  max-width: 1024px;
 }
 
 /* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
