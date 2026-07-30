@@ -1,0 +1,16 @@
+
+.showcase-header{
+  display: flex;
+  flex-grow: 1;
+  border-top-left-radius: var(--rounded);
+  border-top-right-radius: var(--rounded);
+  border-bottom-left-radius: var(--rounded-small);
+  border-bottom-right-radius: var(--rounded-small);
+  justify-content: center;
+}
+
+.showcase-header:hover{
+  background-color: var(--accent);
+  cursor: pointer;
+  color: var(--link-colour);
+}

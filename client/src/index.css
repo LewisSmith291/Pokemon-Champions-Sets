@@ -6,8 +6,9 @@
   --color-bg: var(--bg);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --color-header: #22004e;   /* header bar — same in light/dark */
+  --color-header: var(--header);   /* header bar — same in light/dark */
   --color-link-text: var(--link-color);
+  --rounded: var(--rounded);
 }
 /* 
   custom wiggle animation for pokebal loading icon
@@ -34,6 +35,8 @@
   --bg: #fff;
   --border: #e5e4e7;
   --accent: #f6339a;
+  --header: #22004e;
+  --link-color: #f9f962;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -45,6 +48,8 @@
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --rounded: 0.5rem; /* Border Radius measurement */
+  --rounded-small: 0.2rem;
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -58,7 +63,7 @@
     --bg: #5a4d79;
     --border: #2e303a;
     --accent: #f6339a;
-    --link-color: #f9f962;
+    --header: #22004e;
   }
 }
 
@@ -78,7 +83,6 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
 }
 
 h1 {

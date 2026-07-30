@@ -10,7 +10,6 @@ export default function HeaderLayout() {
   return (
     <>
       <Header isSignedIn={!!session} />
-      <div id="header-gap" className="py-2"></div>
       <Outlet />
     </>
   )

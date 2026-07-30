@@ -9,7 +9,7 @@ interface Props{
 
 export default function Header({isSignedIn}:Props) {
   return (
-    <header className="flex items-center justify-between bg-header px-4 py-2 fixed top-0 w-full">
+    <header className="flex items-center justify-between bg-header px-4 py-2 sticky top-0">
       <Logo />
       <HeaderLinks />
       <Profile isSignedIn={isSignedIn} url={null}/>
