@@ -7,7 +7,6 @@ export default function HeaderLinks() {
       <NavDestination name={"Home"} link="/"/>
       <NavDestination name={"Create"} link="/create"/>
       <NavDestination name={"Browse"} link="/browse"/>
-      <NavDestination name={"Discover"} link="/discover"/>
       <NavDestination name={"Search"} link="/search"/>
     </nav>
   )
