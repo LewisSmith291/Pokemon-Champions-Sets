@@ -39,7 +39,7 @@ export default function SetShowcase({displayNumber, algoType, setAlgoType}: Prop
             " showcase-header"}>New Pokemon Sets</h2>
         </a>
       </div>
-      <div className="flex flex-row h-full gap-2">
+      <div id="showcase-items" className="flex flex-row h-full gap-2">
         <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
         <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>
         <div className="flex h-full flex-5 bg-cyan-600 rounded-xl w-1/3 justify-center text-white items-center">Placeholder</div>

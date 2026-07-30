@@ -48,13 +48,7 @@
 /* For desktop */
 @media (min-width: 1024){
   #home-menu{
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas: 
-      "hero       hero        hero        hero        hero      hero"
-      "showcase   showcase    showcase    showcase    browse    create"
-      "search     search      discover    discover    profile   profile"
-    ;
+    max-width:1024px;
   }
 }
 
@@ -67,18 +61,10 @@
   justify-content: center;
 }
 
-
 #showcase{
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 0.5rem;
-  min-height: 0;
-}
-
-#showcase-items{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 0.5rem;
+  gap: calc(var(--gap) * 0.25);
   min-height: 0;
 }
 

@@ -105,6 +105,11 @@ h1 {
     margin: 20px 0;
   }
 }
+
+#headers a h2 {
+  
+}
+
 p {
   margin: 0;
 }
