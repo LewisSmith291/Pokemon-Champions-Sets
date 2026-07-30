@@ -1,37 +1,80 @@
 header{
-  height:12svh;
-  min-height: 40px;
+  height:var(--header-height);
+  padding:10px;
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr;
+  grid-template-areas: "logo navLinks profile";
 }
 
-#header-gap{
-  height:12svh;
-  min-height: 40px;
+#logo{ grid-area: logo;}
+#nav-links{ grid-area: navLinks;}
+#profile-icon{ grid-area: profile;}
+
+/* Regardless of size */
+#nav-links{
+  display: grid;
+  row-gap:clamp(0.25rem, 1.5vw, 1.5rem);
+  padding:0;
+  place-items: center;
+  flex-grow: 1;
 }
+
+#nav-links a{
+  border-radius: var(--rounded);
+}
+
+/* Mobile size */
+@media screen and (max-width:767px){
+  #nav-links{
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+  }
+
+  #nav-links a{
+    background-color: var(--accent);
+    width:90%;
+    display: flex;
+  }
+}
+/* Above mobile size */
+@media screen and (min-width:768px) {
+  #nav-links{
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    font-size: clamp(0.75rem, 4vh, 1.5rem);
+    height:100%;
+    column-gap:clamp(0, 1vw, 1.5rem);
+  }
+
+  #nav-links a{
+    width:90%;
+    height:100%;
+  }
+}
+
 
 #logo{
-  max-width:20vw;
-  max-height: 5vw;
-  min-width: 160px;
-  min-height: 40px;
-}
+  --logo-size: calc(var(--header-height) * 0.7);
 
-header a{
-  font-size: 2vw;
-  max-height: 5vw;
+  height:var(--logo-size);
+  width:calc(var(--logo-size) * 4);
+  display:flex;
 }
 
 #profile-icon{
-  width:5vw;
-  height:5vw;
-  min-width:40px;
-  min-height: 40px;
+  --icon-size: calc(var(--header-height) * 0.75);
+
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
 
 #profile-dropdown{
   flex-direction: column;
   gap:1svh;
-  right:0;
-  top: 12svh;
+  top:40px;
+  right:30px;
 } 
 
 #profile-dropdown ul li{

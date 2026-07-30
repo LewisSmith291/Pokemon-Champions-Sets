@@ -4,13 +4,13 @@ import { Link } from 'react-router'
 export default function Logo() {
   return (
     <Link 
+      id="logo"
       to="/"
       className="flex items-center hover:brightness-110">
       <img 
-        id="logo"
         src={logo}
         alt="Champion Sets Logo"
-        className="h-[96px] w-auto [image-rendering:pixelated]"
+        className=" [image-rendering:pixelated] flex-1"
       />
     </Link>
   )

@@ -12,7 +12,7 @@ export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) 
   const location = useLocation();
 
   return (
-    <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
+    <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible relative")}>
       <ul className="flex flex-col relative invisible-pre-wrap">
         {isSignedIn ? (
           <>

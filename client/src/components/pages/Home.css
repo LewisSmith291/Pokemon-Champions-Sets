@@ -1,44 +1,31 @@
 #home-menu{
+  --gap: clamp(0.75rem, 2vw, 1.5rem);
   flex: 1;
   display: grid;
   box-sizing: border-box;
+
   place-content: center;
-  padding:0;
-  /*
-  margin-top: 6.25svh;
-  margin-bottom: 6.25svh;
-  margin-left: 12.5vw;
-  margin-right: 12.5vw;
-  */
-  margin-left:6.25vw;
-  margin-right:6.25vw;
+  justify-content: center;
+  align-items: center;
+  margin-left:2.5vw;
+  margin-right:2.5vw;
+
+
   gap:min(6.25svh, 12.5vw);
-  /* For Mobile */
-  /*
-  grid-template-columns: 1.4fr 1fr;
-  grid-template-rows: auto repeat(4, 1fr);
+  
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas: 
-    "hero       hero"
-    "showcase   browse"
-    "showcase   create"
-    "showcase   search"
-    "profile    discover"
-  ;
-  */
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: repeat(7,1fr);
-  grid-template-areas:
-  "hero hero"
-  "hero hero"
-  "showcase browse"
-  "showcase create"
-  "showcase search"
-  "showcase discover"
-  "showcase profile";
+  "hero"
+  "showcase"
+  "actions" ;
 }
 
+#home-actions{
+  display: grid;
+  gap: var(--gap);
 
-
+}
 
 /* For tablet */
 @media (min-width: 768px){
@@ -70,11 +57,11 @@
 /* Item grid placements */
 #hero      { grid-area: hero; }
 #showcase  { grid-area: showcase; }
-#browse    { grid-area: browse; }
-#create    { grid-area: create; }
-#search    { grid-area: search; }
-#discover  { grid-area: discover; }
-#profile   { grid-area: profile; }
+#home-actions { grid-area: actions; }
+
+#hero{
+  justify-content: center;
+}
 
 #showcase{
   display: grid;
