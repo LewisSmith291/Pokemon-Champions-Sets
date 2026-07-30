@@ -78,6 +78,14 @@
   box-sizing: border-box;
 }
 
+/* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
+.hoverable-link:hover {
+  background-color: var(--accent) !important;
+  color: var(--link-color) !important;
+  transition: background-color 0.1s, color 0.1s !important;
+  cursor: pointer !important;
+}
+
 body {
   margin: 0;
 }

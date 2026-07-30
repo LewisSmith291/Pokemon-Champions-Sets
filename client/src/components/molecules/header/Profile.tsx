@@ -19,13 +19,12 @@ export default function Profile({url, isSignedIn}: Props) {
 
   return (
     <div id="profile-icon" className="flex">
-      <Link to="/profile" className="flex flex-1">
         <img
           alt="profile picture icon"
+          onClick={() => clickProfile()}
           src={url !== null ? url : emptyProfile}
           className="flex-1 hover:cursor-pointer hover:brightness-120"
         /> 
-      </Link >
       <ProfileDropdown isSignedIn={isSignedIn} isOpen={isOpen} setIsOpen={clickProfile}/>
     </div>
   )

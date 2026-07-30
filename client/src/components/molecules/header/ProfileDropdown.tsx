@@ -12,24 +12,23 @@ export default function ProfileDropdown({isSignedIn, isOpen, setIsOpen}: Props) 
   const location = useLocation();
 
   return (
-    <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible relative")}>
-      <ul className="flex flex-col relative invisible-pre-wrap">
+    <div id="profile-dropdown" className={(!isOpen ? "invisible hidden" : "visible absolute")}>
+      <ul className="flex flex-row-reverse relative invisible-pre-wrap">
         {isSignedIn ? (
           <>
-            <li onClick={() => setIsOpen?.()}>
+            <li className="hoverable-link" onClick={() => setIsOpen?.()}>
               <Link to="/profile">Profile</Link>
             </li>
-            <li 
-              className="rounded-bl-xl" 
-              onClick={() => {signOut(); setIsOpen?.()}}>Sign Out
+            <li className="rounded-bl-xl hoverable-link" onClick={() => {signOut(); setIsOpen?.()}}>
+              Sign Out
             </li>
           </>
         ) : (
           <>
-            <li onClick={() => setIsOpen?.()}>
+            <li className="hoverable-link" onClick={() => setIsOpen?.()}>
               <Link to="/signin" state={{from:location.pathname}}>Sign In</Link>
             </li>
-            <li onClick={() => setIsOpen?.()} className="rounded-bl-xl">
+            <li className="rounded-bl-xl hoverable-link" onClick={() => setIsOpen?.()}>
               <Link to="/signup" state={{from:location.pathname}}>Sign Up</Link>
             </li>
           </>

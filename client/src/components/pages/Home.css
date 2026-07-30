@@ -4,13 +4,11 @@
   display: grid;
   box-sizing: border-box;
 
-  place-content: center;
-  justify-content: center;
-  align-items: center;
+  align-items: start;
   margin:min(2.5vw,1.5svh);
   
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
   grid-template-areas: 
   "hero"
   "showcase"
@@ -21,7 +19,6 @@
 #home-actions{
   display: grid;
   gap: var(--gap);
-
 }
 
 /* For tablet */
