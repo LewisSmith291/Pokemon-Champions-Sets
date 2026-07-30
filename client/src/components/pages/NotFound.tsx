@@ -2,7 +2,7 @@ import Loading from "../atoms/Loading"
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-1 flex-col gap-6 justify-center items-center">
       <Loading/>
       <h1 className="font-rockwell">Page not found</h1>
     </div>

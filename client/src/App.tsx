@@ -1,6 +1,4 @@
 import './App.css'
-import {useSession} from './services/authClient.ts'
-import Header from './components/organisms/Header.tsx';
 import {Routes, Route} from 'react-router';
 import Home from './components/pages/Home.tsx';
 import CreateSetPage from './components/pages/CreateSetPage.tsx';
@@ -13,8 +11,6 @@ import ProfilePage from './components/pages/ProfilePage.tsx';
 
 
 function App() {
-  const {data: session} = useSession(); // data:session renames the 'data' element in useSession to 'session'
-  
   return (
     <Routes>
       <Route element={<HeaderLayout />}> {/* No path - Header wrapper for all pages*/}
