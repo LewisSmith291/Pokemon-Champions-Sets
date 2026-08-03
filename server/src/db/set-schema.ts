@@ -109,7 +109,7 @@ export const pokemonSetRelations = relations(pokemonSet, ({one, many}) => ({
   tags: many(setTags),
 }));
 
-export const setMoveRelations = relations(setMoves, ({one}) => ({
+export const setMovesRelations = relations(setMoves, ({one}) => ({
   set: one(pokemonSet, {fields:[setMoves.setId], references: [pokemonSet.id]}),
 }));
 
