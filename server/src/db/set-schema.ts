@@ -8,7 +8,8 @@ export const pokemonSet = pgTable(
   {
     id: text("id").primaryKey().$defaultFn(() => nanoid()),
 
-    userId: text("name").notNull(),
+    // cascade delete: Deleting a user will delete all of their sets
+    userId: text("user_id").notNull().references(() => user.id, {onDelete: "cascade"}),
 
     // PokeAPI slugs 
     // species -> /pokemon-species/{slug}
@@ -42,12 +43,12 @@ export const pokemonSet = pgTable(
     // Check two separate constraints so the Postgres error names which rule broke
     check(
       "set_boost_per_stat",
-      sql`${table.boostHp}     between 0 and 32
-      and ${table.boostAtk}    between 0 and 32
-      and ${table.boostDef}    between 0 and 32
-      and ${table.boostSpAtk}  between 0 and 32
-      and ${table.boostSpDef}  between 0 and 32
-      and ${table.boostSpe}    between 0 and 32`,
+      sql`${table.boostHp} between 0 and 32
+      and ${table.boostAtk} between 0 and 32
+      and ${table.boostDef} between 0 and 32
+      and ${table.boostSpAtk} between 0 and 32
+      and ${table.boostSpDef} between 0 and 32
+      and ${table.boostSpe} between 0 and 32`,
     ),
     check(
       "set_boost_total",
@@ -56,3 +57,43 @@ export const pokemonSet = pgTable(
     ),
   ],
 )
+
+export const setMoves = pgTable(
+  "set_moves",
+  {
+    // move rows are deleted when pokemon set is deleted
+    setId: text("set_id").notNull().references(() => pokemonSet.id, {onDelete: "cascade"}),
+    // slot 1 - 4 that move is in
+    slot: integer("slot").notNull(),
+    // PokeApi slug
+    move: text("move").notNull(),
+  },
+  (table) => [
+    // Composite primary key. setId can appear 4 times, and slot can appear many times. but a combo of setId and slot is always unique
+    primaryKey({ columns: [table.setId, table.slot]}),
+    // index for "which set contains x move?"
+    index("set_moves_move_idx").on(table.move),
+    // move slot has to be either 1, 2, 3, 4, enforced by this constraint
+    check("set_moves_slot", sql`${table.slot} between 1 and 4`),
+  ],
+);
+
+// Produces no SQL 
+// TypeScript metadata for db.query
+
+// With these relations, using {schema} and drizzle(), you can find for example:
+// const set = await db.query.pokemonSet.findFirst({
+//    where: eq(pokemonSet.id, "abc123"),
+//    with: {moves: true},
+// });
+// Which will return a typed, nested object:
+// { id: "abc123", species: "gengar", moves: [{slot: 1, move: "shadow-ball"}, ...]}
+
+export const pokemonSetRelations = relations(pokemonSet, ({one, many}) => ({
+  user: one(user, {fields: [pokemonSet.userId], references: [user.id] }),
+  moves: many(setMoves), 
+}));
+
+export const setMoveRelations = relations(setMoves, ({one}) => ({
+  set: one(pokemonSet, {fields:[setMoves.setId], references: [pokemonSet.id]}),
+}));
