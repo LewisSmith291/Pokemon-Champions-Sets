@@ -78,6 +78,21 @@ export const setMoves = pgTable(
   ],
 );
 
+export const setTags = pgTable(
+  "set_tags",
+  {
+    // deleted when associated pokemon set is deleted
+    setId: text("set_id").notNull().references(() => pokemonSet.id, {onDelete: "cascade"}),
+    // slugs from tags
+    tag: text("tag").notNull(),
+  },
+  (table) => [
+    // Composite primary key
+    primaryKey({columns: [table.setId, table.tag]}),
+    index("set_tags_tag_idx").on(table.tag),
+  ],
+);
+
 // Produces no SQL 
 // TypeScript metadata for db.query
 
@@ -88,12 +103,16 @@ export const setMoves = pgTable(
 // });
 // Which will return a typed, nested object:
 // { id: "abc123", species: "gengar", moves: [{slot: 1, move: "shadow-ball"}, ...]}
-
 export const pokemonSetRelations = relations(pokemonSet, ({one, many}) => ({
   user: one(user, {fields: [pokemonSet.userId], references: [user.id] }),
   moves: many(setMoves), 
+  tags: many(setTags),
 }));
 
 export const setMoveRelations = relations(setMoves, ({one}) => ({
   set: one(pokemonSet, {fields:[setMoves.setId], references: [pokemonSet.id]}),
+}));
+
+export const setTagsRelations = relations(setTags, ({one}) => ({
+  set: one(pokemonSet, {fields: [setTags.setId], references: [pokemonSet.id]})
 }));

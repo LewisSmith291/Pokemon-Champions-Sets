@@ -8,6 +8,13 @@
       "when": 1784796501698,
       "tag": "0000_create_account_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1785760002460,
+      "tag": "0001_create_set_and_move_tables",
+      "breakpoints": true
     }
   ]
 }
