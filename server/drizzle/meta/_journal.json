@@ -15,6 +15,13 @@
       "when": 1785760002460,
       "tag": "0001_create_set_and_move_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1785763081873,
+      "tag": "0002_create_tag_table",
+      "breakpoints": true
     }
   ]
 }
