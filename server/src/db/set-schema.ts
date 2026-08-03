@@ -32,8 +32,6 @@ export const pokemonSet = pgTable(
     // this way a set can be saved to profile, without being public, and the user can choose to publish
     isPublic: boolean("is_public").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    // 
-
     updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()).notNull(),
   },
   (table) => [
@@ -41,7 +39,7 @@ export const pokemonSet = pgTable(
     index("set_species_idx").on(table.species),
     index("set_public_created_idx").on(table.isPublic, table.createdAt),
 
-    // Two separate constraints so the Postgres error names which rule broke
+    // Check two separate constraints so the Postgres error names which rule broke
     check(
       "set_boost_per_stat",
       sql`${table.boostHp}     between 0 and 32

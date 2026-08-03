@@ -1,6 +1,7 @@
 import NatureBoost from '../atoms/setDisplay/NatureBoost.tsx';
 import StatDisplay from '../atoms/setDisplay/StatDisplay.tsx';
 import TypeDisplay from '../atoms/setDisplay/TypeDisplay.tsx';
+import GetNatureChanges from '../data/stats.ts'
 import '../atoms/setDisplay/TypeStyle.css'
 import './pokemonDisplay.css'
 import { useState, useEffect } from 'react';
@@ -13,7 +14,6 @@ interface Stats {
   spDef: number
   spe: number
 }
-
 interface PokemonSetDisplayProps extends Stats {
   name: string
   nature: string
@@ -42,86 +42,41 @@ export default function PokemonSetDisplay({name, ability, nature, item, hp, atk,
   // Outputs StatDisplay elements with corresponding up or down arrows for the stats when altered by the pokemon's nature
   // For example: an "adamant" nature will result in increased attack and decreased special attack
   function outputStatsWithNatureArrows(){
-    // "" = no change
-    // "up" = increased stat
-    // "down" = decreased stat
-    let attack = "";
-    let defence = "";
-    let specialAttack = "";
-    let specialDefence = "";
-    let speed = "";
-
-    // copies of stats from props so they can just be edited here and apply to all logic branches,
-    // rather than having to change stats on each branch
-    let hpOut = hp;
-    let atkOut = atk;
-    let defOut = def;
-    let spAtkOut = spAtk
-    let spDefOut = spDef;
-    let speOut = spe;
-
+    // These natures dont have any stat changes, so the unaltered statDisplay components can be output with no up or down arrow
     if (nature == "bashful" || nature == "docile" || nature == "hardy" || nature == "quirky" || nature == "serious"){
       // no stat changes
       return(
         <div className="stat-column">
-          <StatDisplay label="HP" stat={hpOut} />
-          <StatDisplay label="Atk" stat={atkOut} />
-          <StatDisplay label="Def" stat={defOut} />
-          <StatDisplay label="SpAtk" stat={spAtkOut} />
-          <StatDisplay label="SpDef" stat={spDefOut} />
-          <StatDisplay label="Spe" stat={speOut} />
+          <StatDisplay label="HP" stat={hp} />
+          <StatDisplay label="Atk" stat={atk} />
+          <StatDisplay label="Def" stat={def} />
+          <StatDisplay label="SpAtk" stat={spAtk} />
+          <StatDisplay label="SpDef" stat={spDef} />
+          <StatDisplay label="Spe" stat={spe} />
           <div className="nature">{nature}</div>
         </div>
       );
     }
-    // attack up
-    if(nature == "adamant" || nature == "brave" || nature == "lonely" || nature == "naughty"){
-      attack = "up";
-      if (nature == "adamant") specialAttack = "down";
-      if (nature == "brave") speed = "down";
-      if (nature == "lonely") defence = "down";
-      if (nature == "naughty") specialDefence = "down";
-    }
-    // defence up
-    else if(nature == "bold" || nature == "impish" || nature == "lax" || nature == "relaxed"){
-      defence = "up";
-      if (nature == "bold") attack = "down";
-      if (nature == "impish") specialAttack = "down";
-      if (nature == "lax") specialDefence = "down";
-      if (nature == "relaxed") speed = "down";
-    }
-    // special attack up
-    else if(nature == "modest" || nature == "mild" || nature == "quiet" || nature == "rash"){
-      specialAttack = "up";
-      if (nature == "modest") attack = "down";
-      if (nature == "mild") defence = "down";
-      if (nature == "quiet") speed = "down";
-      if (nature == "rash") specialDefence = "down";
-    }
-    // special defence up
-    else if(nature == "calm" || nature == "careful" || nature == "gentle" || nature == "sassy"){
-      specialDefence = "up";
-      if (nature == "calm") attack = "down";
-      if (nature == "careful") specialAttack = "down";
-      if (nature == "gentle") defence = "down";
-      if (nature == "sassy") speed = "down";
-    }
-    // speed up
-    else if(nature == "hasty" || nature == "jolly" || nature == "naive" || nature == "timid"){
-      speed = "up";
-      if (nature == "hasty") defence = "down";
-      if (nature == "jolly") specialAttack = "down";
-      if (nature == "naive") specialDefence = "down";
-      if (nature == "timid") attack = "down";
-    }
+
+    // Function outputs "" for no change in stat, "up" for increased stat, and "down" for decreased stat. Stores results of atk - spe in array[string]
+    const stats = GetNatureChanges(nature);
+    // "" = no change
+    // "up" = increased stat
+    // "down" = decreased stat
+    let attack = stats[0];
+    let defence = stats[1];
+    let specialAttack = stats[2];
+    let specialDefence = stats[3];
+    let speed = stats[4];
+
     return(
       <div className="stat-column">
-        <StatDisplay label="HP" stat={hpOut} />
-        <StatDisplay label="Atk" stat={atkOut} /> {attack !== "" && <NatureBoost isBoost = {attack === "up" ? true : false}/>}
-        <StatDisplay label="Def" stat={defOut} /> {defence !== "" && <NatureBoost isBoost = {defence === "up" ? true : false}/>}
-        <StatDisplay label="SpAtk" stat={spAtkOut} /> {specialAttack !== "" && <NatureBoost isBoost = {specialAttack === "up" ? true : false}/>}
-        <StatDisplay label="SpDef" stat={spDefOut} /> {specialDefence !== "" && <NatureBoost isBoost = {specialDefence === "up" ? true : false}/>}
-        <StatDisplay label="Spe" stat={speOut} /> {speed !== "" && <NatureBoost isBoost = {speed === "up" ? true : false}/>}
+        <StatDisplay label="HP" stat={hp} />
+        <StatDisplay label="Atk" stat={atk} /> {attack !== "" && <NatureBoost isBoost = {attack === "up" ? true : false}/>}
+        <StatDisplay label="Def" stat={def} /> {defence !== "" && <NatureBoost isBoost = {defence === "up" ? true : false}/>}
+        <StatDisplay label="SpAtk" stat={spAtk} /> {specialAttack !== "" && <NatureBoost isBoost = {specialAttack === "up" ? true : false}/>}
+        <StatDisplay label="SpDef" stat={spDef} /> {specialDefence !== "" && <NatureBoost isBoost = {specialDefence === "up" ? true : false}/>}
+        <StatDisplay label="Spe" stat={spe} /> {speed !== "" && <NatureBoost isBoost = {speed === "up" ? true : false}/>}
         <div className="nature">{nature}</div>
       </div>
     )
