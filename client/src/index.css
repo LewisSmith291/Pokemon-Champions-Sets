@@ -111,12 +111,15 @@ p {
   margin: 0;
 }
 
-input, select, textarea {
+input, select, textarea, button {
   font: inherit;
   color: var(--text-h);
   background: var(--color-header);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 12px;
+}
 
+button{
+  transition: background-color 0.1s, color 0.1s;
 }

@@ -63,11 +63,11 @@ export default function AuthForm({authMode, toggleMode}:Props) {
         { // Output the error message 
         error && <p style={{ color: "#fd5d00" }}>{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="hoverable-link" disabled={loading}>
           {loading ? "…" : authMode === "signup" ? "Sign up" : "Log in"}
         </button>
 
-        <button type="button" onClick={() => { toggleMode?.(); setError(null); }}>
+        <button type="button" className="hoverable-link" onClick={() => { toggleMode?.(); setError(null); }}>
           {authMode === "signup" ? "Have an account? Log in" : "Sign up"}
         </button>
       </div>

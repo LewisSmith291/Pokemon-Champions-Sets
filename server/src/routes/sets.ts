@@ -49,7 +49,6 @@ setsRouter.post("/", requireAuth, async (req, res) => {
     console.error("Failed to create set: ", error);
     res.status(500).json({error: "Could not create set"}); // 500 = failed
   }
-
 });
 
 // Non authenticated viewer of sets
@@ -65,9 +64,22 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
       },
       tags: {columns: {tag:true}},
     },
+    
   })
+
   // If no set can be found with pokemonSet.findFirst()
   if (!set){
     return res.status(404).json({error:"Set not found"});
   }
+
+  // A private set is only visible to its owner
+  // 404 is returned to not show that a set is unauthorised, looks like no set exists instead for security
+  // req.user is undefined for logged-out viewers, so ?. yields undefined and the check denies
+  // Need to be after if(!set) to make sure set is not undefined, as accessing .isPublic will error otherwise
+  if (!set.isPublic && set.userId !== req.user?.id){
+    return res.status(404).json({error:"Set not found"});
+  }
+
+  // Returns 200 with set if successful
+  res.json(set);
 });
