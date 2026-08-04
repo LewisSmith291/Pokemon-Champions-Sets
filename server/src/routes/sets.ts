@@ -1,8 +1,11 @@
 import { Router } from "express";
+import type { Request, Response } from "express";
 import { db } from "../db/index.js";
+import { eq } from "drizzle-orm";
 import { pokemonSet, setMoves, setTags } from "../db/schema.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { createSetSchema } from "../schemas/set.js";
+import { optionalAuth } from "../middleware/optionalAuth.js";
 
 export const setsRouter = Router();
 // requireAuth middleware
@@ -42,8 +45,29 @@ setsRouter.post("/", requireAuth, async (req, res) => {
   });
 
   res.status(201).json({ set:created}); // 201 = created
-} catch (error){
-  console.error("Failed to create set: ", error);
-  res.status(500).json({error: "Could not create set"}); // 500 = failed
-}
+  } catch (error){
+    console.error("Failed to create set: ", error);
+    res.status(500).json({error: "Could not create set"}); // 500 = failed
+  }
+
+});
+
+// Non authenticated viewer of sets
+setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Response) => {
+  const set = await db.query.pokemonSet.findFirst({ 
+    where: eq(pokemonSet.id, req.params.id),
+    // Because of the relations block in set-schema.ts, set.moves and set.tags are arryas, and no manual joins are required
+    with: { 
+      // Rows have no order
+      moves: {
+        columns: {slot: true, move: true},
+        orderBy: (m, {asc}) => [asc(m.slot)],
+      },
+      tags: {columns: {tag:true}},
+    },
+  })
+  // If no set can be found with pokemonSet.findFirst()
+  if (!set){
+    return res.status(404).json({error:"Set not found"});
+  }
 });
