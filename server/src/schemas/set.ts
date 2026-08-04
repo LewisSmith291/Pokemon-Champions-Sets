@@ -1,6 +1,7 @@
 import {z} from "zod";
 import {TAG_SLUGS} from "../data/tags.js"
 
+// Max of each stat boost is 32
 const boost = z.number().int().min(0).max(32);
 
 export const createSetSchema = z.object({
@@ -22,6 +23,7 @@ export const createSetSchema = z.object({
   tags: z.array(z.enum(TAG_SLUGS)).default([]),
   isPublic: z.boolean().default(false),
 }).refine(
+  // Check for stat boost total of 66 or over 
   (s) => s.boostHp + s.boostAtk + s.boostDef + s.boostSpAtk + s.boostSpDef + s.boostSpe <= 66,
   {message: "Stat boosts bust total 66 or less", path: ["boostHp"]}
 );
