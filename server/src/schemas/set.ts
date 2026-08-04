@@ -23,7 +23,12 @@ export const createSetSchema = z.object({
   tags: z.array(z.enum(TAG_SLUGS)).default([]),
   isPublic: z.boolean().default(false),
 }).refine(
-  // Check for stat boost total of 66 or over 
+  // Total stat boosts can't exceed 66
   (s) => s.boostHp + s.boostAtk + s.boostDef + s.boostSpAtk + s.boostSpDef + s.boostSpe <= 66,
-  {message: "Stat boosts bust total 66 or less", path: ["boostHp"]}
-);
+  {message: "Stat boosts must total 66 or less", path: ["boostHp"]}
+).refine(
+  // Can't have duplicate moves
+  (s) => new Set(s.moves).size === s.moves.length, { // new Set drops duplicates, so comparing to original sets will show if any duplicates were dropped
+    message: "A set cannot hav duplicate moves",
+    path: ["moves"],
+});
