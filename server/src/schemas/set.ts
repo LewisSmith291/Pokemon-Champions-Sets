@@ -1,4 +1,5 @@
 import {z} from "zod";
+import {TAG_SLUGS} from "../data/tags.js"
 
 const boost = z.number().int().min(0).max(32);
 
@@ -10,7 +11,7 @@ export const createSetSchema = z.object({
   nature: z.string().min(1),
   item: z.string().nullable(),
 
-  boostHtp: boost,
+  boostHp: boost,
   boostAtk: boost,
   boostDef: boost,
   boostSpAtk: boost,

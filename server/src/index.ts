@@ -4,6 +4,7 @@ import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "./auth.js"
 import { requireAuth } from "./middleware/requireAuth.js"
+import { setsRouter } from "./routes/sets.js"
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001); // Falls back to port 3001 if .env.PORT is null. Convert string into port number
@@ -28,6 +29,8 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 // Only touches routes, rather than messing up Better Auth
 app.use(express.json());
 
+app.use("/api/sets", setsRouter);
+
 app.get("/api/me", requireAuth, (req,res) => {
   res.json({user: req.user});
 });
@@ -37,6 +40,7 @@ app.get("/api/me", requireAuth, (req,res) => {
 app.get("/health", (_req, res)=> { 
   res.json({status: "ok"});
 }); 
+
 
 // app.listen starts accepting connections on the 'PORT' port number
 app.listen(PORT, () => {
