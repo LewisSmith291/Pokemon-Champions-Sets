@@ -21,4 +21,7 @@ export const createSetSchema = z.object({
   moves: z.array(z.string().min(1)).min(1).max(4),
   tags: z.array(z.enum(TAG_SLUGS)).default([]),
   isPublic: z.boolean().default(false),
-});
+}).refine(
+  (s) => s.boostHp + s.boostAtk + s.boostDef + s.boostSpAtk + s.boostSpDef + s.boostSpe <= 66,
+  {message: "Stat boosts bust total 66 or less", path: ["boostHp"]}
+);
