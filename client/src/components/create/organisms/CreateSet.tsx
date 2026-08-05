@@ -93,9 +93,6 @@ export default function CreateSet() {
           data.stats.map((s:ApiStat) => [s.stat.name, s.base_stat])
         ));
       })
-      .catch((error) => {
-        console.log('There was an ERROR: ', error);
-      })
     return () => { stale = true; };
   }, [selectedForm])
 

@@ -1,7 +1,9 @@
+// Nature changed stats
 export type StatChange = "up" | "down" | "";
 export type NatureStat= "atk" | "def" | "spAtk" | "spDef" | "spe";
 export type NatureChanges = Record<NatureStat, StatChange>;
 
+// Base stats
 export const STATS = [
   { key: "boostHp", api: "hp", label: "HP" },
   { key: "boostAtk", api: "attack", label: "Attack" },
@@ -9,7 +11,20 @@ export const STATS = [
   { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack" },
   { key: "boostSpDef", api: "special-defense", label: "Sp. Defence" },
   { key: "boostSpe", api: "speed", label: "Speed" },
-] as const;
+] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
+
+// Stat boosts
+export const MAX_PER_STAT = 32;
+export const MAX_TOTAL = 66;
+// typeof STATS is equal to the entire STATS const in a readonly form, which can then be queried by index
+// STATS[number] means to get an index of type number, which is all possible indexes, so all 6 element types are unioned
+// "key" specifies the property from the union
+// if "key" is changed to "api", it will equal all of the api values (e.g. "hp" | "attack" | ...)
+export type BoostKey = typeof STATS[number]["key"];
+export type Boosts = Record<BoostKey, number>;
+export const EMPTY_BOOSTS: Boosts = {
+  boostHp: 0, boostAtk: 0, boostDef: 0, boostSpAtk: 0, boostSpDef: 0, boostSpe:0
+};
 
 // Ommitted natures have no stat change
 // Undefined is required when checking if natureEffect is false
@@ -41,6 +56,7 @@ const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat } | unde
   timid: { up: "spe", down: "atk"},
 };
 
+// Returns record of nature changes
 export default function GetNatureChanges(nature: string): NatureChanges{
   const changes: NatureChanges = {atk:"", def:"", spAtk:"", spDef:"", spe:""}
   const natureEffect = NATURE_EFFECTS[nature];
