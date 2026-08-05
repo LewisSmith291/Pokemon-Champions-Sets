@@ -1,4 +1,6 @@
-import { useEffect, useState, type FormEvent, type SyntheticEvent } from 'react'
+
+
+import { useEffect, useState, type SyntheticEvent } from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../atoms/SpeciesSearch.tsx';
 import FormSearch from '../atoms/FormSearch.tsx'
@@ -6,6 +8,14 @@ import ItemSearch from '../atoms/ItemSearch.tsx';
 import ItemRadio from '../atoms/ItemRadio.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
+
+// One entry of PokeAPI's /pokemon/{name} stats array 
+// This is the typing of the object returned that is needed to get name of stat and value of base stat
+// It then can be mapped into a Record<string,number> for ease of use
+interface ApiStat {
+  base_stat: number;
+  stat: { name: string };
+}
 
 // Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
 // which have no /item/{slug} endpoint). Served from public/wireSquare.svg.
@@ -25,6 +35,8 @@ export default function CreateSet() {
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
+  // stats: Record<string,number> means that you can use the name hp and get the value back
+  const [baseStats, setBaseStats] = useState<Record<string, number>>({});
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -62,7 +74,7 @@ export default function CreateSet() {
     return () => { stale = true; };
   }, [selectedPokemon]);
 
-  // Set sprite depending on form of pokemon
+  // Set sprite and stats depending on form of pokemon
   useEffect(() => {
     // check if a form has been selected
     if (selectedForm === "") return;
@@ -75,10 +87,21 @@ export default function CreateSet() {
         if (stale) return;
         setSprite(data.sprites.other.home.front_default);
         setIsMegaForm(data.name.includes("mega"));
+        // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
+        // then collapses it into a single object: {hp:45, attack:32, ...}
+        setBaseStats(Object.fromEntries(
+          data.stats.map((s:ApiStat) => [s.stat.name, s.base_stat])
+        ));
       })
-
+      .catch((error) => {
+        console.log('There was an ERROR: ', error);
+      })
     return () => { stale = true; };
   }, [selectedForm])
+
+  useEffect(() => {
+    console.log(baseStats);
+  }, [baseStats]);
 
   // Set item sprite depending on selected item
   useEffect(() => {
@@ -178,7 +201,7 @@ export default function CreateSet() {
       </div>
       <div id="sprite-and-stats">
         <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-        <StatsConfig species={selectedForm}/>
+        <StatsConfig baseStats={baseStats}/>
       </div>
       <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
     </form>

@@ -1,50 +1,17 @@
-import {useEffect, useState} from 'react'
+import {STATS} from '@/data/stats';
 
 interface Props{
-  species: string;
+  baseStats: Record<string, number>;
 }
 
-// One entry of PokeAPI's /pokemon/{name} stats array
-interface ApiStat {
-  base_stat: number;
-  stat: { name: string };
-}
 
-interface BaseStat {
-  name: string;
-  value: number;
-}
+export default function StatsConfig({baseStats}: Props) {
 
-export default function StatsConfig({species}: Props) {
-  const [baseStats, setBaseStats] = useState<BaseStat[]>([]);
-
-  useEffect(() => {
-    if (species === "") return;
-
-    // Ignore this response if the species changes again before it lands
-    let stale = false;
-
-    fetch(`https://pokeapi.co/api/v2/pokemon/${species}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (stale) return;
-        // stat.name sits alongside base_stat, one level deeper
-        setBaseStats(data.stats.map((statObject: ApiStat) => ({
-          name: statObject.stat.name,
-          value: statObject.base_stat,
-        })));
-      })
-      .catch((error) => {
-        console.log('There was an ERROR: ', error);
-      });
-
-    return () => { stale = true; };
-  }, [species]);
 
   return (
     <div>
-      {baseStats.map((stat: BaseStat) => (
-        <div key={stat.name}>{stat.name}: {stat.value}</div>
+      {STATS.map((stat) => (
+        <div key={stat.key}>{stat.label}: {baseStats[stat.api] ?? "-"}</div>
       ))}
     </div>
   )

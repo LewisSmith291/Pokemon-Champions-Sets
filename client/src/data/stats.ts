@@ -2,6 +2,15 @@ export type StatChange = "up" | "down" | "";
 export type NatureStat= "atk" | "def" | "spAtk" | "spDef" | "spe";
 export type NatureChanges = Record<NatureStat, StatChange>;
 
+export const STATS = [
+  { key: "boostHp", api: "hp", label: "HP" },
+  { key: "boostAtk", api: "attack", label: "Attack" },
+  { key: "boostDef", api: "defense", label: "Defence" },
+  { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack" },
+  { key: "boostSpDef", api: "special-defense", label: "Sp. Defence" },
+  { key: "boostSpe", api: "speed", label: "Speed" },
+] as const;
+
 // Ommitted natures have no stat change
 // Undefined is required when checking if natureEffect is false
 const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat } | undefined> = {
