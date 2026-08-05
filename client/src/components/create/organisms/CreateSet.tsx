@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FormEvent, type SyntheticEvent } from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../atoms/SpeciesSearch.tsx';
 import FormSearch from '../atoms/FormSearch.tsx'
@@ -25,6 +25,8 @@ export default function CreateSet() {
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
+  // submit button
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Fill out list of forms (default and mega, and without filtering: gmax forms)
   useEffect(() => {
@@ -107,8 +109,12 @@ export default function CreateSet() {
     return () => { stale = true; };
   }, [selectedItem])
 
-  // 
-  async function handleSubmit(){
+
+  // Function run by submit button to create a new set 
+  async function handleSubmit(e: SyntheticEvent){
+    e.preventDefault();
+    setIsSubmitting(true);
+
     const payload = {
     // Real values from the form
     species: selectedPokemon,
@@ -126,51 +132,55 @@ export default function CreateSet() {
     isPublic: false,
     };
 
-    // POST Promise at /api/sets using setsRouter function
-    const response = await fetch(`${API_URL}/api/sets`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
+    // Wrap in try/finally incase the fetch fails, the setIsSubmitting needs to be turned off regardless
+    try{
+      // POST Promise at /api/sets using setsRouter function
+      const response = await fetch(`${API_URL}/api/sets`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      console.log("Failed:", response.status, data);
-      return;
+      if (!response.ok) {
+        console.log("Failed:", response.status, data);
+        return;
+      }
+      console.log("Created set:", data.set.id);
+
+    } finally {
+      setIsSubmitting(false);
     }
-
-    console.log("Created set:", data.set.id);
   }
 
   return (
-    <div id="set-creation">
+    <form id="set-creation" onSubmit={handleSubmit}>
       <h1>Create Pokemon Set</h1>
-      <div id="">
-        <div id="species-form-select">
-          <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} setItemType={setItemType}/>
-          <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
-          <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
-          <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
-          {itemSprite !== "" ? 
-            (
-              <img
-                id="item-sprite" 
-                src={itemSprite}
-                alt={selectedItem}
-                onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
-              />
-            ) : (
-              <div id="item-sprite"></div>
-            )
-          }
-        </div>
+      <div id="species-form-select">
+        <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} setItemType={setItemType}/>
+        <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
+        <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
+        <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
+        {itemSprite !== "" ? 
+          (
+            <img
+              id="item-sprite" 
+              src={itemSprite}
+              alt={selectedItem}
+              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+            />
+          ) : (
+            <div id="item-sprite"></div>
+          )
+        }
       </div>
       <div id="sprite-and-stats">
         <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
         <StatsConfig species={selectedForm}/>
       </div>
-    </div>
+      <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
+    </form>
   )
 }
