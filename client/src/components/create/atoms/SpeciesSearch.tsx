@@ -14,7 +14,7 @@ export default function SpeciesSearch({ value, onSelect, setItemType }: Props) {
   }
 
   return (
-    <div id="species-select" className="overflow-y-auto h-100 w-200">
+    <div id="species-select" className="overflow-y-auto w-full">
       <div className="grid grid-cols-5 gap-2 place-items-center ">
         <div>Species</div>
         <div>Sprite</div>
@@ -22,18 +22,9 @@ export default function SpeciesSearch({ value, onSelect, setItemType }: Props) {
         <div>Abilities</div>
         <div>Hidden Ability</div>
         {SPECIES.map((s:Species) => (
-          <SpeciesRow species={s}/>
+          <SpeciesRow onSelect={onSelect} species={s}/>
         ))}
       </div>
     </div>
-  )
-
-  return (
-    <select value={value} onChange={(e) => handleSelect(e.target.value)}>
-      <option disabled value="">-- choose a Pokémon --</option>
-      {SPECIES.map((s:Species) => (
-        <option>{s.label}</option>
-      ))}
-    </select>
   )
 }

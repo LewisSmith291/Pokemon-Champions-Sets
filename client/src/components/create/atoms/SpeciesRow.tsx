@@ -3,16 +3,21 @@ import { type Species } from "@/data/species"
 
 interface Props{
   species:Species;
+  onSelect: (speciesName:string) => void;
 }
 
-export default function SpeciesRow({species}: Props) {
+export default function SpeciesRow({species, onSelect}: Props) {
   return (
-    <>
-      <div className="species-row">{species.label}</div>
-      <img className="species-row" alt={species.label} src={`/sprites/${species.id}.png`}/>
-      <div>{species.types}</div>
-      <div className="species-row">{species.abilities}</div>
-      <div>{species.hiddenAbility}</div>
-    </>
+    <button 
+      type="button"
+      onClick={() => onSelect(species.name)}
+      className="col-span-5 grid grid-cols-subgrid items-center gap-2 place-items-center hover:bg-accent"
+    >
+      <div>{species.label}</div>
+      <img alt={species.label} src={`/sprites/${species.id}.png`} height={20} loading="lazy"/>
+      <div>{species.types.join(" / ")}</div>
+      <div>{species.abilities.join(", ")}</div>
+      <div>{species.hiddenAbility ?? " "}</div>
+    </button>
     )
 }

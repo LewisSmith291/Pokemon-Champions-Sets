@@ -41,7 +41,9 @@ input[type=range]{
 
 }
 
-
+#species-select{
+  height:70svh;
+}
 
 .species-row{
   height:50px;
