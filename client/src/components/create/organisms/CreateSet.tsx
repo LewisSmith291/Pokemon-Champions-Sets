@@ -8,6 +8,7 @@ import ItemSearch from '../atoms/ItemSearch.tsx';
 import ItemRadio from '../atoms/ItemRadio.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
+import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -35,8 +36,10 @@ export default function CreateSet() {
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
-  // stats: Record<string,number> means that you can use the name hp and get the value back
+  // stats 
+  // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
+  const [statBoosts, setStatBoosts] = useState<Boosts>(EMPTY_BOOSTS);
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -129,6 +132,14 @@ export default function CreateSet() {
     return () => { stale = true; };
   }, [selectedItem])
 
+  // Function to clamp a stat boost slider
+  function updateBoost(key:BoostKey, value:number){
+    setStatBoosts((prev) => {
+      const spentByOthers = Object.values(prev).reduce((sum,v) => sum + v, 0) - prev[key];
+      const clamped = Math.min(value, MAX_PER_STAT, MAX_TOTAL - spentByOthers);
+      return { ...prev, [key]: clamped};
+    });
+  }
 
   // Function run by submit button to create a new set 
   async function handleSubmit(e: SyntheticEvent){
@@ -146,8 +157,7 @@ export default function CreateSet() {
     gender: "male",
     ability: "overgrow",
     nature: "adamant",
-    boostHp: 0, boostAtk: 0, boostDef: 0,
-    boostSpAtk: 0, boostSpDef: 0, boostSpe: 0,
+    ...statBoosts,
     moves: ["protect"],
     isPublic: false,
     };
@@ -198,7 +208,7 @@ export default function CreateSet() {
       </div>
       <div id="sprite-and-stats">
         <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-        <StatsConfig baseStats={baseStats}/>
+        <StatsConfig baseStats={baseStats} statBoosts={statBoosts} setBoosts={updateBoost}/>
       </div>
       <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
     </form>
