@@ -1,5 +1,4 @@
 #set-creation{
-  width:80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +33,16 @@ select{
 }
 
 #pokemon-sprite{
-  width:400px;
-  height:400px;
+  width:200px;
+  height:200px;
+}
+
+input[type=range]{
+
+}
+
+
+
+.species-row{
+  height:50px;
 }

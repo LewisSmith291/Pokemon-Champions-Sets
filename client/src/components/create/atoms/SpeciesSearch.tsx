@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { SPECIES, type Species } from "@/data/species";
+import SpeciesRow from "./SpeciesRow";
 
 interface Props {
   value: string;
@@ -7,27 +8,31 @@ interface Props {
 }
 
 export default function SpeciesSearch({ value, onSelect, setItemType }: Props) {
-  const [speciesList, setSpeciesList] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokedex/champions`)
-      .then((response) => response.json())
-      .then((data) => {
-        const species = data.pokemon_entries.map((s: { pokemon_species: { name: string } }) => s.pokemon_species.name);
-        setSpeciesList(species);
-        setItemType("held");
-      })
-      .catch((error) => {
-        console.log('There was an ERROR: ', error);
-      });
-  }, []);
-
+  function handleSelect(chosen:string){
+    onSelect(chosen);
+    setItemType("held");
+  }
 
   return (
-    <select value={value} onChange={(e) => onSelect(e.target.value)}>
+    <div id="species-select" className="overflow-y-auto h-100 w-200">
+      <div className="grid grid-cols-5 gap-2 place-items-center ">
+        <div>Species</div>
+        <div>Sprite</div>
+        <div>Types</div>
+        <div>Abilities</div>
+        <div>Hidden Ability</div>
+        {SPECIES.map((s:Species) => (
+          <SpeciesRow species={s}/>
+        ))}
+      </div>
+    </div>
+  )
+
+  return (
+    <select value={value} onChange={(e) => handleSelect(e.target.value)}>
       <option disabled value="">-- choose a Pokémon --</option>
-      {speciesList.map((s: string) => (
-        <option key={s} value={s}>{s}</option>
+      {SPECIES.map((s:Species) => (
+        <option>{s.label}</option>
       ))}
     </select>
   )

@@ -88,7 +88,7 @@ export default function CreateSet() {
       .then((response) => response.json())
       .then((data) => {
         if (stale) return;
-        //setSprite(data.sprites.other.home.front_default);
+        //setSprite(data.sprites.other.home.front_default); -- full art sprite
         setSprite(data.sprites.front_default);
         setIsMegaForm(data.name.includes("mega"));
         // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
@@ -187,31 +187,33 @@ export default function CreateSet() {
   }
 
   return (
-    <form id="set-creation" onSubmit={handleSubmit}>
+    <div className="w-9/10 flex flex-col items-center" >
       <h1>Create Pokemon Set</h1>
-      <div id="species-form-select">
-        <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} setItemType={setItemType}/>
-        <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
-        <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
-        <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
-        {itemSprite !== "" ? 
-          (
-            <img
-              id="item-sprite" 
-              src={itemSprite}
-              alt={selectedItem}
-              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
-            />
-          ) : (
-            <div id="item-sprite"></div>
-          )
-        }
-      </div>
-      <div id="sprite-and-stats">
-        <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-        <StatsConfig baseStats={baseStats} statBoosts={statBoosts} setBoosts={updateBoost}/>
-      </div>
-      <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
-    </form>
+      <form id="set-creation" className="bg-gray-500 p-4 m-4 w-full" onSubmit={handleSubmit}>
+        <div id="species-form-select">
+          <SpeciesSearch value={selectedPokemon} onSelect={setSelectedPokemon} setItemType={setItemType}/>
+          <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
+          <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
+          <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
+          {itemSprite !== "" ? 
+            (
+              <img
+                id="item-sprite" 
+                src={itemSprite}
+                alt={selectedItem}
+                onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+              />
+            ) : (
+              <div id="item-sprite"></div>
+            )
+          }
+        </div>
+        <div id="sprite-and-stats">
+          <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
+          <StatsConfig baseStats={baseStats} statBoosts={statBoosts} setBoosts={updateBoost}/>
+        </div>
+        <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
+      </form>
+    </div>
   )
 }
