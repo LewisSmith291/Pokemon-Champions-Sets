@@ -199,13 +199,12 @@ export default function CreateSet() {
   }
 
   return (
-    <div className="w-9/10 flex flex-col items-center" >
-      <h1>Create Pokemon Set</h1>
+    <div id="create-container" className="w-10/10 flex flex-col items-center">
       {choosingPokemon ? (
-        <SpeciesSearch value={selectedPokemon} onSelect={choosePokemon} setItemType={setItemType}/>
+        <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType}/>
       ) : (
         <form id="set-creation" className="bg-gray-500 p-4 m-4 w-full" onSubmit={handleSubmit}>
-          <div id="species-form-select">
+          <div id="species-form-select" className="flex flex-row"> 
             <button type="button" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
             <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
             <label className="flex flex-col">

@@ -45,6 +45,8 @@
 
   letter-spacing: 0.18px;
   --header-height: 80px;
+  --page-height: 100svh;
+  --max-mobile-width: 767px;
 
   color-scheme: light dark;
   color: var(--text);

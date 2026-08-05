@@ -10,18 +10,16 @@ interface Props{
 
 export default function StatsConfig({baseStats, statBoosts, setBoosts}: Props) {
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {STATS.map((stat) => (
-        <div key={stat.key} className="stat-row">
-          <span>{stat.label}</span>
-          <span>{baseStats[stat.api] ?? "-"}</span>
+        <div className="stat-row" key={stat.key}>
           <BoostSlider 
             statName={stat.label}
+            baseStat={baseStats[stat.api] ?? 0}
             value={statBoosts[stat.key]}
             max={MAX_PER_STAT}
             setValue={(value) => setBoosts(stat.key, value)}
           />
-          <span>+{statBoosts[stat.key]}</span>
         </div>
       ))}
     </div>
