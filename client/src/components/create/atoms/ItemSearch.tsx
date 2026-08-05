@@ -1,6 +1,6 @@
 import { useEffect, useState} from "react";
-import { HELD_ITEMS, BERRIES } from "../../data/itemData";
-import GetMegaStones from "../../data/megaStones.ts";
+import { HELD_ITEMS, BERRIES } from "@/data/itemData";
+import GetMegaStones from "@/data/megaStones.ts";
 
 interface Props {
   value: string;

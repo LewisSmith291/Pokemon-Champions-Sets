@@ -1,12 +1,12 @@
 import './App.css'
 import {Routes, Route} from 'react-router';
-import Home from './components/pages/Home.tsx';
-import CreateSetPage from './components/pages/CreateSetPage.tsx';
-import AuthPage from './components/pages/AuthPage.tsx';
+import Home from './components/home/pages/Home.tsx';
+import CreateSetPage from './components/create/pages/CreateSetPage.tsx';
+import AuthPage from './components/auth/pages/AuthPage.tsx';
 import RequireAuth from './components/routing/RequireAuth.tsx';
-import HeaderLayout from './components/organisms/HeaderLayout.tsx';
-import NotFound from './components/pages/NotFound.tsx';
-import ProfilePage from './components/pages/ProfilePage.tsx';
+import HeaderLayout from './components/header/templates/HeaderLayout.tsx';
+import NotFound from './components/not-found/NotFound.tsx';
+import ProfilePage from './components/profile/ProfilePage.tsx';
 
 
 

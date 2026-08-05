@@ -1,7 +1,7 @@
 import './Header.css'
-import HeaderLinks from '../molecules/header/HeaderLinks'
-import Logo from '../atoms/header/Logo'
-import Profile from '../molecules/header/Profile'
+import HeaderLinks from '../molecules/HeaderLinks'
+import Logo from '../atoms/Logo'
+import Profile from '@/components/profile-icon/Profile'
 
 interface Props{
   isSignedIn: boolean;

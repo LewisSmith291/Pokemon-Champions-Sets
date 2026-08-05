@@ -1,6 +1,6 @@
 import {Outlet} from "react-router";
-import { useSession } from "../../services/authClient";
-import Header from "./Header";
+import { useSession } from "@/services/authClient";
+import Header from "../organisms/Header";
 
 
 

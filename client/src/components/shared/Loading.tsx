@@ -1,4 +1,4 @@
-import Pokeball from '../../assets/images/Pokeball-icon.svg'
+import Pokeball from '@/assets/images/Pokeball-icon.svg'
 
 
 export default function Loading() {

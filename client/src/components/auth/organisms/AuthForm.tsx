@@ -1,5 +1,5 @@
 import { useState, type SyntheticEvent } from "react";
-import { signIn, signUp } from "../../services/authClient";
+import { signIn, signUp } from "@/services/authClient";
 
 interface Props {
   authMode: "signin" | "signup";

@@ -1,5 +1,5 @@
-import emptyProfile from "../../../assets/images/profile-circle-gengar.svg"
-import ProfileDropdown from "../../molecules/header/ProfileDropdown";
+import emptyProfile from "@/assets/images/profile-circle-gengar.svg"
+import ProfileDropdown from "./ProfileDropdown";
 import { useState } from "react";
 
 interface Props{

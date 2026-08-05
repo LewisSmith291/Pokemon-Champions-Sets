@@ -1,4 +1,4 @@
-import { signOut } from "../../../services/authClient";
+import { signOut } from "@/services/authClient";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 

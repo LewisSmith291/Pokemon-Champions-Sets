@@ -1,4 +1,4 @@
-import NavDestination from '../../atoms/header/NavDestination'
+import NavDestination from '../atoms/NavDestination'
 
 export default function HeaderLinks() {
 

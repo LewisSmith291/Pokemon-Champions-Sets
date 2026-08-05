@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router";
-import { useSession } from "../../services/authClient";
-import Loading from "../atoms/Loading";
+import { useSession } from "@/services/authClient";
+import Loading from "@/components/shared/Loading";
 
 
 export default function RequireAuth() {

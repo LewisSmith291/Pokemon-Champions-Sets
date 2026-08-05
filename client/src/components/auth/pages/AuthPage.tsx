@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router"
 import AuthForm from "../organisms/AuthForm"
-import { useSession } from "../../services/authClient";
+import { useSession } from "@/services/authClient";
 import { useEffect } from "react";
 
 type Props = {

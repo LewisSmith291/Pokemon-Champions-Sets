@@ -1,4 +1,4 @@
-import Loading from "../atoms/Loading"
+import Loading from "@/components/shared/Loading"
 
 export default function NotFound() {
   return (

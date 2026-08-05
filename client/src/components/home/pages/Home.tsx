@@ -1,4 +1,4 @@
-import HomeButton from "../atoms/home/HomeButton";
+import HomeButton from "../atoms/HomeButton";
 import Hero from "../molecules/Hero";
 import SetShowcase from "../organisms/SetShowcase";
 import "./Home.css"
