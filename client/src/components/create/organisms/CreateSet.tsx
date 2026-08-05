@@ -88,7 +88,8 @@ export default function CreateSet() {
       .then((response) => response.json())
       .then((data) => {
         if (stale) return;
-        setSprite(data.sprites.other.home.front_default);
+        //setSprite(data.sprites.other.home.front_default);
+        setSprite(data.sprites.front_default);
         setIsMegaForm(data.name.includes("mega"));
         // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
         // then collapses it into a single object: {hp:45, attack:32, ...}
