@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type SyntheticEvent } from 'react'
 import "./CreateSet.css"
-import SpeciesSearch from '../atoms/SpeciesSearch.tsx';
+import SpeciesSearch from '../molecules/SpeciesList.tsx';
 import FormSearch from '../atoms/FormSearch.tsx'
 import ItemSearch from '../atoms/ItemSearch.tsx';
 import ItemRadio from '../atoms/ItemRadio.tsx';
