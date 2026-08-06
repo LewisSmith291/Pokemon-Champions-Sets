@@ -58,11 +58,11 @@ export default function PokemonSetDisplay({name, ability, nature, item, hp, atk,
         </div>
         <div className="stat-column">
         <StatDisplay label="HP" stat={hp} />
-        <StatDisplay label="Atk" stat={atk} /> {statChanges.atk !== "" && <NatureBoost isBoost = {statChanges.atk === "up"}/>}
-        <StatDisplay label="Def" stat={def} /> {statChanges.def !== "" && <NatureBoost isBoost = {statChanges.def === "up"}/>}
-        <StatDisplay label="SpAtk" stat={spAtk} /> {statChanges.spAtk !== "" && <NatureBoost isBoost = {statChanges.spAtk === "up"}/>}
-        <StatDisplay label="SpDef" stat={spDef} /> {statChanges.spDef !== "" && <NatureBoost isBoost = {statChanges.spDef === "up"}/>}
-        <StatDisplay label="Spe" stat={spe} /> {statChanges.spe !== "" && <NatureBoost isBoost = {statChanges.spe === "up"}/>}
+        <StatDisplay label="Atk" stat={atk} /> {statChanges.attack !== "" && <NatureBoost isBoost = {statChanges.attack === "up"}/>}
+        <StatDisplay label="Def" stat={def} /> {statChanges.defense !== "" && <NatureBoost isBoost = {statChanges.defense === "up"}/>}
+        <StatDisplay label="SpAtk" stat={spAtk} /> {statChanges["special-attack"] !== "" && <NatureBoost isBoost = {statChanges["special-attack"] === "up"}/>}
+        <StatDisplay label="SpDef" stat={spDef} /> {statChanges["special-defense"] !== "" && <NatureBoost isBoost = {statChanges["special-defense"] === "up"}/>}
+        <StatDisplay label="Spe" stat={spe} /> {statChanges.speed !== "" && <NatureBoost isBoost = {statChanges.speed === "up"}/>}
         <div className="nature">{nature}</div>
       </div>
       </div>
