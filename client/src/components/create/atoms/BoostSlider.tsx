@@ -1,4 +1,5 @@
 import type { Alignment } from "@/data/stats";
+import { useEffect } from "react";
 
 interface Props {
   statName: string;
@@ -13,6 +14,11 @@ export default function BoostSlider({statName, baseStat, alignment, value, setVa
   // HP is calculated: Base + StatPoints + 75
   // All other stats are calculated: (Base + StatPoints + 20) * Alignment
   // Stat point decimals are always rounded down
+
+  useEffect(() => {
+    console.log(alignment);
+  },[alignment])
+
   const basePlusBoost = statName === "HP" ? baseStat + value + 75 : Math.floor((baseStat + value + 20) * alignment);
   return (
     <label className="stat-slider-row grid">
@@ -23,6 +29,15 @@ export default function BoostSlider({statName, baseStat, alignment, value, setVa
         value={value} step={1} 
         onChange={(e) => setValue(Number(e.target.value))}/>
       <p>{value === 0 ? value : "+"+value}</p>
+
+      {alignment === 1 ? 
+        (<div/>) // Neutral stat alignment
+      : alignment === 1.1 ? 
+        (<img className="w-5 h-5" alt="stats up" src={"/stats-up-arrow.svg"}/>) // Positive stat alignment
+      : 
+        (<img className="w-5 h-5" alt="stats down" src={"/stats-down-arrow.svg"}/>)  // Negative stat alignment
+       
+      }
     </label>
   )
 }
