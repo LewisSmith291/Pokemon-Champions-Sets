@@ -1,8 +1,3 @@
-// Nature changed stats
-export type StatChange = "up" | "down" | "";
-export type NatureStat= "atk" | "def" | "spAtk" | "spDef" | "spe";
-export type NatureChanges = Record<NatureStat, StatChange>;
-
 // Base stats
 export const STATS = [
   { key: "boostHp", api: "hp", label: "HP" },
@@ -12,6 +7,18 @@ export const STATS = [
   { key: "boostSpDef", api: "special-defense", label: "Sp. Defence" },
   { key: "boostSpe", api: "speed", label: "Speed" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
+
+// Nature changed stats
+export type StatChange = "up" | "down" | "";
+// Derived from STATS
+export type StatApi = typeof STATS[number]["api"];
+// Nature stats dont effect HP, so it is excluded, but rest of stats are used
+export type NatureStat = Exclude<StatApi, "hp">; // ("attack" | "defense" | "special-attack" | "special-defense" | "speed")
+export type NatureChanges = Record<StatApi, StatChange>;
+
+// Converting "up" | "down" |"" to alignment number values
+export type Alignment = 0.9 | 1.0 | 1.1;
+export const ALIGNMENTS: Record<StatChange, Alignment> = {up:1.1, down:0.9, "":1.0};
 
 // Stat boosts
 export const MAX_PER_STAT = 32;
@@ -26,40 +33,47 @@ export const EMPTY_BOOSTS: Boosts = {
   boostHp: 0, boostAtk: 0, boostDef: 0, boostSpAtk: 0, boostSpDef: 0, boostSpe:0
 };
 
+export const NATURES: string[] = [
+  "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", 
+  "Docile", "Gentle", "Hardy", "Hasty", "Impish", "Jolly", 
+  "Lax", "Lonely", "Mild", "Modest", "Naive", "Naughty", 
+  "Quiet", "Quirky", "Rash", "Relaxed", "Sassy", "Serious", "Timid"
+];
+
 // Ommitted natures have no stat change
 // Undefined is required when checking if natureEffect is false
 const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat } | undefined> = {
   // Attack up
-  adamant: { up: "atk", down: "spAtk"},
-  brave: { up: "atk", down: "spe"},
-  lonely: { up: "atk", down: "def"},
-  naughty: { up: "atk", down: "spDef"},
+  adamant: { up: "attack", down: "special-attack"},
+  brave: { up: "attack", down: "speed"},
+  lonely: { up: "attack", down: "defense"},
+  naughty: { up: "attack", down: "special-defense"},
   // Defence up
-  bold: { up: "def", down: "atk"},
-  impish: { up: "def", down: "spAtk"},
-  lax: { up: "def", down: "spDef"},
-  relaxed: { up: "def", down: "spe"},
+  bold: { up: "defense", down: "attack"},
+  impish: { up: "defense", down: "special-attack"},
+  lax: { up: "defense", down: "special-defense"},
+  relaxed: { up: "defense", down: "speed"},
   // Special Attack up
-  modest: { up: "spAtk", down: "atk"},
-  mild: { up: "spAtk", down: "def"},
-  quiet: { up: "spAtk", down: "spe"},
-  rash: { up: "spAtk", down: "spDef"},
+  modest: { up: "special-attack", down: "attack"},
+  mild: { up: "special-attack", down: "defense"},
+  quiet: { up: "special-attack", down: "speed"},
+  rash: { up: "special-attack", down: "special-defense"},
   // Special Defence up
-  calm: { up: "spDef", down: "atk"},
-  careful: { up: "spDef", down: "spAtk"},
-  gentle: { up: "spDef", down: "def"},
-  sassy: { up: "spDef", down: "spe"},
+  calm: { up: "special-defense", down: "attack"},
+  careful: { up: "special-defense", down: "special-attack"},
+  gentle: { up: "special-defense", down: "defense"},
+  sassy: { up: "special-defense", down: "speed"},
   // Speed up
-  hasty: { up: "spe", down: "def"},
-  jolly: { up: "spe", down: "spAtk"},
-  naive: { up: "spe", down: "spDef"},
-  timid: { up: "spe", down: "atk"},
+  hasty: { up: "speed", down: "defense"},
+  jolly: { up: "speed", down: "special-attack"},
+  naive: { up: "speed", down: "special-defense"},
+  timid: { up: "speed", down: "attack"},
 };
 
 // Returns record of nature changes
 export default function GetNatureChanges(nature: string): NatureChanges{
-  const changes: NatureChanges = {atk:"", def:"", spAtk:"", spDef:"", spe:""}
-  const natureEffect = NATURE_EFFECTS[nature];
+  const changes: NatureChanges = {hp:"",attack:"", defense:"", "special-attack":"", "special-defense":"", "speed":""}
+  const natureEffect = NATURE_EFFECTS[nature.toLowerCase()];
 
   // If there is no nature effect, return no changes
   if (!natureEffect) return changes;

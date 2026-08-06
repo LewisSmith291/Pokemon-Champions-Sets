@@ -9,6 +9,7 @@ import ItemRadio from '../atoms/ItemRadio.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
+import NatureSelect from '../atoms/NatureSelect.tsx';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -26,7 +27,6 @@ const QUESTION_MARK = "/question-mark.svg"
 export default function CreateSet() {
   // form logic
   const [choosingPokemon, setChoosingPokemon] = useState<boolean>(true);
-
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -43,6 +43,7 @@ export default function CreateSet() {
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
   const [statBoosts, setStatBoosts] = useState<Boosts>(EMPTY_BOOSTS);
+  const [nature, setNature] = useState<string>("Bold");
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -160,7 +161,7 @@ export default function CreateSet() {
     // Hardcoded placeholders — replaced by real inputs one at a time
     gender: "male",
     ability: "overgrow",
-    nature: "adamant",
+    nature: nature.toLowerCase(),
     ...statBoosts,
     moves: ["protect"],
     isPublic: false,
@@ -203,10 +204,11 @@ export default function CreateSet() {
       {choosingPokemon ? (
         <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType}/>
       ) : (
-        <form id="set-creation" className="bg-gray-500 p-4 m-4 w-full" onSubmit={handleSubmit}>
+        <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
           <div id="species-form-select" className="flex flex-row"> 
             <button type="button" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
             <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
+            <NatureSelect nature={nature} setNature={setNature}/>
             <label className="flex flex-col">
               Select Item
               <div className='flex flex-row'>
@@ -229,7 +231,7 @@ export default function CreateSet() {
           </div>
           <div id="sprite-and-stats">
             <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-            <StatsConfig baseStats={baseStats} statBoosts={statBoosts} setBoosts={updateBoost}/>
+            <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
           </div>
           <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
         </form>

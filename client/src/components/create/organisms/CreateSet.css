@@ -51,8 +51,9 @@ input[type=range]{
 }
 
 .stat-slider-row{
+  color: white;
   grid-template-columns: 1.5fr 0.5fr 3fr 1fr;
-  background-color: var(--bg);
+  background-color: var(--header);
   border-radius: var(--rounded);
   padding:10px;
   align-items: center;
@@ -66,7 +67,10 @@ input[type=range]{
     flex-direction: column;
   }
   .stat-slider-row{
-    grid-template-columns: auto auto 1fr auto;
+    grid-template-columns: 1fr 0.5fr 1fr 0.5fr;
+  }
+  input[type=range]{
+    width: 150px;
   }
 }
 
