@@ -21,9 +21,9 @@ export default function BoostSlider({statName, baseStat, alignment, value, setVa
 
   const basePlusBoost = statName === "HP" ? baseStat + value + 75 : Math.floor((baseStat + value + 20) * alignment);
   return (
-    <label className="stat-slider-row grid">
-      <p className="text-start">{statName}</p>
-      <p className="text-start">{basePlusBoost}</p>
+    <label className={"stat-slider-row grid " }>
+      <p className={"text-start "+ (alignment === 1 ? "" : alignment === 1.1 ? " text-red-400" : " text-cyan-400")}>{statName}</p>
+      <p className={"text-start "+ (alignment === 1 ? "" : alignment === 1.1 ? " text-red-400" : " text-cyan-400")}>{basePlusBoost}</p>
       <input 
         type="range" min={0} max={max} 
         value={value} step={1} 
