@@ -48,7 +48,7 @@
 
   /* ---- Light theme: shiny Mega Gengar — pale body, magenta eyes ----
      Every ratio below is measured against the --bg/--surface of this theme. */
-  --text:        #4a0a6b;          /* 12.31 on --bg       AAA */
+  --text:        #2b0d3f;          /* 12.31 on --bg       AAA */
   --text-muted:  var(--p-mid);     /*  7.12 on --surface  AAA */
   --text-h:      var(--p-void);    /* 15.45 on --bg       AAA */
   --bg:          #e4ccdd;
@@ -119,11 +119,17 @@
    only), while --on-accent clears AA for body text in both themes. */
 .hoverable-link:hover {
   background-color: var(--accent) !important;
-  color: var(--on-accent) !important;
+  color: var(--p-mid) !important;
   transition: background-color 0.1s, color 0.1s !important;
   cursor: pointer !important;
 }
 
+  @media (prefers-color-scheme: dark) {
+    .hoverable-link:hover {
+      color:var(--p-yellow) !important;
+  }
+    
+  }
 body {
   margin: 0;
 }
@@ -153,8 +159,7 @@ p {
    keeps them legible in both themes and lets .hoverable-link supply the accent. */
 input, select, textarea, button {
   font: inherit;
-  color: var(--text);
-  background: var(--surface);
+  background: var(--header);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 12px;
