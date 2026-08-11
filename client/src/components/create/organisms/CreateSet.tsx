@@ -10,6 +10,8 @@ import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 import NatureSelect from '../atoms/NatureSelect.tsx';
+import { MoveSummary } from '@/data/moves.ts';
+import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -17,6 +19,10 @@ import NatureSelect from '../atoms/NatureSelect.tsx';
 interface ApiStat {
   base_stat: number;
   stat: { name: string };
+}
+
+interface ApiMove{
+  move: {name:string};
 }
 
 // Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
@@ -40,6 +46,7 @@ export default function CreateSet() {
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
   // moves
+  const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
   const [moveLists, setMoveList] = useState<string[]>(["protect"]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
@@ -106,10 +113,25 @@ export default function CreateSet() {
     return () => { stale = true; };
   }, [selectedForm])
 
+  const learnsetForm  = selectedForm.includes("-mega") ? pokemonForms[0] : selectedForm;
   useEffect(() => {
-    console.log(baseStats);
-  }, [baseStats]);
+    if (!learnsetForm) return;
+    let stale = false;
 
+    fetch(`https://pokeapi.co/api/v2/pokemon/${learnsetForm}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (stale) return;
+        setLearnableMoves(
+          data.moves.map((m: ApiMove) => MOVE_BY_NAME.get(m.move.name))
+          .filter((m:MoveSummary | undefined): m is MoveSummary => m !== undefined)
+        );
+      })
+      .catch((error) => {console.log("Failed to load learnset: ", error)});
+
+      return () => {stale = true};
+   }, [learnsetForm])
+  
   // Set item sprite depending on selected item
   useEffect(() => {
     // check if an item has been selected
