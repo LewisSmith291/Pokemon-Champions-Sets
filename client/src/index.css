@@ -44,8 +44,6 @@
   --p-yellow:  #f9f962;
   --p-pink:    #ea5092;
   --p-crimson: #c31c41;
-  /* Derived. Neither purple is dark enough to sit behind the other
-     (deep vs mid is only 1.43:1), so the page background needs its own value. */
   --p-void:    #2b0d3f;
 
   /* ---- Light theme: shiny Mega Gengar — pale body, magenta eyes ----
@@ -53,13 +51,13 @@
   --text:        #4a0a6b;          /* 12.31 on --bg       AAA */
   --text-muted:  var(--p-mid);     /*  7.12 on --surface  AAA */
   --text-h:      var(--p-void);    /* 15.45 on --bg       AAA */
-  --bg:          #f7f2fa;
-  --surface:     #ffffff;
+  --bg:          #e4ccdd;
+  --surface:     #e4ccdd;
   --border:      var(--p-mid);
   --header:      var(--p-deep);
   --accent:      var(--p-crimson); /*  5.34 on --bg       AA  */
   --accent-fill: var(--p-pink);    /* fill only — 3.14, never text */
-  --on-accent:   #ffffff;          /*  5.89 on --accent   AA  */
+  --on-accent:   #e4ccdd;          /*  5.89 on --accent   AA  */
   --stat-up:     var(--p-crimson); /*  5.89 on --surface  AA  */
   --stat-down:   #0e6ea8;          /*  5.51 on --surface  AA  */
 
@@ -101,8 +99,7 @@
     --accent:      var(--p-pink);  /*  4.92 on --bg      AA  */
     --accent-fill: var(--p-pink);
     --on-accent:   var(--p-void);  /*  4.92 on --accent  AA  */
-    /* Crimson is unusable here — 1.72 on --p-deep — so the stat colours are
-       tinted up until they clear AA against the purple slider rows. */
+    /* Crimson is unusable here */
     --stat-up:     #ff9db4;        /*  5.19 on --p-deep  AA  */
     --stat-down:   #7fd4ff;        /*  6.17 on --p-deep  AA  */
   }
