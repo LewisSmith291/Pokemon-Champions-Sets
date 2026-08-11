@@ -1,3 +1,18 @@
+@import "tailwindcss";
+
+:root{
+  --down-alignment-colour: #178bff;
+  --up-alignment-colour: #ff1717;
+}
+
+/* Convert root variables to usable tailwind variables*/
+@theme inline{
+  --up-alignment: var(--up-alignment-color);
+  --down-alignment: var(--down-alignment-color)
+}
+
+
+
 #set-creation{
   display: flex;
   flex-direction: column;
@@ -27,6 +42,8 @@
   height: calc(var(--page-height) - var(--header-height));
 }
 
+#search-bar
+
 select{
   padding:0.5svh;
   border-radius: 0.5rem;
@@ -52,7 +69,7 @@ input[type=range]{
 
 .stat-slider-row{
   color: white;
-  grid-template-columns: 1.5fr 0.5fr 3fr 1fr 0.5fr;
+  grid-template-columns: 1.5fr 0.5fr 3fr 1fr 0.25fr;
   background-color: var(--header);
   border-radius: var(--rounded);
   padding:10px;

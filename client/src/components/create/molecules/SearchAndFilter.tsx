@@ -1,0 +1,17 @@
+import MagnifyingGlass from '/magnifying-glass.svg'
+
+interface Props {
+  
+}
+
+export default function SearchAndFilter({}: Props) {
+
+  return (
+    <div id="search-and-filter" className="flex flex-row items-center justify-center">
+      <input className="" type="text" placeholder="Search">
+      </input>
+      <img src={MagnifyingGlass} className='w-6 h-6'></img>
+    </div>
+  )
+
+}

@@ -1,5 +1,6 @@
 import { SPECIES, type Species } from "@/data/species";
 import SpeciesRow from "../atoms/SpeciesRow";
+import SpeciesSearchBar from "../molecules/SearchAndFilter.jsx";
 
 interface Props {
   onSelect: (species: string) => void;
@@ -14,7 +15,7 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
 
   return (
     <div id="species-search-container" className="flex flex-col gap-2 p-4 w-full m-0">
-      <input className="" type="text" placeholder="Search"/>
+      <SpeciesSearchBar/>
         <div className="species-header grid grid-cols-5 gap-2 place-items-center">
           <div className="species-headers">Species</div>
           <div className="species-headers">Sprite</div>
