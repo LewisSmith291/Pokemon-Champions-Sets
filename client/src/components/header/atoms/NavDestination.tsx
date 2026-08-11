@@ -9,8 +9,8 @@ export default function NavDestination({name, link}: Props) {
   return (
       <Link
         to={link}
-        className="flex text-white/80 transition-colors 
-        hover:text-(--color-link-text) hover:bg-pink-500 
+        className="flex text-white/80 transition-colors
+        hover:text-(--color-on-accent) hover:bg-(--color-accent)
         items-center justify-center
         ">
         {name}

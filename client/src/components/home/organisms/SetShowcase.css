@@ -12,5 +12,5 @@
 .showcase-header:hover{
   background-color: var(--accent);
   cursor: pointer;
-  color: var(--link-color);
+  color: var(--on-accent);
 }
