@@ -7,6 +7,6 @@ function subscribe(onChange: () => void) {
   return () => query.removeEventListener('change', onChange);
 }
 
-export default function userPrefersDark() {
+export default function usePrefersDark() {
   return useSyncExternalStore(subscribe, () => query.matches);
 }

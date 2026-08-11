@@ -39,6 +39,8 @@ export default function CreateSet() {
   const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
+  // moves
+  const [moveLists, setMoveList] = useState<string[]>(["protect"]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
