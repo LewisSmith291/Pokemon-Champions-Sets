@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState, type SyntheticEvent } from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../organisms/SpeciesSearch.tsx';
@@ -10,7 +8,7 @@ import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 import NatureSelect from '../atoms/NatureSelect.tsx';
-import { MoveSummary } from '@/data/moves.ts';
+import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
@@ -47,7 +45,7 @@ export default function CreateSet() {
   const [itemType, setItemType] = useState<string>("held");
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
-  const [moveLists, setMoveList] = useState<string[]>(["protect"]);
+  const [moveList, setMoveList] = useState<string[]>(["protect"]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
@@ -74,7 +72,7 @@ export default function CreateSet() {
         const filteredVarieties:string[] = varieties.filter((name:string) => !name.includes("-gmax"));
 
         // Enable mega stone selection if any variety is a mega form
-        setCanMega(filteredVarieties.some((e: string) => e.includes("mega")));
+        setCanMega(filteredVarieties.some((e: string) => e.includes("-mega")));
 
         // Set forms
         setPokemonForms(filteredVarieties);
@@ -83,6 +81,9 @@ export default function CreateSet() {
         // Reset item
         setItemType("held");
         setSelectedItem("");
+
+        // Reset moves list
+        setMoveList([]);
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
@@ -103,7 +104,7 @@ export default function CreateSet() {
         if (stale) return;
         //setSprite(data.sprites.other.home.front_default); -- full art sprite
         setSprite(data.sprites.front_default);
-        setIsMegaForm(data.name.includes("mega"));
+        setIsMegaForm(data.name.includes("-mega"));
         // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
         // then collapses it into a single object: {hp:45, attack:32, ...}
         setBaseStats(Object.fromEntries(
@@ -130,7 +131,7 @@ export default function CreateSet() {
       .catch((error) => {console.log("Failed to load learnset: ", error)});
 
       return () => {stale = true};
-   }, [learnsetForm])
+   }, [learnsetForm]);
   
   // Set item sprite depending on selected item
   useEffect(() => {
@@ -187,7 +188,7 @@ export default function CreateSet() {
     ability: "overgrow",
     nature: nature.toLowerCase(),
     ...statBoosts,
-    moves: ["protect"],
+    moves: moveList,
     isPublic: false,
     };
 
@@ -257,7 +258,7 @@ export default function CreateSet() {
             <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
             <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
           </div>
-          <button type="submit" className="hoverable-link" disabled={isSubmitting}>Create Set</button>
+          <button type="submit" className="hoverable-link" disabled={isSubmitting && moveList.length === 0}>Create Set</button>
         </form>
       )}
       
