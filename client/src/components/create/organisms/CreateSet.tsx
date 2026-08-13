@@ -12,6 +12,7 @@ import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
+import MoveButtonList from '../molecules/MoveButtonList.tsx';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -49,6 +50,7 @@ export default function CreateSet() {
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
   const [moveList, setMoveList] = useState<string[]>(["protect"]);
+  const [selectedMove, setSelectedMove] = useState<string | null>("")
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
@@ -227,6 +229,10 @@ export default function CreateSet() {
     setIsSpeciesOpen(true);
   }
 
+  function openMoves(selectedMove: string | null){
+    setSelectedMove(selectedMove)
+    setIsMovesOpen(true);
+  }
 
   return (
     <div id="create-container" className="w-10/10 flex flex-col items-center">
@@ -260,6 +266,7 @@ export default function CreateSet() {
           <button type="button" onClick={() => setIsMovesOpen(true)}>
             {moveList.length === 0 ? "Choose moves" : moveList.join(", ")}
           </button>
+          <MoveButtonList moveList={moveList} learnableMoves={learnableMoves}/>
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
         <button type="submit" className="hoverable-link" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
@@ -272,7 +279,7 @@ export default function CreateSet() {
         <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType} />
       </Modal>
       <Modal isOpen={isMovesOpen} onClose={() => setIsMovesOpen(false)} title="Choose Moves">
-        <MoveSelect learnableMoves={learnableMoves} moveList={moveList} setMoveList={setMoveList}/>
+        <MoveSelect learnableMoves={learnableMoves} moveList={moveList} setMoveList={setMoveList} selectedMove={selectedMove}/>
       </Modal>
     </div>
   )

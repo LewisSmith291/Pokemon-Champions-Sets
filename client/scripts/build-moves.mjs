@@ -1,21 +1,30 @@
-// Generates src/data/moves.ts from PokeAPI.
+// Generates src/data/moves.ts from Serebii's Champions move list.
 //
 // Run manually:  node scripts/build-moves.mjs
+//
+// Champions hand-picks its move pool and rebalances the numbers, so PokeAPI is the
+// wrong source for everything except slugs — its PP disagrees with Champions on
+// ~80% of moves. Serebii's Champions page is the authority here; PokeAPI is used
+// only to validate the slugs we derive, and to fill the handful of blank effects.
+//
+// Slugs matter because they're the join key: learnsets come from PokeAPI's
+// /pokemon/{form}.moves, so a slug that doesn't match theirs would silently never
+// appear for any Pokémon. Hence the validation pass rather than trusting slugify().
 
 import { writeFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+const SEREBII = "https://www.serebii.net/pokemonchampions/moves.shtml";
 const API = "https://pokeapi.co/api/v2";
-// Keep a modest number of requests in flight rather than firing all ~900 at once
 const CONCURRENCY = 10;
-// Shadow moves (Colosseum/XD) live above this id and aren't in the mainline games
-const MAX_MOVE_ID = 10000;
+// Serebii writes accuracy as 101 for moves that cannot miss
+const NEVER_MISSES = "101";
+// If the page ever changes shape, fail loudly instead of writing a stub file
+const MIN_EXPECTED_MOVES = 400;
 
 const OUT = resolve(dirname(fileURLToPath(import.meta.url)), "../src/data/moves.ts");
 
-// ~900 requests makes a transient failure far likelier than the 208 in
-// build-species.mjs, so back off and retry rather than losing the whole run.
 async function getJson(url, attempt = 1) {
   try {
     const response = await fetch(url);
@@ -28,99 +37,122 @@ async function getJson(url, attempt = 1) {
   }
 }
 
-// PokeAPI slug -> display label. "thunder-punch" -> "Thunder Punch"
-// Only a fallback: the API's own English name is better, because it knows
-// "double-edge" is "Double-Edge" but "thunder-punch" is "Thunder Punch".
-function toLabel(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
-// The list endpoint gives us /move/{id}/ urls, so the id is readable without
-// fetching the move itself — that's enough to skip the shadow moves up front.
-function idFromUrl(url) {
-  return Number(url.split("/").filter(Boolean).pop());
-}
-
-// Max Moves only exist inside Dynamax, so they can never fill one of a set's four
-// slots. PokeAPI has no flag for them, but the "max-" prefix is exact here: all 19
-// matches are Max Moves, and no regular move's name begins with "Max".
-// (G-Max moves aren't in PokeAPI at all, so there's nothing to filter for those.)
-function isMaxMove(move) {
-  return move.name.startsWith("max-");
-}
-
-// Z-moves are likewise unselectable. There's no flag for these either, and 1 PP
-// alone is too broad — Sketch, Struggle and Revival Blessing share it. Pairing it
-// with an empty learned_by_pokemon separates them: every Z-move is learnt by
-// nobody, whereas Sketch and Revival Blessing have real learnsets.
-//
-// This also drops Struggle, which is correct for a set builder — it's the move you
-// get when you have no moves left, not one you can pick.
-function isZMove(move) {
-  return move.pp === 1 && move.learned_by_pokemon.length === 0;
-}
-
-// Runs worker over items with at most `limit` running concurrently
 async function pool(items, limit, worker) {
   const results = new Array(items.length);
   let next = 0;
-
   async function run() {
     while (next < items.length) {
       const index = next++;
       results[index] = await worker(items[index]);
     }
   }
-
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
   return results;
 }
 
+const NAMED_ENTITIES = {
+  amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ",
+  eacute: "é", egrave: "è", ntilde: "ñ", rsquo: "’", lsquo: "‘",
+  ldquo: "“", rdquo: "”", mdash: "—", ndash: "–", hellip: "…",
+};
+
+function decodeEntities(text) {
+  return text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&([a-z]+);/gi, (whole, name) => NAMED_ENTITIES[name.toLowerCase()] ?? whole);
+}
+
+// A table cell's visible text: drop tags, decode entities, collapse whitespace.
+function cellText(html) {
+  return decodeEntities(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+}
+
+// "Will-O-Wisp" -> "will-o-wisp", "King's Shield" -> "kings-shield".
+// Matches PokeAPI's slug scheme, which the validation pass below confirms.
+function slugify(label) {
+  return label
+    .toLowerCase()
+    .replace(/[.,'’]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+function parseNumber(value, sentinel) {
+  if (value === "" || value === "--" || value === sentinel) return null;
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+console.log("Fetching Serebii's Champions move list...");
+const response = await fetch(SEREBII, { headers: { "User-Agent": "Mozilla/5.0" } });
+if (!response.ok) throw new Error(`${response.status} ${SEREBII}`);
+// The page is served as ISO-8859-1, so decoding as UTF-8 would mangle "Pokémon"
+const html = new TextDecoder("iso-8859-1").decode(await response.arrayBuffer());
+
+// The move table is the last one on the page; the first is the article blurb.
+const table = html.slice(html.lastIndexOf("<table"));
+
+const scraped = [];
+for (const row of table.split(/<tr[^>]*>/i).slice(1)) {
+  const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((m) => m[1]);
+  // Header and layout rows have no move link in the first cell
+  if (cells.length < 7 || !/attackdex-champions\//i.test(cells[0])) continue;
+
+  const label = cellText(cells[0]);
+  scraped.push({
+    name: slugify(label),
+    label,
+    // Type and category are shown as sprites, so the filename is the value
+    type: (cells[1].match(/type\/([a-z]+)\.gif/i) ?? [])[1] ?? "",
+    // Serebii labels status moves "other"; keep PokeAPI's vocabulary
+    damageClass: ((cells[2].match(/type\/([a-z]+)\.png/i) ?? [])[1] ?? "").replace("other", "status"),
+    pp: parseNumber(cellText(cells[3])),
+    power: parseNumber(cellText(cells[4])),
+    accuracy: parseNumber(cellText(cells[5]), NEVER_MISSES),
+    description: cellText(cells[6]),
+  });
+}
+
+if (scraped.length < MIN_EXPECTED_MOVES) {
+  throw new Error(`Only parsed ${scraped.length} moves — Serebii's markup has probably changed.`);
+}
+console.log(`Parsed ${scraped.length} moves.`);
+
+// Validate every derived slug against PokeAPI, because a wrong one wouldn't throw —
+// it would just quietly never match a learnset entry.
 const index = await getJson(`${API}/move?limit=100000`);
-const entries = index.results.filter((entry) => idFromUrl(entry.url) < MAX_MOVE_ID);
+const validSlugs = new Set(index.results.map((entry) => entry.name));
+const unknown = scraped.filter((move) => !validSlugs.has(move.name));
+if (unknown.length > 0) {
+  console.log(`\nWARNING: ${unknown.length} slug(s) not found in PokeAPI — these will never`);
+  console.log("match a learnset and need a manual alias:");
+  unknown.forEach((move) => console.log(`  ${move.label} -> ${move.name}`));
+}
 
-console.log(`Fetching ${entries.length} moves (skipped ${index.results.length - entries.length} shadow moves)...`);
-
-let done = 0;
-const fetched = await pool(entries, CONCURRENCY, async (entry) => {
-  const move = await getJson(entry.url);
-  done++;
-  if (done % 100 === 0 || done === entries.length) console.log(`  ${done}/${entries.length}`);
-  return move;
+// Serebii leaves the effect column blank for moves that just deal damage. Borrow
+// PokeAPI's wording for those rather than shipping an empty string.
+const blank = scraped.filter((move) => move.description === "" && validSlugs.has(move.name));
+console.log(`\nFilling ${blank.length} blank description(s) from PokeAPI...`);
+await pool(blank, CONCURRENCY, async (move) => {
+  const detail = await getJson(`${API}/move/${move.name}`);
+  const effect = detail.effect_entries.find((e) => e.language.name === "en");
+  if (effect?.short_effect) {
+    move.description = effect.short_effect.replaceAll("$effect_chance", String(detail.effect_chance));
+  }
 });
 
-const excluded = fetched.filter((move) => isMaxMove(move) || isZMove(move));
-console.log(`\nExcluded ${excluded.length} unselectable moves:`);
-console.log(excluded.map((m) => `  ${m.name}`).sort().join("\n"));
-
-const moves = fetched
-  .filter((move) => !isMaxMove(move) && !isZMove(move))
-  .map((move) => ({
-    name: move.name,
-    label: move.names.find((n) => n.language.name === "en")?.name ?? toLabel(move.name),
-    type: move.type.name,
-    damageClass: move.damage_class.name,
-    power: move.power,
-    accuracy: move.accuracy,
-    pp: move.pp,
-  }));
-
-// Alphabetical, since that's how you browse a move list — unlike species, where
-// dex order is meaningful. The picker can re-sort however it likes.
-moves.sort((a, b) => a.label.localeCompare(b.label));
+scraped.sort((a, b) => a.label.localeCompare(b.label));
 
 const file = `// GENERATED FILE - do not edit by hand.
 // Rebuild with: node scripts/build-moves.mjs
 //
-// Every selectable move, bundled so the move picker can filter locally instead of
-// making a request per move. Sorted by label. Max Moves, Z-moves, Shadow moves and
-// Struggle are excluded — none of them can go in one of a set's four slots.
+// Champions' hand-picked move pool, scraped from Serebii and bundled so the move
+// picker can filter locally instead of making a request per move. Sorted by label.
+// Every number here is Champions', not mainline - the PP scale in particular is
+// completely different.
 
 export interface MoveSummary {
-  /** PokeAPI slug - this is what gets submitted in a set's \`moves\` array */
+  /** PokeAPI slug - submitted in a set's \`moves\` array, and the join key for learnsets */
   name: string;
   /** Display name, e.g. "Double-Edge" */
   label: string;
@@ -133,12 +165,14 @@ export interface MoveSummary {
   /** null for moves that never miss */
   accuracy: number | null;
   pp: number | null;
+  /** Serebii's effect text, or PokeAPI's short_effect for plain damaging moves */
+  description: string;
 }
 
-export const MOVES: MoveSummary[] = ${JSON.stringify(moves, null, 2)};
+export const MOVES: MoveSummary[] = ${JSON.stringify(scraped, null, 2)};
 `;
 
 await mkdir(dirname(OUT), { recursive: true });
 await writeFile(OUT, file, "utf8");
 
-console.log(`\nWrote ${moves.length} moves to src/data/moves.ts`);
+console.log(`\nWrote ${scraped.length} moves to src/data/moves.ts`);

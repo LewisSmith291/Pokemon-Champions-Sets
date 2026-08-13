@@ -7,13 +7,15 @@ const MAX_MOVES = 4;
 interface Props {
   learnableMoves: MoveSummary[];
   moveList: string[];
+  selectedMove: string | null;
   setMoveList: (moves: string[]) => void;
 }
 
 // Renders list and reports the selection to parent via moveList and setMoveList
-export default function MoveSelect({learnableMoves, moveList, setMoveList}: Props){
+export default function MoveSelect({learnableMoves, moveList, selectedMove, setMoveList}: Props){
   const [query, setQuery] = useState<string>("");
   const [activeType, setActiveType] = useState<string>("");
+  const [selected, setSelected] = useState<string | null>(selectedMove);
 
   // useMemo is better than useEffect here as each keystroke in the search query would cause a re-render
   // and visible would be a new object on every render
