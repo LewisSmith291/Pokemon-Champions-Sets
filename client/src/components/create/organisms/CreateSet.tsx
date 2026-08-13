@@ -34,7 +34,7 @@ const QUESTION_MARK = "/question-mark.svg"
 export default function CreateSet() {
   // form logic
   const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(true);
-  const [isMovesOpen, setIsMovesOpen] = useState<boolean>(false);
+  const [editingSlot, setEditingSlot] = useState<number | null>(null);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -49,7 +49,7 @@ export default function CreateSet() {
   const [itemType, setItemType] = useState<string>("held");
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
-  const [moveList, setMoveList] = useState<string[]>(["protect"]);
+  const [moveList, setMoveList] = useState<(string | null)[]>([null, null, null, null]);
   const [selectedMove, setSelectedMove] = useState<string | null>("")
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
@@ -88,7 +88,7 @@ export default function CreateSet() {
         setSelectedItem("");
 
         // Reset moves list
-        setMoveList([]);
+        setMoveList([null, null, null, null]);
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
@@ -187,13 +187,12 @@ export default function CreateSet() {
     form: selectedForm,
     // Schema is nullable — null means "no held item", "" would be a string that passes validation but means nothing
     item: selectedItem === "" ? null : selectedItem,
-
     // Hardcoded placeholders — replaced by real inputs one at a time
     gender: "male",
     ability: "overgrow",
     nature: nature.toLowerCase(),
     ...statBoosts,
-    moves: moveList,
+    moves: moveList.filter((move): move is string => move !== null),
     isPublic: false,
     };
 
@@ -229,9 +228,15 @@ export default function CreateSet() {
     setIsSpeciesOpen(true);
   }
 
-  function openMoves(selectedMove: string | null){
-    setSelectedMove(selectedMove)
-    setIsMovesOpen(true);
+  /* Move slot functions */
+  function confirmMove(move:string){
+    setMoveList((prev) => prev.map((m,i) => (i === editingSlot ? move: m))); // replace move in editing slot with new move
+    setEditingSlot(null);
+  }
+
+  function clearSlot(){
+    setMoveList((prev) => prev.map((m,i) => (i === editingSlot ? null : m)));
+    setEditingSlot(null);
   }
 
   return (
@@ -263,10 +268,7 @@ export default function CreateSet() {
         </div>
         <div id="sprite-and-stats">
           <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-          <button type="button" onClick={() => setIsMovesOpen(true)}>
-            {moveList.length === 0 ? "Choose moves" : moveList.join(", ")}
-          </button>
-          <MoveButtonList moveList={moveList} learnableMoves={learnableMoves}/>
+          <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
         <button type="submit" className="hoverable-link" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
@@ -278,8 +280,15 @@ export default function CreateSet() {
       >
         <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType} />
       </Modal>
-      <Modal isOpen={isMovesOpen} onClose={() => setIsMovesOpen(false)} title="Choose Moves">
-        <MoveSelect learnableMoves={learnableMoves} moveList={moveList} setMoveList={setMoveList} selectedMove={selectedMove}/>
+      <Modal isOpen={editingSlot !== null} onClose={() => setEditingSlot(null)} title={`Choose Move ${(editingSlot ?? 0) + 1}`}
+      >
+        <MoveSelect key={editingSlot} 
+          learnableMoves={learnableMoves} 
+          currentMove={editingSlot == null ? null : moveList[editingSlot]} 
+          takenMoves={moveList.filter((m,i) => m !== null && i !== editingSlot) as string[]} 
+          onConfirm={confirmMove}
+          onClear={clearSlot}
+        />
       </Modal>
     </div>
   )

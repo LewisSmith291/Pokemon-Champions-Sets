@@ -34,7 +34,7 @@ export default function Modal ({isOpen, onClose, title, children}: Props){
       // The backdrop is part of the dialog's own box
       // e.target === ref.current is checking if the click was on the backdrop
       onClick={(e) => { if (e.target === ref.current) onClose(); }}
-      className="w-full max-w-3xl rounded-xl bg-surface p-0 text-text backdrop:bg-black/50"
+      className="w-full max-w-5xl rounded-xl bg-surface p-0 text-text backdrop:bg-black/50"
     >
       <div className="flex items-center justify-between p-4">
         <h2 id={titleId}>{title}</h2>

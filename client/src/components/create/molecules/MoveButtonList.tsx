@@ -1,24 +1,28 @@
-import type { MoveSummary } from "@/data/moves";
+import { MOVE_BY_NAME } from "@/data/moveLookup";
 import MoveButton from "../atoms/MoveButton"
-import { useState, useEffect } from "react";
 
 interface Props {
-  moveList: string[];
-  learnableMoves: MoveSummary[];
+  moveList: (string | null)[];
+  onEditSlot: (slot: number) => void;
 }
 
-const MAX_MOVES = 4;
+export default function MoveButtonList({moveList, onEditSlot}: Props) {
 
-export default function MoveButtonList({moveList, learnableMoves, }: Props) {
-  const [moves, setMoves] = useState<string[]>(moveList);
-
-  useEffect(() => {
-
-  }, moveList);
 
   return (
     <div className="flex flex-col gap-2">
-      <MoveButton moveName={moves[0]} type={null} pp={null} handleOpenMoves={}></MoveButton>
+      {moveList.map((name, slot) => {
+        const move = name ? MOVE_BY_NAME.get(name) : undefined;
+        return (
+          <MoveButton
+            key={slot}
+            label={move?.label ?? null}
+            type={move?.type ?? null}
+            pp={move?.pp ?? null}
+            onClick={() => onEditSlot(slot)}
+          />
+        )
+      })}
     </div>
   )
 }

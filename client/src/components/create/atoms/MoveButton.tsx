@@ -1,19 +1,20 @@
 
 interface Props {
-  moveName:string | null;
-  type:string | null;
-  pp:number | null;
-  handleOpenMoves: (selectedMove: string | null) => void;
+  label: string | null;
+  type: string | null;
+  pp: number | null;
+  onClick: () => void;
 }
 
-export default function MoveButton({moveName, type, pp, handleOpenMoves}: Props) {
+export default function MoveButton({label, type, pp, onClick}: Props) {
 
   // If no move in this slot
-  if (!moveName)
+  if (!label)
     return (
       <button 
+        type="button"
         className="flex items-center bg-grey-400 hover:bg-grey-300"
-        onClick={() => handleOpenMoves(null)}
+        onClick={onClick}
       >
         Choose Move
       </button>
@@ -23,10 +24,10 @@ export default function MoveButton({moveName, type, pp, handleOpenMoves}: Props)
   return (
     <button 
       className={"grid grid-cols-3 " + type}
-      type="button" onClick={() => handleOpenMoves(moveName)}>
+      type="button" onClick={onClick}>
       <img />
       <div>
-        {moveName}
+        {label}
       </div>
       <div>
         {pp}
