@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { SPECIES, type Species } from "@/data/species";
 import SpeciesRow from "../atoms/SpeciesRow";
 import SpeciesSearchBar from "../molecules/SearchAndFilter.jsx";
@@ -8,14 +9,22 @@ interface Props {
 }
 
 export default function SpeciesList({ onSelect, setItemType }: Props) {
+  const [query, setQuery] = useState<string>("");
+
+
+
   function handleSelect(chosen:string){
     onSelect(chosen);
     setItemType("held");
   }
 
+  function handleQuery(q:string){
+    setQuery(q);
+  }
+
   return (
     <div id="species-search-container" className="flex flex-col gap-2 p-4 w-full m-0">
-      <SpeciesSearchBar/>
+      <SpeciesSearchBar queryText={query} updateQuery={handleQuery} />
         <div className="species-header grid grid-cols-5 gap-2 place-items-center">
           <div className="species-headers">Species</div>
           <div className="species-headers">Sprite</div>

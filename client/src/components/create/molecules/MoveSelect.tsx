@@ -43,7 +43,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
   const detail = highlighted === null ? undefined : learnableMoves.find((m) => m.name === highlighted);
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row ">
       <div className="flex flex-col gap-2">
         <div className="flex flex-row items-center gap-2">
           <input
@@ -65,7 +65,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
           </button>
         ))}
         </div>
-        <div className="grid grid-cols-6 gap-2 place-items-center">
+        <div className="grid grid-cols-6 gap-2 place-items-center overflow-y">
           {visible.map((move) => {
 
             const taken = takenMoves.includes(move.name);
@@ -90,7 +90,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-col gap-2 p-4 w-2/3">
         <h3>{detail?.label ?? "Select a move"}</h3>
         {detail && (
           <>
