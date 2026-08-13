@@ -1,3 +1,4 @@
+import './TypeStyle.css'
 
 interface TypeProp {
   type: string

@@ -10,6 +10,8 @@ import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } fro
 import NatureSelect from '../atoms/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
+import Modal from '@/components/shared/Modal.tsx';
+import MoveSelect from '../molecules/MoveSelect.tsx';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -30,7 +32,8 @@ const QUESTION_MARK = "/question-mark.svg"
 
 export default function CreateSet() {
   // form logic
-  const [choosingPokemon, setChoosingPokemon] = useState<boolean>(true);
+  const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(true);
+  const [isMovesOpen, setIsMovesOpen] = useState<boolean>(false);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -217,51 +220,60 @@ export default function CreateSet() {
    
   function choosePokemon(pokemon:string){
     setSelectedPokemon(pokemon);
-    setChoosingPokemon(false);
+    setIsSpeciesOpen(false);
   }
 
   function chooseNewPokemon(){
-    setChoosingPokemon(true);
+    setIsSpeciesOpen(true);
   }
+
 
   return (
     <div id="create-container" className="w-10/10 flex flex-col items-center">
-      {choosingPokemon ? (
-        <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType}/>
-      ) : (
-        <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
-          <div id="species-form-select" className="flex flex-row"> 
-            <button type="button" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
-            <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
-            <NatureSelect nature={nature} setNature={setNature}/>
-            <label className="flex flex-col">
-              Select Item
-              <div className='flex flex-row'>
-                <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
-                <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
-                {itemSprite !== "" ? 
-                  (
-                    <img
-                      id="item-sprite" 
-                      src={itemSprite}
-                      alt={selectedItem}
-                      onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
-                    />
-                  ) : (
-                    <div id="item-sprite"></div>
-                  )
-                }
-              </div>
-            </label>
-          </div>
-          <div id="sprite-and-stats">
-            <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
-            <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
-          </div>
-          <button type="submit" className="hoverable-link" disabled={isSubmitting && moveList.length === 0}>Create Set</button>
-        </form>
-      )}
-      
+      <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
+        <div id="species-form-select" className="flex flex-row"> 
+          <button type="button" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
+          <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
+          <NatureSelect nature={nature} setNature={setNature}/>
+          <label className="flex flex-col">
+            Select Item
+            <div className='flex flex-row'>
+              <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
+              <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
+              {itemSprite !== "" ? 
+                (
+                  <img
+                    id="item-sprite" 
+                    src={itemSprite}
+                    alt={selectedItem}
+                    onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+                  />
+                ) : (
+                  <div id="item-sprite"></div>
+                )
+              }
+            </div>
+          </label>
+        </div>
+        <div id="sprite-and-stats">
+          <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
+          <button type="button" onClick={() => setIsMovesOpen(true)}>
+            {moveList.length === 0 ? "Choose moves" : moveList.join(", ")}
+          </button>
+          <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
+        </div>
+        <button type="submit" className="hoverable-link" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
+      </form>
+      <Modal 
+        isOpen={isSpeciesOpen}
+        onClose={() => setIsSpeciesOpen(false)}
+        title = "Choose a Pokémon"
+      >
+        <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType} />
+      </Modal>
+      <Modal isOpen={isMovesOpen} onClose={() => setIsMovesOpen(false)} title="Choose Moves">
+        <MoveSelect learnableMoves={learnableMoves} moveList={moveList} setMoveList={setMoveList}/>
+      </Modal>
     </div>
   )
 }
