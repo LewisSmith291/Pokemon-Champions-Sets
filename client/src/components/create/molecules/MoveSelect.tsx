@@ -1,8 +1,6 @@
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import { type MoveSummary } from "@/data/moves";
 import TypeDisplay from "@/components/shared/TypeDisplay";
-
-const MAX_MOVES = 4;
 
 interface Props {
   learnableMoves: MoveSummary[];

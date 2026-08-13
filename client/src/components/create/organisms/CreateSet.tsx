@@ -50,7 +50,6 @@ export default function CreateSet() {
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
   const [moveList, setMoveList] = useState<(string | null)[]>([null, null, null, null]);
-  const [selectedMove, setSelectedMove] = useState<string | null>("")
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
