@@ -265,7 +265,7 @@ export default function CreateSet() {
             </div>
           </label>
         </div>
-        <div id="sprite-and-stats">
+        <div id="sprite-and-stats" className="flex flex-row gap-4">
           <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
           <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
