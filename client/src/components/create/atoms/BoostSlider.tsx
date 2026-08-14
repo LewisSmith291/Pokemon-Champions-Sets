@@ -29,7 +29,7 @@ export default function BoostSlider({statName, baseStat, alignment, value, setVa
         type="range" min={0} max={max} 
         value={value} step={1} 
         onChange={(e) => setValue(Number(e.target.value))}/>
-      <p>{value === 0 ? value : "+"+value}</p>
+      <p>{value === 0 ? (value) : (alignment === 1 ? value : alignment === 0.9 ? value+" -" : value+" +")}</p>
 
       {alignment === 1 ? 
         (<div/>) // Neutral stat alignment

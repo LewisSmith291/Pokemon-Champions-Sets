@@ -35,13 +35,13 @@ export default function Modal ({isOpen, onClose, title, children}: Props){
       // The backdrop is part of the dialog's own box
       // e.target === ref.current is checking if the click was on the backdrop
       onClick={(e) => { if (e.target === ref.current) onClose(); }}
-      className="w-full rounded-xl bg-surface p-0 backdrop:bg-black/50 move-modal"
+      className="w-full rounded-xl bg-surface p-0 backdrop:bg-black/50 modal"
     >
-      <div className="flex items-center justify-between p-4">
+      <div className="flex shrink-0 items-center justify-between p-4">
         <h2 id={titleId}>{title}</h2>
         <button type="button" onClick={onClose} aria-label="Close">×</button>
       </div>
-      <div className="">
+      <div className="min-h-0 flex-1">
         {isOpen && children}
       </div>
     </dialog>

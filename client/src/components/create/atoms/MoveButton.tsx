@@ -30,7 +30,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
         {label}
       </div>
       <div>
-        {pp}
+        {pp} PP
       </div>
     </button>
   )
