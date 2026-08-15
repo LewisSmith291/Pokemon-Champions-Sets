@@ -13,7 +13,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
     return (
       <button 
         type="button"
-        className="flex items-center bg-grey-400 hover:bg-grey-300"
+        className="move-button flex items-center bg-grey-400 hover:bg-grey-300"
         onClick={onClick}
       >
         Choose Move
@@ -23,7 +23,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
   // If there is a move in this slot
   return (
     <button 
-      className={"grid grid-cols-3 " + type}
+      className={" move-button grid grid-cols-3 " + type}
       type="button" onClick={onClick}>
       <img />
       <div>

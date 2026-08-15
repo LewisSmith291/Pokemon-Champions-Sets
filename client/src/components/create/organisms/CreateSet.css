@@ -112,3 +112,12 @@ input[type=range]{
   border-top-right-radius: var(--rounded);
   border-bottom-right-radius: var(--rounded);
 }
+
+#move-button-list{
+  width:20vw;
+  gap:5vh;
+}
+
+.move-button{
+  /*transform: skew(0deg, -5deg);*/
+}
