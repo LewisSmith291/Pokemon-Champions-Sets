@@ -1,4 +1,5 @@
 
+import TypeDisplay from "@/components/shared/TypeDisplay";
 import { type Species } from "@/data/species"
 
 interface Props{
@@ -15,7 +16,10 @@ export default function SpeciesRow({species, onSelect}: Props) {
     >
       <div>{species.label}</div>
       <img alt={species.label} src={`/sprites/${species.id}.png`} height={20} loading="lazy"/>
-      <div>{species.types.join(" / ")}</div>
+      <div className="flex flex-row gap-2">
+        <TypeDisplay type={species.types[0]}/>
+        {species.types.length === 2 && <TypeDisplay type={species.types[1]}/>}
+      </div>
       <div>{species.abilities.join(", ")}</div>
       <div>{species.hiddenAbility ?? " "}</div>
     </button>

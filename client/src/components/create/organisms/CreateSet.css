@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* Stat alignment colours now live in index.css as --stat-up / --stat-down.
-   They have to be theme-aware: the old #ff1717 / #178bff were 2.61 and 2.99
-   against the purple slider rows, both below the 4.5 AA floor. */
-
 #set-creation{
   display: flex;
   flex-direction: column;
@@ -33,7 +29,9 @@
   height: calc(var(--page-height) - var(--header-height));
 }
 
-#search-bar
+#search-bar{
+
+}
 
 select{
   padding:0.5svh;

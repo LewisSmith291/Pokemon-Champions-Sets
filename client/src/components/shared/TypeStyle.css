@@ -1,109 +1,89 @@
-
-
 .grass{
-  background-color: #3fa12a;
+  background-color: #439837;
   color: black;
-  text-transform: capitalize;
 }
 
 .fire{
-  background-color: #e62828;
-  color: white;
-  text-transform: capitalize;
+  background-color: #e4613e;
+  color: black;
 }
 
 .water{
-  background-color: #2981ef;
+  background-color: #3099e1;
   color: black;
-  text-transform: capitalize;
 }
 
 .electric{
-  background-color: #fabf00;
+  background-color: #dfbc28;
   color: black;
-  text-transform: capitalize;
 }
 
 .flying{
-  background-color: #81b8ee;
+  background-color: #74aad0;
   color: black;
-  text-transform: capitalize;
 }
 
 .normal{
-  background-color: #9fa19e;
+  background-color: #828282;
   color: black;
-  text-transform: capitalize;
 }
 
 .ground{
-  background-color: #915121;
-  color: white;
-  text-transform: capitalize;
+  background-color: #a4733c;
+  color: black;
 }
 
 .rock{
-  background-color: #aea981;
+  background-color: #a9a481;
   color: black;
-  text-transform: capitalize;
 }
 
 .psychic{
-  background-color: #ee4179;
-  color: white;
-  text-transform: capitalize;
+  background-color: #e96c8c;
+  color: black;
 }
 
 .bug{
-  background-color: #91a11a;
+  background-color: #9f9f28;
   color: black;
-  text-transform: capitalize;
 }
 
 .poison{
-  background-color: #9241cc;
+  background-color: #9354cb;
   color: white;
-  text-transform: capitalize;
 }
 
 .fighting{
-  background-color: #ff7f00;
+  background-color: #e49021;
   color: black;
-  text-transform: capitalize;
 }
 
 .ice{
-  background-color: #3fd9ff;
+  background-color: #47c8c8;
   color: black;
-  text-transform: capitalize;
 }
 
 .ghost{
-  background-color: #704070;
+  background-color: #6f4570;
   color: white;
-  text-transform: capitalize;
 }
 
 .dark{
-  background-color: #50413e;
+  background-color: #4f4747;
   color: white;
-  text-transform: capitalize;
 }
 
 .steel{
-  background-color: #60a1b7;
+  background-color: #74b0cb;
   color: black;
-  text-transform: capitalize;
 }
 
 .dragon{
-  background-color: #5160e1;
+  background-color: #576fbc;
   color: white;
-  text-transform: capitalize;
 }
 
 .fairy{
-  background-color: #ee70ee;
+  background-color: #e18ce1;
   color: black;
-  text-transform: capitalize;
 }
