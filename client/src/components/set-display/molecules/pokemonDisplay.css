@@ -28,12 +28,23 @@
 
 .type-notch{
   border: solid 1px black;
-  border-top-left-radius: 5rem;
-  border-top-right-radius: 5rem;
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-  padding:0.5rem;
+  border-radius: var(--rounded);
   text-transform: capitalize;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.type-notch svg{
+  flex-grow: 1;
+}
+.type-notch p{
+  flex-grow: 2;
+}
+
+.type-icon{
+  width: 25%;
+  aspect-ratio: 1/1;
 }
 
 .about-and-stats{
