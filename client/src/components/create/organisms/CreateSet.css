@@ -29,10 +29,6 @@
   height: calc(var(--page-height) - var(--header-height));
 }
 
-#search-bar{
-
-}
-
 select{
   padding:0.5svh;
   border-radius: 0.5rem;

@@ -23,6 +23,7 @@
   supposed to look like when attempting to catch a pokemon in game
 */
 @theme {
+  --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
   --animate-wiggle: wiggle 1s ease-out infinite;
   @keyframes wiggle {
     0%, 100% {
@@ -37,13 +38,12 @@
   }
 }
 
-.google-sans-text {
-  font-family: "Google Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
+@font-face {
+  font-family: "Google Sans";
+  src: url("/fonts/GoogleSans-Variable.woff2") format("woff2");
+  font-weight: 400 700;      /* the variable range, not a single weight */
   font-style: normal;
-  font-variation-settings:
-    "GRAD" 0;
+  font-display: swap;        /* show fallback text immediately, swap when ready */
 }
 
 :root {
@@ -74,8 +74,7 @@
      chrome does not change colour between them. 9.07 on --p-deep, AAA. */
   --link-color:  var(--p-yellow);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --default-font-family: "Google Sans", ui-sans-serif, system-ui, sans-serif;
 
   letter-spacing: 0.18px;
   --header-height: 80px;
@@ -123,9 +122,16 @@
   align-items: center;
 }
 
+html{
+  font-family: var(--default-font-family);
+  font-weight: 500;
+}
+
+body {
+  margin: 0;
+}
+
 /* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
-/* --on-accent rather than --link-color: yellow-on-pink is only 3.09 (large text
-   only), while --on-accent clears AA for body text in both themes. */
 .hoverable-link:hover {
   background-color: var(--accent) !important;
   color: var(--p-mid) !important;
@@ -133,20 +139,10 @@
   cursor: pointer !important;
 }
 
-  @media (prefers-color-scheme: dark) {
-    .hoverable-link:hover {
-      color:var(--p-yellow) !important;
+@media (prefers-color-scheme: dark) {
+  .hoverable-link:hover {
+    color:var(--p-yellow) !important;
   }
-    
-  }
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
 }
 
 h1 {

@@ -8,6 +8,7 @@ header{
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr;
   grid-template-areas: "logo navLinks profile";
+  font-weight: 700;
 }
 
 #logo{ grid-area: logo;}
