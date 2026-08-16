@@ -29,6 +29,7 @@
 
 .species-types{
   height: 3rem;
+  justify-content: center;
 }
 
 .about-and-stats{

@@ -17,7 +17,7 @@ export default function SpeciesRow({species, onSelect}: Props) {
     >
       <div>{species.label}</div>
       <img alt={species.label} src={`/sprites/${species.id}.png`} height={20} loading="lazy"/>
-        <div className={"flex flex-row gap-2 species-types " + (species.types.length === 2 ? "w-1/1" : "w-1/2")}>
+        <div className={"flex flex-row gap-2 species-types items-between " + (species.types.length === 2 ? " w-1/1" : " w-1/2")}>
         <TypeDisplay type={species.types[0]}/>
         {species.types.length === 2 && <TypeDisplay type={species.types[1]}/>}
       </div>

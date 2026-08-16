@@ -9,7 +9,7 @@ export default function TypeDisplay({type}: TypeProp) {
   const typeString = type;
   return (
     <div className={"type-notch " + typeString}>
-      <svg className=" type-icon w-1/4 h-full" aria-hidden="true"><use href={`/types.svg#${type}`}/></svg>
+      <svg className="type-icon" aria-hidden="true"><use href={`/types.svg#${type}`}/></svg>
       <p>{typeString}</p>
     </div>
   )

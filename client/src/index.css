@@ -159,17 +159,17 @@ p {
   margin: 0;
 }
 
-/* Controls sit on --surface, not on the header chrome. Pinning them to the deep
-   purple made every input a heavy block on the pale light-mode page; --surface
-   keeps them legible in both themes and lets .hoverable-link supply the accent. */
-input, select, textarea, button {
-  font: inherit;
-  background: var(--header);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 12px;
+@layer base{
+  input, select, textarea, button {
+    font: inherit;
+    background: var(--header);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  
+  button{
+    transition: background-color 0.1s, color 0.1s;
+  }
 }
 
-button{
-  transition: background-color 0.1s, color 0.1s;
-}

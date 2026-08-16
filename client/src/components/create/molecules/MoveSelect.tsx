@@ -56,12 +56,12 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
             placeholder="Search Moves"
           />
         </div>
-        <div className="flex flex-row flex-wrap gap-1">{types.map((type) => (
+        <div className="flex flex-row flex-wrap gap-1 ">{types.map((type) => (
           <button
             key={type}
             type="button"
             onClick={() => setActiveType(activeType === type ? "" : type)}
-            className={activeType === type ? "opacity-100" : "opacity-50"}
+            className={`border-0 bg-transparent p-0 ${activeType === type ? "opacity-100" : "opacity-50"}`}
           >
             <TypeDisplay type={type} />
           </button>
