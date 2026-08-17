@@ -10,6 +10,7 @@ import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } fro
 import NatureSelect from '../atoms/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
+import { itemSpritePath } from '@/data/itemDetails.ts';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
@@ -26,8 +27,8 @@ interface ApiMove{
   move: {name:string};
 }
 
-// Shown when an item has no PokeAPI sprite (e.g. Champions-original mega stones,
-// which have no /item/{slug} endpoint). Served from public/wireSquare.svg.
+// Shown when an item slug has no file in public/sprites/items - which now only
+// happens for a slug added to itemData.ts without re-running build-items.mjs.
 const PLACEHOLDER_SPRITE = "/wireSquare.svg";
 const QUESTION_MARK = "/question-mark.svg"
 
@@ -44,7 +45,6 @@ export default function CreateSet() {
   const [sprite, setSprite] = useState<string>();
   // items
   const [selectedItem, setSelectedItem] = useState<string>("");
-  const [itemSprite, setItemSprite] = useState<string>();
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
   // moves
@@ -142,34 +142,11 @@ export default function CreateSet() {
       return () => {stale = true};
    }, [learnsetForm]);
   
-  // Set item sprite depending on selected item
-  useEffect(() => {
-    // check if an item has been selected
-    if (selectedItem === ""){
-      setItemSprite("");
-      return;
-    }
-    // Ignore this response if the selection moves on before it lands, otherwise
-    // a slow request for the old item overwrites the sprite of the new one.
-    let stale = false;
-
-    fetch(`https://pokeapi.co/api/v2/item/${selectedItem}`)
-      .then((response) => {
-        // 404 for Champions-original mega stones not in PokeAPI
-        if (!response.ok) throw new Error(`Item not in PokeAPI: ${selectedItem}`);
-        return response.json();
-      })
-      .then((data) => {
-        // some items exist but have a null sprite — fall back too
-        if (!stale) setItemSprite(data.sprites.default ?? PLACEHOLDER_SPRITE);
-      })
-      .catch((error) => {
-        console.log('Falling back to placeholder sprite: ', error);
-        if (!stale) setItemSprite(PLACEHOLDER_SPRITE);
-      });
-
-    return () => { stale = true; };
-  }, [selectedItem])
+  // Item sprites are keyed by the same slug we already hold, so the path is
+  // derivable - no request, and no race between a slow response and a newer
+  // selection. Previously this asked PokeAPI, which has no entry at all for the
+  // Champions-original mega stones and so always fell back to the placeholder.
+  const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
 
   // Function to clamp a stat boost slider
   function updateBoost(key:BoostKey, value:number){
