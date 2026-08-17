@@ -77,7 +77,7 @@ input[type=range]{
 }
 
 .species-row{
-  height:100px;
+  height: fit-content;
 }
 
 .species-header{

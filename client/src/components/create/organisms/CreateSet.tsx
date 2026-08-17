@@ -106,8 +106,10 @@ export default function CreateSet() {
       .then((response) => response.json())
       .then((data) => {
         if (stale) return;
-        //setSprite(data.sprites.other.home.front_default); -- full art sprite
-        setSprite(data.sprites.front_default);
+        // Served from public/sprites, not data.sprites.front_default: that field
+        // points at raw.githubusercontent.com, which 429s under GitHub's abuse
+        // protection. data.id is the *form's* dex id, so megas resolve correctly.
+        setSprite(`/sprites/${data.id}.png`);
         setIsMegaForm(data.name.includes("-mega"));
         // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
         // then collapses it into a single object: {hp:45, attack:32, ...}
@@ -115,6 +117,9 @@ export default function CreateSet() {
           data.stats.map((s:ApiStat) => [s.stat.name, s.base_stat])
         ));
       })
+      .catch((error) => {
+        console.log('There was an ERROR: ', error);
+      });
     return () => { stale = true; };
   }, [selectedForm])
 
@@ -266,7 +271,14 @@ export default function CreateSet() {
           </label>
         </div>
         <div id="sprite-and-stats" className="flex flex-row gap-4">
-          <img id="pokemon-sprite" src={!sprite ? QUESTION_MARK: sprite} alt={selectedForm}/>
+          <img
+            id="pokemon-sprite"
+            src={!sprite ? QUESTION_MARK : sprite}
+            alt={selectedForm}
+            // A handful of forms have no sprite in the PokeAPI repo (pikachu-starter),
+            // so there is nothing in public/sprites to serve for them
+            onError={(e) => { e.currentTarget.src = QUESTION_MARK; }}
+          />
           <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>

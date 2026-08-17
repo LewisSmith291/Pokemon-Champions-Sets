@@ -28,8 +28,14 @@
 
 
 .species-types{
-  height: 3rem;
   justify-content: center;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 767px) {
+  .species-types{
+    flex-direction: column;
+  }
 }
 
 .about-and-stats{

@@ -1,10 +1,16 @@
-// Downloads every Champions-dex sprite into public/sprites/{id}.png.
+// Downloads every selectable Champions sprite into public/sprites/{id}.png.
 //
 // Run manually:  node scripts/build-sprites.mjs
 //
 // The files are committed so the app serves them from its own origin. Hotlinking
 // raw.githubusercontent.com for 200+ images trips GitHub's abuse protection,
-// which responds 404 - so the sprites appear to be missing when they aren't.
+// which responds 404/429 - so the sprites appear to be missing when they aren't.
+// The download itself goes through jsDelivr's mirror of the same repo for the
+// same reason: it is a CDN, so it does not rate limit a bulk run.
+//
+// Covers every form the picker can reach, not just the default one - selecting a
+// mega in CreateSet asks for that form's own dex id (venusaur-mega is 10033), so
+// downloading only default ids leaves every mega with a broken image.
 //
 // Depends on src/data/species.ts, so run build-species.mjs first.
 
@@ -14,15 +20,52 @@ import { fileURLToPath } from "node:url";
 
 import { SPECIES } from "../src/data/species.ts";
 
-const SPRITE_BASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
-// Small enough to stay well clear of the rate limiting that broke the hotlinked version
-const CONCURRENCY = 6;
+const API = "https://pokeapi.co/api/v2";
+const SPRITE_BASE = "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon";
+const CONCURRENCY = 4;
+const ATTEMPTS = 5;
 
 const OUT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "../public/sprites");
 
+const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
+
+// jsDelivr throttles a bulk run with 403s, and answers 404 for a file that does
+// exist while its edge cache is cold - both clear on a retry, so treat every
+// failure as transient and back off. A genuine 404 just burns the attempts.
+async function fetchWithRetry(url) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (response.ok) return response;
+      if (attempt === ATTEMPTS) throw new Error(`${response.status} ${url}`);
+    } catch (error) {
+      if (attempt === ATTEMPTS) throw error;
+    }
+    await sleep(500 * 2 ** (attempt - 1));
+  }
+}
+
+async function getJson(url) {
+  const response = await fetchWithRetry(url);
+  return response.json();
+}
+
+// A variety's url ends in its dex id: ".../pokemon/10033/" -> 10033
+function idFromUrl(url) {
+  return Number(url.split("/").filter(Boolean).pop());
+}
+
+// Every form CreateSet can switch to. Mirrors the -gmax filter it applies to the
+// form list, so we don't download sprites the app will never ask for.
+async function selectableIds(species) {
+  const data = await getJson(`${API}/pokemon-species/${species.name}`);
+  return data.varieties
+    .filter((variety) => !variety.pokemon.name.includes("-gmax"))
+    .map((variety) => idFromUrl(variety.pokemon.url));
+}
+
 async function download(id) {
-  const response = await fetch(`${SPRITE_BASE}/${id}.png`);
-  if (!response.ok) throw new Error(`${response.status} for id ${id}`);
+  const response = await fetchWithRetry(`${SPRITE_BASE}/${id}.png`);
   const bytes = Buffer.from(await response.arrayBuffer());
   await writeFile(resolve(OUT_DIR, `${id}.png`), bytes);
   return bytes.length;
@@ -46,19 +89,46 @@ async function pool(items, limit, worker) {
 
 await mkdir(OUT_DIR, { recursive: true });
 
-console.log(`Downloading ${SPECIES.length} sprites...`);
+console.log(`Resolving forms for ${SPECIES.length} species...`);
 
-let done = 0;
 const failed = [];
 
-const sizes = await pool(SPECIES, CONCURRENCY, async (species) => {
+const idsPerSpecies = await pool(SPECIES, CONCURRENCY, async (species) => {
   try {
-    const size = await download(species.id);
+    return await selectableIds(species);
+  } catch (error) {
+    failed.push(`forms for ${species.name}: ${error.message}`);
+    // Fall back to the default form so a species is never dropped entirely
+    return [species.id];
+  }
+});
+
+const ids = [...new Set(idsPerSpecies.flat())].sort((a, b) => a - b);
+
+// jsDelivr throttles harder the longer a run goes, so a cold run usually leaves a
+// handful of ids behind. Skipping what is already on disk lets a re-run pick up
+// only those instead of re-fetching everything. Pass --force to refresh them all.
+const force = process.argv.includes("--force");
+const onDisk = new Set(await readdir(OUT_DIR));
+const wanted = force ? ids : ids.filter((id) => !onDisk.has(`${id}.png`));
+
+if (!wanted.length) {
+  console.log(`\nAll ${ids.length} sprites already in public/sprites - nothing to do.`);
+  process.exit(0);
+}
+
+console.log(`Downloading ${wanted.length} sprites (${ids.length - wanted.length} already on disk)...`);
+
+let done = 0;
+
+const sizes = await pool(wanted, CONCURRENCY, async (id) => {
+  try {
+    const size = await download(id);
     done++;
-    if (done % 25 === 0 || done === SPECIES.length) console.log(`  ${done}/${SPECIES.length}`);
+    if (done % 25 === 0 || done === wanted.length) console.log(`  ${done}/${wanted.length}`);
     return size;
   } catch (error) {
-    failed.push(`${species.name} (${species.id}): ${error.message}`);
+    failed.push(`id ${id}: ${error.message}`);
     return 0;
   }
 });
