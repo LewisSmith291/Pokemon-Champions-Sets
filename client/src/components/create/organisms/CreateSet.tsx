@@ -224,7 +224,7 @@ export default function CreateSet() {
     <div id="create-container" className="w-10/10 flex flex-col items-center">
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
         <div id="species-form-select" className="flex flex-row"> 
-          <button type="button" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
+          <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
           <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
           <NatureSelect nature={nature} setNature={setNature}/>
           <label className="flex flex-col">

@@ -70,7 +70,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
       </div>
       <div className="flex min-h-0 flex-1 flex-row">
         <div className="min-w-0 flex-1 overflow-y-auto">
-          <div className="grid grid-cols-6 gap-2 place-items-center">
+          <div className="grid grid-cols-[minmax(0,2fr)_auto_repeat(4,minmax(0,1fr))] gap-2 place-items-center max-w-full">
             {visible.map((move) => {
               const taken = takenMoves.includes(move.name);
               return (

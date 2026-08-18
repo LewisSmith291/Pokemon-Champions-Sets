@@ -13,7 +13,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
     return (
       <button 
         type="button"
-        className="move-button flex items-center bg-grey-400 hover:bg-grey-300"
+        className="move-button flex items-center justify-center bg-grey-400 hover:bg-grey-300 hoverable-link"
         onClick={onClick}
       >
         Choose Move
@@ -23,15 +23,15 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
   // If there is a move in this slot
   return (
     <button 
-      className={" move-button grid grid-cols-3 " + type}
+      className={" move-button grid grid-cols-3 items-center " + type}
       type="button" onClick={onClick}>
-      <img />
-      <div>
+      <svg className="h-full aspect-1/1 brightness-90" aria-hidden="true"><use href={`/types.svg#${type}`}/></svg>
+      <p>
         {label}
-      </div>
-      <div>
+      </p>
+      <p>
         {pp} PP
-      </div>
+      </p>
     </button>
   )
 }

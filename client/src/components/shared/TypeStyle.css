@@ -1,18 +1,30 @@
 .type-notch{
   border: solid 1px black;
   border-radius: var(--rounded);
+
   text-transform: capitalize;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding:0.5rem;
+
+  padding:0.4em 0.55em;
   gap: 0.35em;
+  font-size: clamp(0.72rem, 0.5rem + 0.4vw, 0.95rem);
+
+  max-width:100%;
+  min-width: 0;
 } 
+
+.type-notch p{
+  /* Fighting is longest name, so make all types text 8ch wide */
+  width:8ch; 
+  min-width: 0;
+}
 
 .type-icon{
   filter:brightness(90%);
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.25em;
+  height: 1.25em;
   flex-shrink:0;
 }
 
