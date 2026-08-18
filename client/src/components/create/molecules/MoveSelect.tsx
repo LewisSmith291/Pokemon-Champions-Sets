@@ -23,17 +23,17 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
   // types stores all types of moves the pokemon can know
   // If a pokemon doesn't know an ice type move, then they dont need any ice type variables or elements
   // When learnable moves changes, the function is run again to check for the types
-  const types = useMemo(
+  const types:string[] = useMemo(
     // new Set drops duplicate moves
     () => [...new Set(learnableMoves.map((m) => m.type))].sort(),[learnableMoves]
   )
 
-  const visible = useMemo(() => {
+  const visible: MoveSummary[] = useMemo(() => {
     // trim() gets rid of stray spaces
     // toLowerCase() makes so capitalisation of search query doesn't matter
     // replace(/-/g, " ") replaces all hyphons with a space ("double edge" matches on "double-edge" now)
     // g means every occurance of this regex match, not just the first
-    const needle = query.trim().toLowerCase().replace(/-/g, " ");
+    const needle: string = query.trim().toLowerCase().replace(/-/g, " ");
     return (learnableMoves.filter((move) => {
       if (activeType !== "" && move.type !== activeType) return false;
       if (needle === "") return true;
@@ -43,7 +43,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
     .sort((a,b) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type) || a.label.localeCompare(b.label));
   }, [learnableMoves, query, activeType]);
 
-  const detail = highlighted === null ? undefined : learnableMoves.find((m) => m.name === highlighted);
+  const detail: MoveSummary | undefined = highlighted === null ? undefined : learnableMoves.find((m) => m.name === highlighted);
 
   return (
     <div className="flex h-full min-h-0 flex-col">
