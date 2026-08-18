@@ -124,6 +124,11 @@ input[type=range]{
   grid-template-columns: 1fr 3fr 1fr;
 }
 
+.move-select-info{
+  display:flex ;
+  flex-direction: row;
+}
+
 /* Mobile formatting */
 @media screen and (max-width: 676px) {
   #move-button-list{
@@ -133,5 +138,11 @@ input[type=range]{
   }
   .move-button{
     width:100%;
+  }
+  .move-select-info{
+    flex-direction: column;
+  }
+  .move-info{
+    width: 100%;
   }
 }

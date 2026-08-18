@@ -46,8 +46,8 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
   const detail: MoveSummary | undefined = highlighted === null ? undefined : learnableMoves.find((m) => m.name === highlighted);
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 flex-col">
+    <div className="flex h-full min-h-0 flex-col ">
+      <div className="flex shrink-0 flex-col ">
         <div className="flex flex-row items-center gap-2 ">
           <input
             type="text"
@@ -68,9 +68,21 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
         ))}
         </div>
       </div>
-      <div className="flex min-h-0 flex-1 flex-row">
+      <div className="flex min-h-0 flex-1 move-select-info">
         <div className="min-w-0 flex-1 overflow-y-auto">
           <div className="grid grid-cols-[minmax(0,2fr)_auto_repeat(4,minmax(0,1fr))] gap-2 place-items-center max-w-full">
+            <div 
+              id="move-select-header" 
+              className="col-span-6 grid grid-cols-subgrid items-center gap-2 
+              place-items-center hoverable-link sticky top-0 p-2 bg-[var(--header)] z-1"
+            >
+              <div>Name</div>
+              <div>Type</div>
+              <div>Category</div>
+              <div>Power</div>
+              <div>Accuracy</div>
+              <div>PP</div>
+            </div>
             {visible.map((move) => {
               const taken = takenMoves.includes(move.name);
               return (
@@ -93,11 +105,17 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
             })}
           </div>
         </div>
-        <div className="flex w-1/3 shrink-0 flex-col gap-2 p-4">
-          <h3>{detail?.label ?? "Select a move"}</h3>
+        <div className="flex w-1/3 shrink-0 flex-col gap-2 p-4 move-info">
+          <div className="flex flex-row justify-evenly gap-2 items-center">
+            <h3 
+              className="bg-[var(--p-void)] rounded-[var(--rounded)] px-2 py-1 flex-1"
+            >
+              {detail?.label ?? "Select a move"} 
+            </h3>
+            {detail && <TypeDisplay type={detail.type} />}
+          </div>
           {detail && (
             <>
-              <TypeDisplay type={detail.type} />
               <p>{detail.damageClass} · {detail.power ?? "—"} power · {detail.accuracy ?? "—"} acc · {detail.pp} PP</p>
               <p>{detail.description}</p>
             </>
