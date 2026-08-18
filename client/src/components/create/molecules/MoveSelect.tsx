@@ -102,11 +102,11 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
               <p>{detail.description}</p>
             </>
           )}
-          <button type="button" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
+          <button type="button" className="hoverable-link" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
             {currentMove === null ? "Add to slot" : "Replace move"}
           </button>
           {currentMove !== null && (
-            <button type="button" onClick={onClear}>Clear slot</button>
+            <button type="button" className="hoverable-link" onClick={onClear}>Clear slot</button>
           )}
         </div>
       </div>
