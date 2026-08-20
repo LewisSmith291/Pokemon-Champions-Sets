@@ -31,6 +31,8 @@ interface ApiMove{
 // happens for a slug added to itemData.ts without re-running build-items.mjs.
 const PLACEHOLDER_SPRITE = "/wireSquare.svg";
 const QUESTION_MARK = "/question-mark.svg"
+const HOME_SPRITE_BASE =
+  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/";
 
 export default function CreateSet() {
   // form logic

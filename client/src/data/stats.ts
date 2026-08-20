@@ -42,7 +42,7 @@ export const NATURES: string[] = [
 
 // Ommitted natures have no stat change
 // Undefined is required when checking if natureEffect is false
-const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat } | undefined> = {
+export const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat } | undefined> = {
   // Attack up
   adamant: { up: "attack", down: "special-attack"},
   brave: { up: "attack", down: "speed"},
