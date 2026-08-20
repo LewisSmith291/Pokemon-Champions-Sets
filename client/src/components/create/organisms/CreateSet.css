@@ -171,16 +171,35 @@ input[type=range]{
 
 .nature-head-col,
 .nature-head-row{
+  display: grid;
+  place-items: center;
   border-radius: var(--rounded-small);
   padding: 0.25rem;
   line-height: 1.15;
-  font-size: clamp(0.7rem, 2.2vw, 0.95rem);
   transition: background-color 120ms ease, color 120ms ease;
+}
+/* Highlighting columns on nature hover */
+#nature-grid:has(.nature-cell[data-col="0"]:is(:hover,:focus-visible)) .nature-head-col[data-col="0"],
+#nature-grid:has(.nature-cell[data-col="1"]:is(:hover,:focus-visible)) .nature-head-col[data-col="1"],
+#nature-grid:has(.nature-cell[data-col="2"]:is(:hover,:focus-visible)) .nature-head-col[data-col="2"],
+#nature-grid:has(.nature-cell[data-col="3"]:is(:hover,:focus-visible)) .nature-head-col[data-col="3"],
+#nature-grid:has(.nature-cell[data-col="4"]:is(:hover,:focus-visible)) .nature-head-col[data-col="4"]{
+  background-color: var(--stat-down-fill);
+  color: var(--on-stat-fill);
+}
+/* Highlighting rows on nature hover */
+#nature-grid:has(.nature-cell[data-row="0"]:is(:hover,:focus-visible)) .nature-head-row[data-row="0"],
+#nature-grid:has(.nature-cell[data-row="1"]:is(:hover,:focus-visible)) .nature-head-row[data-row="1"],
+#nature-grid:has(.nature-cell[data-row="2"]:is(:hover,:focus-visible)) .nature-head-row[data-row="2"],
+#nature-grid:has(.nature-cell[data-row="3"]:is(:hover,:focus-visible)) .nature-head-row[data-row="3"],
+#nature-grid:has(.nature-cell[data-row="4"]:is(:hover,:focus-visible)) .nature-head-row[data-row="4"]{
+  background-color: var(--stat-up-fill);
+  color: var(--on-stat-fill);
 }
 
 @media screen and (max-width: 676px){
   #nature-grid{ grid-template-columns: 2.75rem repeat(5, 1fr); gap: 1px; }
-  
+
   .nature-cell{ min-height: 2.75rem; }
   /* stack "SpD" over "⬆" so the row header stays one column wide */
   .nature-head-row{ display: flex; flex-direction: column; align-items: center; }

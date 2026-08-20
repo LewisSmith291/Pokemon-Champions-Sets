@@ -20,34 +20,36 @@ export default function NatureSelect({currentNature, onConfirm}: Props) {
     <div id="nature-form-container" className="flex flex-col gap-2 p-2">
       <div id="nature-grid">
         <div></div>
-        {NATURE_STAT_STRINGS.map((stat:string, index:number) => {
-          return <Fragment>
-            <div className="flex flex-row justify-center">
-              <div className="stat-long nature-head-col" key={stat + " down long"}>{stat +" ↓"}</div>
-              <div className="stat-short nature-head-col" key={stat + " down short"}>{NATURE_STAT_SHORT[index] + " ↓"}</div> 
+        {/* column headers*/}
+        {NATURE_STAT_STRINGS.map((stat:string, col:number) => (
+          <div className="flex flex-row justify-center nature-head-col">
+            <span className="stat-long" data-col={col} >{stat} ↓</span>
+            <span className="stat-short">{NATURE_STAT_SHORT[col]} ↓</span> 
+          </div>
+        ))}
+        {NATURE_STAT_STRINGS.map((stat:string, row:number) => (
+          <Fragment key={stat}>
+            <div className="nature-head-row" data-row={row}>
+              <span className="stat-long">{stat} ⬆</span>
+              <span className="stat-short">{NATURE_STAT_SHORT[row]} ⬆</span> 
             </div>
+            {ROWS[row].map((nature:string, col:number) => (
+              <button 
+                key = {`${row}-${col}`} 
+                data-row={row}
+                data-col={col}
+                className={
+                  "nature-cell "+(!nature ? "" : "hoverable-link") + " " + 
+                  (selectedNature === nature ? "bg-[var(--accent)] text-[var(--p-yellow)]" : "bg-[var(--bg)]")
+                } 
+                onClick={() => setSelectedNature(nature)}
+                disabled={!nature}
+              >
+                {nature}
+              </button>
+            ))}
           </Fragment>
-        })}
-        {NATURE_STAT_STRINGS.map((stat:string, index:number) => {
-          return (
-            <Fragment key={stat}>
-              <div className="flex flex-row justify-center items-center">
-                <div className="stat-long nature-head-row">{stat+" ⬆"}</div>
-                <div className="stat-short nature-head-row">{NATURE_STAT_SHORT[index] + "⬆"}</div> 
-              </div>
-              {ROWS[index].map((nature:string) => {
-                return <button 
-                  key = {nature} 
-                  className={"nature-cell "+(!nature ? "" : "hoverable-link") + " " + (selectedNature === nature ? "bg-[var(--accent)] text-[var(--p-yellow)]" : "bg-[var(--bg)]")} 
-                  onClick={() => setSelectedNature(nature)}
-                  disabled={!nature}
-                >
-                  {nature}
-                </button>
-              })}
-            </Fragment>
-          )
-        })}
+        ))}
       </div>
       <button className="hoverable-link rounded-[var(--rounded)]" onClick={() => onConfirm(selectedNature)}>Submit Nature</button>
     </div>

@@ -67,7 +67,11 @@
   --accent-fill: var(--p-pink);    /* fill only — 3.14, never text */
   --on-accent:   #e4ccdd;          /*  5.89 on --accent   AA  */
   --stat-up:     var(--p-crimson); /*  5.89 on --surface  AA  */
-  --stat-down:   #0e6ea8;          /*  5.51 on --surface  AA  */
+  --stat-down:   #0e6ea8;          /*  5.51 on --surface  AA  */  
+
+  --stat-up-fill:   var(--p-crimson);
+  --stat-down-fill: #0e6ea8;
+  --on-stat-fill:   #ffffff;
 
   /* Text sitting on the deep-purple chrome. Yellow in BOTH themes, because the
      chrome does not change colour between them. 9.07 on --p-deep, AAA. */
@@ -108,7 +112,10 @@
     --on-accent:   var(--p-void);  /*  4.92 on --accent  AA  */
     /* Crimson is unusable here */
     --stat-up:     #ff9db4;        /*  5.19 on --p-deep  AA  */
-    --stat-down:   #7fd4ff;        /*  6.17 on --p-deep  AA  */
+    --stat-down:   #7fd4ff;        /*  6.17 on --p-deep  AA  */    
+    
+    --stat-up-fill:   #a8153a;
+    --stat-down-fill: #10598a;
   }
 }
 
