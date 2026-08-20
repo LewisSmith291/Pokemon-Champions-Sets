@@ -148,8 +148,11 @@ input[type=range]{
   }
 }
 
+#nature-form-container{
+}
+
 #nature-grid{
   display: grid;
-  grid-template-columns: repeat(1fr, 6);
-  grid-template-rows: repeat(1fr, 6);
+  grid-template-columns: repeat(6, 2fr);
+  grid-template-rows: repeat(6, 2fr);
 }

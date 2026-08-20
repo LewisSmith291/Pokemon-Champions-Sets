@@ -8,6 +8,7 @@ export const STATS = [
   { key: "boostSpe", api: "speed", label: "Speed" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
 
+export const NATURE_STAT_STRINGS = ["Attack", "Defense", "Special Attack", "Special Defense", "Speed"]
 // Nature changed stats
 export type StatChange = "up" | "down" | "";
 // Derived from STATS
@@ -34,10 +35,11 @@ export const EMPTY_BOOSTS: Boosts = {
 };
 
 export const NATURES: string[] = [
-  "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", 
-  "Docile", "Gentle", "Hardy", "Hasty", "Impish", "Jolly", 
-  "Lax", "Lonely", "Mild", "Modest", "Naive", "Naughty", 
-  "Quiet", "Quirky", "Rash", "Relaxed", "Sassy", "Serious", "Timid"
+  "Serious", "Lonely", "Adamant", "Naughty", "Brave",
+  "Bold", "", "Impish", "Lax", "Relaxed",
+  "Modest", "Mild", "", "Rash", "Quiet",
+  "Calm", "Gentle", "Careful", "", "Sassy",
+  "Timid", "Hasty", "Jolly", "Naive", "",
 ];
 
 // Ommitted natures have no stat change
@@ -68,15 +70,25 @@ export const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat }
   jolly: { up: "speed", down: "special-attack"},
   naive: { up: "speed", down: "special-defense"},
   timid: { up: "speed", down: "attack"},
+  // No changes
+  hardy:   { up: "attack", down: "attack" },
+  docile:  { up: "defense", down: "defense" },
+  bashful: { up: "special-attack", down: "special-attack" },
+  quirky:  { up: "special-defense", down: "special-defense" },
+  serious: { up: "speed", down: "speed" },
 };
 
 // Returns record of nature changes
 export default function GetNatureChanges(nature: string): NatureChanges{
-  const changes: NatureChanges = {hp:"",attack:"", defense:"", "special-attack":"", "special-defense":"", "speed":""}
+  const changes: NatureChanges = {hp:"",attack:"", defense:"", "special-attack":"", "special-defense":"", speed:""}
   const natureEffect = NATURE_EFFECTS[nature.toLowerCase()];
 
-  // If there is no nature effect, return no changes
+  
+  // If natureEffect is undefined (wrong nature input possibly, return)
   if (!natureEffect) return changes;
+
+  // If a nature with no stat changes is selected, also return no stat changes
+  if (natureEffect.up === natureEffect.down) return changes;
 
   // uses the up and down nature stored in natureEffect object to edit the correct stats in the changes object
   changes[natureEffect.up] = "up";

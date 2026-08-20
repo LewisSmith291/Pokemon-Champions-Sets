@@ -7,7 +7,7 @@ import ItemRadio from '../atoms/ItemRadio.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
 import { API_URL } from '@/services/api.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
-import NatureSelect from '../atoms/NatureSelect.tsx';
+import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 import { itemSpritePath } from '@/data/itemDetails.ts';
@@ -31,13 +31,12 @@ interface ApiMove{
 // happens for a slug added to itemData.ts without re-running build-items.mjs.
 const PLACEHOLDER_SPRITE = "/wireSquare.svg";
 const QUESTION_MARK = "/question-mark.svg"
-const HOME_SPRITE_BASE =
-  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/";
 
 export default function CreateSet() {
   // form logic
   const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(true);
   const [editingSlot, setEditingSlot] = useState<number | null>(null);
+  const [isNatureOpen, setIsNatureOpen] = useState<boolean>(false);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -202,6 +201,7 @@ export default function CreateSet() {
     }
   }
    
+  /* Species and pokemon selection functions */
   function choosePokemon(pokemon:string){
     setSelectedPokemon(pokemon);
     setIsSpeciesOpen(false);
@@ -209,6 +209,17 @@ export default function CreateSet() {
 
   function chooseNewPokemon(){
     setIsSpeciesOpen(true);
+  }
+
+  /* Nature selection functions */
+
+  function chooseNature(){
+    setIsNatureOpen(true);
+  }
+
+  function selectNature(nature:string){
+    setNature(nature);
+    setIsSpeciesOpen(false);
   }
 
   /* Move slot functions */
@@ -228,7 +239,8 @@ export default function CreateSet() {
         <div id="species-form-select" className="flex flex-row"> 
           <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
           <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
-          <NatureSelect nature={nature} setNature={setNature}/>
+          <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNature()}>Choose Nature</button>
+          <p>{nature}</p>
           <label className="flex flex-col">
             Select Item
             <div className='flex flex-row'>
@@ -270,6 +282,15 @@ export default function CreateSet() {
       >
         <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType} />
       </Modal>
+      
+      <Modal
+        isOpen={isNatureOpen}
+        onClose={() => setIsNatureOpen(false)}
+        title = "Select Nature"
+      >
+        <NatureSelect nature={nature} onConfirm={selectNature}/>
+      </Modal>
+      
       <Modal isOpen={editingSlot !== null} onClose={() => setEditingSlot(null)} title={`Choose Move ${(editingSlot ?? 0) + 1}`}
       >
         <MoveSelect key={editingSlot} 
