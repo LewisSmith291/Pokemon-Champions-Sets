@@ -8,7 +8,8 @@ export const STATS = [
   { key: "boostSpe", api: "speed", label: "Speed" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
 
-export const NATURE_STAT_STRINGS = ["Attack", "Defense", "Special Attack", "Special Defense", "Speed"]
+export const NATURE_STAT_STRINGS = ["Attack", "Defense", "Special Attack", "Special Defense", "Speed"];
+export const NATURE_STAT_SHORT = ["Atk", "Def", "SpAtk", "SpDef", "Speed"]
 // Nature changed stats
 export type StatChange = "up" | "down" | "";
 // Derived from STATS

@@ -1,5 +1,5 @@
 import { useState, Fragment } from "react";
-import { NATURES, NATURE_STAT_STRINGS } from "@/data/stats";
+import { NATURES, NATURE_STAT_STRINGS, NATURE_STAT_SHORT } from "@/data/stats";
 
 interface Props {
   currentNature: string;
@@ -20,13 +20,21 @@ export default function NatureSelect({currentNature, onConfirm}: Props) {
     <div id="nature-form-container" className="flex flex-col gap-2 p-2">
       <div id="nature-grid">
         <div></div>
-        {NATURE_STAT_STRINGS.map((stat:string) => {
-          return <div key={stat + " down"}>{stat} ↓</div>
+        {NATURE_STAT_STRINGS.map((stat:string, index:number) => {
+          return <Fragment>
+            <div className="flex flex-row justify-center">
+              <div className="stat-long nature-head-col" key={stat + " down long"}>{stat +" ↓"}</div>
+              <div className="stat-short nature-head-col" key={stat + " down short"}>{NATURE_STAT_SHORT[index] + " ↓"}</div> 
+            </div>
+          </Fragment>
         })}
         {NATURE_STAT_STRINGS.map((stat:string, index:number) => {
           return (
             <Fragment key={stat}>
-              <div >{stat} ⬆</div>
+              <div className="flex flex-row justify-center items-center">
+                <div className="stat-long nature-head-row">{stat+" ⬆"}</div>
+                <div className="stat-short nature-head-row">{NATURE_STAT_SHORT[index] + "⬆"}</div> 
+              </div>
               {ROWS[index].map((nature:string) => {
                 return <button 
                   key = {nature} 

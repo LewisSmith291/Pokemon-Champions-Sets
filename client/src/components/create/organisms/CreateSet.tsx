@@ -278,25 +278,34 @@ export default function CreateSet() {
         </div>
         <button type="submit" className="hoverable-link" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
       </form>
+      {/* Species select modal */}
       <Modal 
         isOpen={isSpeciesOpen}
         onClose={() => setIsSpeciesOpen(false)}
         title = "Choose a Pokémon"
       >
-        <SpeciesSearch onSelect={choosePokemon} setItemType={setItemType} />
+        <SpeciesSearch 
+          onSelect={choosePokemon} 
+          setItemType={setItemType} />
       </Modal>
-      
+      {/* Nature select modal */}
       <Modal
         isOpen={isNatureOpen}
         onClose={() => setIsNatureOpen(false)}
         title = "Select Nature"
       >
-        <NatureSelect currentNature={nature} onConfirm={selectNature}/>
+        <NatureSelect 
+          currentNature={nature} 
+          onConfirm={selectNature}/>
       </Modal>
-      
-      <Modal isOpen={editingSlot !== null} onClose={() => setEditingSlot(null)} title={`Choose Move ${(editingSlot ?? 0) + 1}`}
+      {/* Move select modal */}
+      <Modal 
+        isOpen={editingSlot !== null} 
+        onClose={() => setEditingSlot(null)} 
+        title={`Choose Move ${(editingSlot ?? 0) + 1}`}
       >
-        <MoveSelect key={editingSlot} 
+        <MoveSelect 
+          key={editingSlot} 
           learnableMoves={learnableMoves} 
           currentMove={editingSlot == null ? null : moveList[editingSlot]} 
           takenMoves={moveList.filter((m,i) => m !== null && i !== editingSlot) as string[]} 
