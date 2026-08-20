@@ -11,8 +11,6 @@ interface Props {
 export default function SpeciesList({ onSelect, setItemType }: Props) {
   const [query, setQuery] = useState<string>("");
 
-
-
   function handleSelect(chosen:string){
     onSelect(chosen);
     setItemType("held");
@@ -35,7 +33,7 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
       <div id="species-select" className="overflow-y-auto w-full">
         <div className="grid grid-cols-5 gap-2 place-items-center">
           {SPECIES.map((s:Species) => (
-            <SpeciesRow onSelect={handleSelect} species={s}/>
+            <SpeciesRow key={s.name} onSelect={handleSelect} species={s}/>
           ))}
         </div>
       </div>

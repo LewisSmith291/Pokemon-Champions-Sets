@@ -87,6 +87,9 @@ export default function CreateSet() {
         setItemType("held");
         setSelectedItem("");
 
+        // Reset nature
+        setNature("serious");
+
         // Reset moves list
         setMoveList([null, null, null, null]);
       })
@@ -219,7 +222,7 @@ export default function CreateSet() {
 
   function selectNature(nature:string){
     setNature(nature);
-    setIsSpeciesOpen(false);
+    setIsNatureOpen(false);
   }
 
   /* Move slot functions */
@@ -288,7 +291,7 @@ export default function CreateSet() {
         onClose={() => setIsNatureOpen(false)}
         title = "Select Nature"
       >
-        <NatureSelect nature={nature} onConfirm={selectNature}/>
+        <NatureSelect currentNature={nature} onConfirm={selectNature}/>
       </Modal>
       
       <Modal isOpen={editingSlot !== null} onClose={() => setEditingSlot(null)} title={`Choose Move ${(editingSlot ?? 0) + 1}`}

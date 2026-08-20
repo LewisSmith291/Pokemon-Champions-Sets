@@ -148,11 +148,14 @@ input[type=range]{
   }
 }
 
-#nature-form-container{
-}
-
 #nature-grid{
   display: grid;
-  grid-template-columns: repeat(6, 2fr);
-  grid-template-rows: repeat(6, 2fr);
+  grid-template-columns: 0.5fr repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  width:100%;
+  height:100%;
+}
+
+.nature-cell{
+  border-radius: var(--rounded);
 }
