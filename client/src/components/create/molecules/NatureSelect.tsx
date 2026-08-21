@@ -38,6 +38,7 @@ export default function NatureSelect({currentNature, onConfirm}: Props) {
                 key = {`${row}-${col}`} 
                 data-row={row}
                 data-col={col}
+                aria-pressed={selectedNature === nature}
                 className={
                   "nature-cell "+(!nature ? "" : "hoverable-link") + " " + 
                   (selectedNature === nature ? "bg-[var(--accent)] text-[var(--p-yellow)]" : "bg-[var(--bg)]")

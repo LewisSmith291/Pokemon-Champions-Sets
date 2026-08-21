@@ -152,8 +152,8 @@ input[type=range]{
 #nature-grid{
   display: grid;
   grid-template-columns: minmax(3rem, 0.5fr) repeat(5,1fr);
-  gap:2px;
   align-items: center;
+  gap:0;
 }
 
 .stat-short { 
@@ -167,6 +167,7 @@ input[type=range]{
   height: 100%;
   padding-inline: 0.15rem;
   font-size: clamp(0.65rem, 2.4vw, 1rem);
+  margin:2px;
 }
 
 .nature-head-col,
@@ -175,10 +176,35 @@ input[type=range]{
   place-items: center;
   border-radius: var(--rounded-small);
   padding: 0.25rem;
+  margin: 2px;
   line-height: 1.15;
-  transition: background-color 120ms ease, color 120ms ease;
+  /* transparent by default so the border can fade in without shifting layout */
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: background-color 120ms ease, color 120ms ease, outline-color 120ms ease;
 }
-/* Highlighting columns on nature hover */
+
+/* Styling for highlighting and bordering for selected and hovered natures on grid */
+
+/* SELECTED nature: persistent border */
+#nature-grid:has(.nature-cell[data-col="0"][aria-pressed="true"]) .nature-head-col[data-col="0"],
+#nature-grid:has(.nature-cell[data-col="1"][aria-pressed="true"]) .nature-head-col[data-col="1"],
+#nature-grid:has(.nature-cell[data-col="2"][aria-pressed="true"]) .nature-head-col[data-col="2"],
+#nature-grid:has(.nature-cell[data-col="3"][aria-pressed="true"]) .nature-head-col[data-col="3"],
+#nature-grid:has(.nature-cell[data-col="4"][aria-pressed="true"]) .nature-head-col[data-col="4"]{
+  outline-color: var(--stat-down-fill);
+  color: var(--stat-down);
+}
+#nature-grid:has(.nature-cell[data-row="0"][aria-pressed="true"]) .nature-head-row[data-row="0"],
+#nature-grid:has(.nature-cell[data-row="1"][aria-pressed="true"]) .nature-head-row[data-row="1"],
+#nature-grid:has(.nature-cell[data-row="2"][aria-pressed="true"]) .nature-head-row[data-row="2"],
+#nature-grid:has(.nature-cell[data-row="3"][aria-pressed="true"]) .nature-head-row[data-row="3"],
+#nature-grid:has(.nature-cell[data-row="4"][aria-pressed="true"]) .nature-head-row[data-row="4"]{
+  outline-color: var(--stat-up-fill);
+  color: var(--stat-up);
+}
+
+/* HOVERED cell: background fill */
 #nature-grid:has(.nature-cell[data-col="0"]:is(:hover,:focus-visible)) .nature-head-col[data-col="0"],
 #nature-grid:has(.nature-cell[data-col="1"]:is(:hover,:focus-visible)) .nature-head-col[data-col="1"],
 #nature-grid:has(.nature-cell[data-col="2"]:is(:hover,:focus-visible)) .nature-head-col[data-col="2"],
@@ -187,7 +213,7 @@ input[type=range]{
   background-color: var(--stat-down-fill);
   color: var(--on-stat-fill);
 }
-/* Highlighting rows on nature hover */
+
 #nature-grid:has(.nature-cell[data-row="0"]:is(:hover,:focus-visible)) .nature-head-row[data-row="0"],
 #nature-grid:has(.nature-cell[data-row="1"]:is(:hover,:focus-visible)) .nature-head-row[data-row="1"],
 #nature-grid:has(.nature-cell[data-row="2"]:is(:hover,:focus-visible)) .nature-head-row[data-row="2"],
@@ -197,12 +223,21 @@ input[type=range]{
   color: var(--on-stat-fill);
 }
 
+/* Mobile nature modal styling */
 @media screen and (max-width: 676px){
-  #nature-grid{ grid-template-columns: 2.75rem repeat(5, 1fr); gap: 1px; }
+  #nature-grid{ 
+    grid-template-columns: 2.75rem repeat(5, 1fr); 
+    gap: 1px; 
+  }
 
-  .nature-cell{ min-height: 2.75rem; }
-  /* stack "SpD" over "⬆" so the row header stays one column wide */
-  .nature-head-row{ display: flex; flex-direction: column; align-items: center; }
+  .nature-cell{ 
+    min-height: 2.75rem; 
+  }
+  .nature-head-row{ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+  }
 
   .stat-short{
     display: inline;

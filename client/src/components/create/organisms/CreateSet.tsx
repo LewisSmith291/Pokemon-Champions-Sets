@@ -88,7 +88,7 @@ export default function CreateSet() {
         setSelectedItem("");
 
         // Reset nature
-        setNature("serious");
+        setNature("Serious");
 
         // Reset moves list
         setMoveList([null, null, null, null]);
