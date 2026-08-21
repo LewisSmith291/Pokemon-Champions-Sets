@@ -44,8 +44,8 @@ select{
 }
 
 #pokemon-sprite{
-  width:192px;
-  height:192px;
+  width:288px;
+  height:288px;
   image-rendering: pixelated;
 }
 
