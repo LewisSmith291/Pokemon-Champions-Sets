@@ -224,8 +224,8 @@ input[type=range]{
 /* Mobile nature modal styling */
 @media screen and (max-width: 676px){
   #nature-grid{ 
-    grid-template-columns: 2.75rem repeat(5, 1fr); 
-    gap: 1px; 
+    grid-template-columns: auto repeat(5, 1fr);
+    gap: 1px;
   }
 
   .nature-cell{ 

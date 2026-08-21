@@ -16,14 +16,14 @@
 
 /* ---- size scale ---- */
 .modal-sm   { --modal-width: min(90vw, 24rem); }
-.modal-md   { --modal-width: min(90vw, 34rem); }
-.modal-lg   { --modal-width: min(95vw, 46rem); }
+.modal-md   { --modal-width: min(90vw, 48rem); }
+.modal-lg   { --modal-width: min(95vw, 64rem); }
 .modal-full { --modal-width: 90vw; --modal-height: 90svh; }
 
 @media screen and (max-width: 676px){
   .modal-sm,
   .modal-lg   { 
-    --modal-width: 100vw; 
+    --modal-width: 100vw;
   }
 
   .modal-md,

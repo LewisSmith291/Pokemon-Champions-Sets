@@ -305,7 +305,7 @@ export default function CreateSet() {
         isOpen={editingSlot !== null} 
         onClose={() => setEditingSlot(null)} 
         title={`Choose Move ${(editingSlot ?? 0) + 1}`}
-        className="modal-md"
+        className="modal-full"
       >
         <MoveSelect 
           key={editingSlot} 
