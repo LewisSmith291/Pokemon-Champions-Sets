@@ -115,15 +115,27 @@ input[type=range]{
   grid-template-columns: 1fr;
   justify-content: center;
   gap:2em;
-  width:25%;
+  width:20%;
 }
 
 .move-button{
   border-radius: var(--rounded);
-  height:3em;
-  grid-template-columns: 1fr 3fr 1fr;
+  min-height: 3em;                      /* was height — lets content wrap safely */
+  grid-template-columns: auto 1fr auto; /* icon and PP take what they need */
+  align-items: center;
+  gap: 0.5em;
+  padding-inline: 0.5em;
 }
 
+.move-button .type-icon{ justify-self: center; }
+
+/* long move names ellipsis instead of overflowing */
+.move-button p{
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .move-select-info{
   display:flex ;
   flex-direction: row;
