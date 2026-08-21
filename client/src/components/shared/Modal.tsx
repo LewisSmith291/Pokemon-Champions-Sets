@@ -5,10 +5,11 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  className?: string; // per-modal sizing
   children: ReactNode;
 }
 
-export default function Modal ({isOpen, onClose, title, children}: Props){
+export default function Modal ({isOpen, onClose, title, className="", children}: Props){
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -35,7 +36,7 @@ export default function Modal ({isOpen, onClose, title, children}: Props){
       // The backdrop is part of the dialog's own box
       // e.target === ref.current is checking if the click was on the backdrop
       onClick={(e) => { if (e.target === ref.current) onClose(); }}
-      className="w-full rounded-xl bg-surface p-0 backdrop:bg-black/50 modal"
+      className={`modal rounded-xl bg-surface p-0 backdrop:bg-black/50 ${className}`}
     >
       <div className="flex shrink-0 items-center justify-between p-4">
         <h2 id={titleId}>{title}</h2>

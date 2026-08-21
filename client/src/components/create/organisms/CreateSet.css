@@ -43,7 +43,6 @@ select{
   aspect-ratio: 1 / 1;
 }
 
-
 #pokemon-sprite{
   width:192px;
   height:192px;
@@ -185,7 +184,6 @@ input[type=range]{
 }
 
 /* Styling for highlighting and bordering for selected and hovered natures on grid */
-
 /* SELECTED nature: persistent border */
 #nature-grid:has(.nature-cell[data-col="0"][aria-pressed="true"]) .nature-head-col[data-col="0"],
 #nature-grid:has(.nature-cell[data-col="1"][aria-pressed="true"]) .nature-head-col[data-col="1"],

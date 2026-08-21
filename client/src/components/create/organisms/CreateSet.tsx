@@ -283,6 +283,7 @@ export default function CreateSet() {
         isOpen={isSpeciesOpen}
         onClose={() => setIsSpeciesOpen(false)}
         title = "Choose a Pokémon"
+        className="modal-full"
       >
         <SpeciesSearch 
           onSelect={choosePokemon} 
@@ -293,6 +294,7 @@ export default function CreateSet() {
         isOpen={isNatureOpen}
         onClose={() => setIsNatureOpen(false)}
         title = "Select Nature"
+        className="modal-lg"
       >
         <NatureSelect 
           currentNature={nature} 
@@ -303,6 +305,7 @@ export default function CreateSet() {
         isOpen={editingSlot !== null} 
         onClose={() => setEditingSlot(null)} 
         title={`Choose Move ${(editingSlot ?? 0) + 1}`}
+        className="modal-md"
       >
         <MoveSelect 
           key={editingSlot} 

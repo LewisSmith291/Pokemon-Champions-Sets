@@ -1,23 +1,34 @@
 .modal{
-  top:50%;
-  left:50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   overflow-y: hidden;
-}
 
-.big-modal{
-  width:90%;
-  height:90%;
-}
-
-@media screen and (max-width:767px){
-  .big-modal{
-    width:100%;
-    height:100%;
-  }
+  width:      var(--modal-width,  min(90vw, 40rem));
+  height:     var(--modal-height, auto);
+  max-height: var(--modal-max-h,  90svh);
 }
 
 .modal[open]{
   display: flex;
   flex-direction: column;
+}
+
+/* ---- size scale ---- */
+.modal-sm   { --modal-width: min(90vw, 24rem); }
+.modal-md   { --modal-width: min(90vw, 34rem); }
+.modal-lg   { --modal-width: min(95vw, 46rem); }
+.modal-full { --modal-width: 90vw; --modal-height: 90svh; }
+
+@media screen and (max-width: 676px){
+  .modal-sm,
+  .modal-lg   { 
+    --modal-width: 100vw; 
+  }
+
+  .modal-md,
+  .modal-full { 
+    --modal-width: 100vw; 
+    --modal-height: 100svh; 
+  }
 }
