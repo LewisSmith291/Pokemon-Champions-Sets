@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SPECIES, type Species } from "@/data/species";
 import SpeciesRow from "../atoms/SpeciesRow";
 import SpeciesSearchBar from "../molecules/SearchAndFilter.jsx";
@@ -10,6 +10,14 @@ interface Props {
 
 export default function SpeciesList({ onSelect, setItemType }: Props) {
   const [query, setQuery] = useState<string>("");
+
+  const visible: Species[] = useMemo(() => {
+    const needle: string = query.trim().toLowerCase().replace(/-/g, " ");
+    if (needle === "") return SPECIES;
+    return SPECIES.filter((s) =>
+      s.label.toLowerCase().replace(/-/g, " ").includes(needle)
+    );
+  }, [query])
 
   function handleSelect(chosen:string){
     onSelect(chosen);
@@ -32,7 +40,7 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
         </div>
       <div id="species-select" className="overflow-y-auto w-full">
         <div className="grid grid-cols-5 gap-2 place-items-center">
-          {SPECIES.map((s:Species) => (
+          {visible.map((s:Species) => (
             <SpeciesRow key={s.name} onSelect={handleSelect} species={s}/>
           ))}
         </div>
