@@ -22,8 +22,8 @@ export default function NatureSelect({currentNature, onConfirm}: Props) {
         <div></div>
         {/* column headers*/}
         {NATURE_STAT_STRINGS.map((stat:string, col:number) => (
-          <div className="flex flex-row justify-center nature-head-col">
-            <span className="stat-long" data-col={col} >{stat} ↓</span>
+          <div key={stat + " down"} className="nature-head-col" data-col={col}>
+            <span className="stat-long">{stat} ↓</span>
             <span className="stat-short">{NATURE_STAT_SHORT[col]} ↓</span> 
           </div>
         ))}
