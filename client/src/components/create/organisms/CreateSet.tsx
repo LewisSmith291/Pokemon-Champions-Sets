@@ -276,7 +276,7 @@ export default function CreateSet() {
           <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
-        <button type="submit" className="hoverable-link" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
+        <button type="submit" className="hoverable-link rounded-[var(--rounded)]" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
       </form>
       {/* Species select modal */}
       <Modal 

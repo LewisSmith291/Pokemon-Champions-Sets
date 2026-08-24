@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import MagnifyingGlass from '/magnifying-glass.svg'
 interface Props {
   queryText:string;
   updateQuery: (query:string) => void

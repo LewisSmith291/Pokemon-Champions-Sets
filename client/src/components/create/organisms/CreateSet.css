@@ -28,7 +28,8 @@
 }
 
 #species-search-container{
-  height: calc(var(--page-height) - var(--header-height));
+  height: 100%;
+  min-height: 0;
 }
 
 select{
@@ -78,8 +79,21 @@ input[type=range]{
   }
 }
 
+@media screen and (max-width: 676px){
+  #species-list, .species-header{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .species-row { 
+    grid-column: span 3;
+  }
+  .species-abilities, .species-hidden, .species-header .species-headers:nth-child(n+4){
+    display: none;
+  }
+}
+
 .species-row{
   height: fit-content;
+  border-radius: var(--rounded);
 }
 
 .species-header{
@@ -93,11 +107,23 @@ input[type=range]{
 }
 
 .species-headers{
-  color: var(--link-color);
+  color: white;
+  display: flex;
   border: solid 1px var(--bg);
   width:100%;
   height:100%;
+  align-items: center;
+  justify-content: center;
 }
+
+@media screen and (prefers-color-scheme: dark){
+  .species-headers{
+    background-color: var(--p-void);
+    border-color: var(--header);
+  }
+}
+
+/* Make start and end borders rounded of header, but rest of them normal. Target n=3 child on mobile as columns get reduced to 3 */
 
 .species-header .species-headers:first-child{
   border-top-left-radius: var(--rounded);
@@ -107,6 +133,13 @@ input[type=range]{
 .species-header .species-headers:last-child{
   border-top-right-radius: var(--rounded);
   border-bottom-right-radius: var(--rounded);
+}
+
+@media screen and (max-width: 676px) {
+  .species-headers:nth-child(3){
+    border-top-right-radius: var(--rounded);
+    border-bottom-right-radius: var(--rounded);
+  }
 }
 
 #move-button-list{
@@ -127,7 +160,13 @@ input[type=range]{
   padding-inline: 0.5em;
 }
 
-.move-button .type-icon{ justify-self: center; }
+.move-button:hover{
+  color: var(--link-color);
+}
+
+.move-button .type-icon{ 
+  justify-self: center;
+}
 
 /* long move names ellipsis instead of overflowing */
 .move-button p{
@@ -136,6 +175,7 @@ input[type=range]{
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .move-select-info{
   display:flex ;
   flex-direction: row;

@@ -74,8 +74,8 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
           <div className="grid grid-cols-[minmax(0,2fr)_auto_repeat(4,minmax(0,1fr))] gap-2 place-items-center max-w-full">
             <div 
               id="move-select-header" 
-              className="col-span-6 grid grid-cols-subgrid items-center gap-2 
-              place-items-center hoverable-link sticky top-0 p-2 bg-[var(--header)] z-1"
+              className="col-span-6 grid grid-cols-subgrid items-center gap-2 text-white
+              place-items-center hoverable-link sticky top-0 p-2 bg-[var(--header)] dark: bg-[var(--p-void)] z-1"
             >
               <div>Name</div>
               <div>Type</div>
@@ -92,7 +92,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
                   type="button" 
                   disabled={taken} 
                   onClick={() => setHighlighted(move.name)}
-                  className={`col-span-6 grid grid-cols-subgrid items-center gap-2 place-items-center hoverable-link
+                  className={`col-span-6 grid grid-cols-subgrid items-center gap-2 place-items-center hoverable-link rounded-[var(--rounded)]
                     ${highlighted === move.name ? "bg-accent" : ""} ${taken ? "opacity-40" : ""}`}
                 >
                   <div>{move.label}</div>
@@ -109,7 +109,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
         <div className="flex w-1/3 shrink-0 flex-col gap-2 p-4 move-info">
           <div className="flex flex-row justify-evenly gap-2 items-center">
             <h3 
-              className="bg-[var(--p-void)] rounded-[var(--rounded)] px-2 py-1 flex-1"
+              className="bg-[var(--p-void)] text-white rounded-[var(--rounded)] px-2 py-1 flex-1"
             >
               {detail?.label ?? "Select a move"} 
             </h3>
@@ -121,7 +121,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
               <p>{detail.description}</p>
             </>
           )}
-          <button type="button" className="hoverable-link" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
+          <button type="button" className="rounded-[var(--rounded)] hoverable-link" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
             {currentMove === null ? "Add to slot" : "Replace move"}
           </button>
           {currentMove !== null && (

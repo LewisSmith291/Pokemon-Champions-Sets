@@ -23,7 +23,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
   // If there is a move in this slot
   return (
     <button 
-      className={"hover:cursor-pointer hover:brightness-110 move-button grid grid-cols-3 items-center " + type}
+      className={"move-button hover:cursor-pointer hover:brightness-110 grid grid-cols-3 items-center " + type}
       type="button" onClick={onClick}>
       <svg className="h-full aspect-1/1 brightness-90" aria-hidden="true"><use href={`/types.svg#${type}`}/></svg>
       <p>

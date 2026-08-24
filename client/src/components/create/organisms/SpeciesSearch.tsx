@@ -38,9 +38,9 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
           <div className="species-headers">Abilities</div>
           <div className="species-headers">Hidden Ability</div>
         </div>
-      <div id="species-select" className="overflow-y-auto w-full">
+      <div id="species-select" className="overflow-y-auto w-full flex-1 min-h-0">
         {visible.length === 0 && <p className="p-4">No species match "{query}".</p>}
-        <div className="grid grid-cols-5 gap-2 place-items-center">
+        <div id="species-list" className="grid grid-cols-5 gap-2 place-items-center">
           {visible.map((s:Species) => (
             <SpeciesRow key={s.name} onSelect={handleSelect} species={s}/>
           ))}

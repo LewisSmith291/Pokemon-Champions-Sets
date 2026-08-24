@@ -21,8 +21,8 @@ export default function SpeciesRow({species, onSelect}: Props) {
         <TypeDisplay type={species.types[0]}/>
         {species.types.length === 2 && <TypeDisplay type={species.types[1]}/>}
       </div>
-      <div>{species.abilities.join(", ")}</div>
-      <div>{species.hiddenAbility ?? " "}</div>
+      <div className="species-abilities">{species.abilities.join(", ")}</div>
+      <div className="species-hidden">{species.hiddenAbility ?? " "}</div>
     </button>
     )
 }

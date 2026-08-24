@@ -140,16 +140,18 @@ body {
 /* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
 .hoverable-link:hover {
   background-color: var(--accent) !important;
-  color: var(--p-mid) !important;
+  color:var(--p-yellow) !important;
   transition: background-color 0.1s, color 0.1s !important;
   cursor: pointer !important;
 }
 
+/*
 @media (prefers-color-scheme: dark) {
   .hoverable-link:hover {
     color:var(--p-yellow) !important;
   }
 }
+*/
 
 h1 {
   font-size: 56px;
