@@ -2,9 +2,9 @@
 export const STATS = [
   { key: "boostHp", api: "hp", label: "HP" },
   { key: "boostAtk", api: "attack", label: "Attack" },
-  { key: "boostDef", api: "defense", label: "Defence" },
+  { key: "boostDef", api: "defense", label: "Defense" },
   { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack" },
-  { key: "boostSpDef", api: "special-defense", label: "Sp. Defence" },
+  { key: "boostSpDef", api: "special-defense", label: "Sp. Defense" },
   { key: "boostSpe", api: "speed", label: "Speed" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
 
@@ -51,7 +51,7 @@ export const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat }
   brave: { up: "attack", down: "speed"},
   lonely: { up: "attack", down: "defense"},
   naughty: { up: "attack", down: "special-defense"},
-  // Defence up
+  // Defense up
   bold: { up: "defense", down: "attack"},
   impish: { up: "defense", down: "special-attack"},
   lax: { up: "defense", down: "special-defense"},
@@ -61,7 +61,7 @@ export const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat }
   mild: { up: "special-attack", down: "defense"},
   quiet: { up: "special-attack", down: "speed"},
   rash: { up: "special-attack", down: "special-defense"},
-  // Special Defence up
+  // Special Defense up
   calm: { up: "special-defense", down: "attack"},
   careful: { up: "special-defense", down: "special-attack"},
   gentle: { up: "special-defense", down: "defense"},

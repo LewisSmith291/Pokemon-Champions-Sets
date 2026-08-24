@@ -1,4 +1,4 @@
-import { useEffect, useState, type SyntheticEvent } from 'react'
+import { useEffect, useState, type SyntheticEvent, useRef} from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../organisms/SpeciesSearch.tsx';
 import FormSearch from '../atoms/FormSearch.tsx'
@@ -48,9 +48,13 @@ export default function CreateSet() {
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [canMega, setCanMega] = useState<boolean>(false);
   const [itemType, setItemType] = useState<string>("held");
+  // ability
+  const [abilityList, setAbilityList] = useState<string[]>(["overgrow"]);
+  const [ability, setAbility] = useState<string>("");
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
   const [moveList, setMoveList] = useState<(string | null)[]>([null, null, null, null]);
+  const [droppedMoves, setDroppedMoves] = useState<string[]>([]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
@@ -90,6 +94,9 @@ export default function CreateSet() {
         // Reset nature
         setNature("Serious");
 
+        // Set ability list
+        setAbilityList(data.abilities);
+
         // Reset moves list
         setMoveList([null, null, null, null]);
       })
@@ -120,12 +127,21 @@ export default function CreateSet() {
         setBaseStats(Object.fromEntries(
           data.stats.map((s:ApiStat) => [s.stat.name, s.base_stat])
         ));
+
+        // Reset ability list on form change
+        setAbilityList(data.abilities);
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
       });
     return () => { stale = true; };
   }, [selectedForm])
+
+  // update moveListRef
+  const moveListRef = useRef(moveList);
+  useEffect(() => {
+    moveListRef.current = moveList;
+  },[moveList])
 
   const learnsetForm  = selectedForm.includes("-mega") ? pokemonForms[0] : selectedForm;
   useEffect(() => {
@@ -136,20 +152,24 @@ export default function CreateSet() {
       .then((response) => response.json())
       .then((data) => {
         if (stale) return;
-        setLearnableMoves(
-          data.moves.map((m: ApiMove) => MOVE_BY_NAME.get(m.move.name))
-          .filter((m:MoveSummary | undefined): m is MoveSummary => m !== undefined)
-        );
+
+        const moves: MoveSummary[] = data.moves
+        .map((m: ApiMove) => MOVE_BY_NAME.get(m.move.name))
+        .filter((m:MoveSummary | undefined): m is MoveSummary => m !== undefined);
+
+        setLearnableMoves(moves);
+        
+        // A form change can invalidate moves the previous form knew
+        const learnable = new Set(moves.map((m) => m.name));
+        const dropped = moveListRef.current.filter((m): m is string => m !== null && !learnable.has(m));
+        setDroppedMoves(dropped.map((n) => MOVE_BY_NAME.get(n)?.label ?? n));
+        setMoveList((prev) => prev.map((m) => (m === null || learnable.has(m) ? m : null)));
       })
       .catch((error) => {console.log("Failed to load learnset: ", error)});
 
       return () => {stale = true};
    }, [learnsetForm]);
   
-  // Item sprites are keyed by the same slug we already hold, so the path is
-  // derivable - no request, and no race between a slow response and a newer
-  // selection. Previously this asked PokeAPI, which has no entry at all for the
-  // Champions-original mega stones and so always fell back to the placeholder.
   const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
 
   // Function to clamp a stat boost slider
@@ -174,7 +194,7 @@ export default function CreateSet() {
     item: selectedItem === "" ? null : selectedItem,
     // Hardcoded placeholders — replaced by real inputs one at a time
     gender: "male",
-    ability: "overgrow",
+    ability: ability,
     nature: nature.toLowerCase(),
     ...statBoosts,
     moves: moveList.filter((move): move is string => move !== null),
