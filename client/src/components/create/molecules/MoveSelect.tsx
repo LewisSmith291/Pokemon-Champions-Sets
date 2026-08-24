@@ -50,6 +50,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
       <div className="flex shrink-0 flex-col ">
         <div className="flex flex-row items-center gap-2 ">
           <input
+            className="text-input"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

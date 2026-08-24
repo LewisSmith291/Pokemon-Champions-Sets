@@ -38,7 +38,7 @@ export default function AuthForm({authMode, toggleMode}:Props) {
         authMode === "signup" && (
           <input
             placeholder="First Name"
-            className="bg-white text-black border border-(--color-border) rounded-md px-3 py-2"
+            className="text-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -48,7 +48,7 @@ export default function AuthForm({authMode, toggleMode}:Props) {
           type="email"
           placeholder="Email"
           value={email}
-          className="bg-white text-black border border-(--color-border) rounded-md px-3 py-2"
+          className="text-input"
           onChange={(e) => setEmail(e.target.value)}
           required
         />
@@ -56,7 +56,7 @@ export default function AuthForm({authMode, toggleMode}:Props) {
           type="password"
           placeholder="Password"
           value={password}
-          className="bg-white text-black border border-(--color-border) rounded-md px-3 py-2"
+          className="text-input"
           onChange={(e) => setPassword(e.target.value)}
           required
         />

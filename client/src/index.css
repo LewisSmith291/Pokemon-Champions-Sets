@@ -177,5 +177,13 @@ p {
   button{
     transition: background-color 0.1s, color 0.1s;
   }
+
+  .text-input{
+    background-color: white;
+    color: black;
+    border: solid 1px var(--color-border);
+    border-radius: var(--rounded);
+    padding: 0.5rem 0.75rem;
+  }
 }
 

@@ -14,9 +14,8 @@ export default function SearchAndFilter({queryText, updateQuery}: Props) {
 
     return (
     <div id="search-and-filter" className="flex flex-row items-center justify-center">
-      <input className="" type="text" value={query} placeholder="Search" onChange={(e) => updateQuery(e.target.value)}>
+      <input className="text-input" type="text" value={query} placeholder="Search" onChange={(e) => updateQuery(e.target.value)}>
       </input>
-      <img src={MagnifyingGlass} className='w-6 h-6 bright dark:invert'></img>
     </div>
   )
 }
