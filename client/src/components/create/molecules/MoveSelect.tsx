@@ -51,6 +51,7 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
         <div className="flex flex-row items-center gap-2 ">
           <input
             className="text-input"
+            data-autofocus
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

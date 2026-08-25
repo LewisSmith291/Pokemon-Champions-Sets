@@ -18,7 +18,17 @@ export default function Modal ({isOpen, onClose, title, className="", children}:
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return; // Null before first render, so check that
-    if (isOpen && !dialog.open) dialog.showModal(); // Move element to browser's top layer
+    if (isOpen && !dialog.open) {
+      dialog.showModal(); // Move element to browser's top layer
+
+      // showModal() runs its own focusing steps, so any focus a child claimed on
+      // mount has already been overridden by this point - claim it back here.
+      // Touch devices are skipped: focusing a search box there throws up the
+      // on-screen keyboard over the list the user is trying to read.
+      if (window.matchMedia("(pointer: fine)").matches) {
+        dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+      }
+    }
     if (!isOpen && dialog.open) dialog.close();
 
     // Block scrolling of background when modal is open
