@@ -34,8 +34,7 @@ export default function ItemSearch({ value, onSelect, name, form, isMegaForm, it
     itemType === "berry" ? BERRIES :
     HELD_ITEMS;
 
-  // Only the mega filter auto-picks (a mega form must hold a stone); every other filter, and
-  // every species change, resets to "None".
+  // Keeps the selection legal as the form, species and filter change.
   useEffect(() => {
     // A mega form determines its own stone, so correct the choice even when the
     // current one is a valid option - switching Charizard X -> Y leaves
@@ -46,8 +45,10 @@ export default function ItemSearch({ value, onSelect, name, form, isMegaForm, it
       return;
     }
 
-    if (options.includes(value)) return;
-    onSelect(itemType === "mega" ? (options[0] ?? "") : "");
+    // Anything else may hold nothing, so "None" stays legal even while the mega
+    // filter is showing - otherwise choosing it here would be undone immediately.
+    if (value === "" || options.includes(value)) return;
+    onSelect("");
   },[itemType, name, form, isMegaForm, options, value])
 
   return (
