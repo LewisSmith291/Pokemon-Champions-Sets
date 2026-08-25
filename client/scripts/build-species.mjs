@@ -23,7 +23,7 @@ async function getJson(url) {
   return response.json();
 }
 
-// PokeAPI slug -> display label. "ho-oh" -> "Ho-Oh"
+// Last-resort display label if PokeAPI has no English name. "ho-oh" -> "Ho-Oh"
 function toLabel(slug) {
   return slug
     .split("-")
@@ -31,17 +31,23 @@ function toLabel(slug) {
     .join("-");
 }
 
-// Most species share a name with their default form, but some don't
-// ("deoxys" has no /pokemon/deoxys — it's deoxys-normal). Fall back to asking
-// the species which of its varieties is the default one.
-async function getDefaultForm(name) {
-  try {
-    return await getJson(`${API}/pokemon/${name}`);
-  } catch {
-    const species = await getJson(`${API}/pokemon-species/${name}`);
-    const fallback = species.varieties.find((v) => v.is_default) ?? species.varieties[0];
-    return getJson(fallback.pokemon.url);
-  }
+// PokeAPI's own label rather than a title-cased slug, which gets "Kommo-o" and
+// "Mr. Rime" wrong today and would also miss "Type: Null", "Farfetch'd",
+// "Tapu Koko" and the Paradox names if the Champions dex ever adds them.
+function englishName(speciesJson) {
+  return (
+    speciesJson.names.find((n) => n.language.name === "en")?.name ??
+    toLabel(speciesJson.name)
+  );
+}
+
+// The species record carries both the display name and a pointer to its default
+// form, so asking for it answers both questions. It also sidesteps the fact that
+// not every species has a /pokemon/{name} of its own ("deoxys" is deoxys-normal).
+async function getSpeciesAndForm(name) {
+  const speciesJson = await getJson(`${API}/pokemon-species/${name}`);
+  const variety = speciesJson.varieties.find((v) => v.is_default) ?? speciesJson.varieties[0];
+  return { speciesJson, form: await getJson(variety.pokemon.url) };
 }
 
 // Runs worker over items with at most `limit` running concurrently
@@ -67,13 +73,13 @@ console.log(`Fetching ${names.length} species from the "${POKEDEX}" pokedex...`)
 
 let done = 0;
 const species = await pool(names, CONCURRENCY, async (name) => {
-  const form = await getDefaultForm(name);
+  const { speciesJson, form } = await getSpeciesAndForm(name);
   done++;
   if (done % 25 === 0 || done === names.length) console.log(`  ${done}/${names.length}`);
 
   return {
     name,
-    label: toLabel(name),
+    label: englishName(speciesJson),
     // The default form's id, which is what the sprite filename uses
     id: form.id,
     types: form.types.map((t) => t.type.name),

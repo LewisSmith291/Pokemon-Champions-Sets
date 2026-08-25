@@ -3543,7 +3543,7 @@ export const SPECIES: Species[] = [
   },
   {
     "name": "kommo-o",
-    "label": "Kommo-O",
+    "label": "Kommo-o",
     "id": 784,
     "types": [
       "dragon",
@@ -3716,7 +3716,7 @@ export const SPECIES: Species[] = [
   },
   {
     "name": "mr-rime",
-    "label": "Mr-Rime",
+    "label": "Mr. Rime",
     "id": 866,
     "types": [
       "ice",
