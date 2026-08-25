@@ -28,9 +28,16 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
     setQuery(q);
   }
 
+  // Enter picks the result outright once the query has narrowed to exactly one,
+  // so a species can be chosen without reaching for the mouse
+  function handleEnter(){
+    if (visible.length !== 1) return;
+    handleSelect(visible[0].name);
+  }
+
   return (
     <div id="species-search-container" className="flex flex-col gap-2 p-4 w-full m-0">
-      <SpeciesSearchBar queryText={query} updateQuery={handleQuery} />
+      <SpeciesSearchBar queryText={query} updateQuery={handleQuery} onEnter={handleEnter} />
         <div className="species-header grid grid-cols-5 gap-2 place-items-center">
           <div className="species-headers">Species</div>
           <div className="species-headers">Sprite</div>

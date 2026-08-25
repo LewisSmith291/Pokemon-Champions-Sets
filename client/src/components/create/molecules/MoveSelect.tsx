@@ -45,6 +45,16 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
 
   const detail: MoveSummary | undefined = highlighted === null ? undefined : learnableMoves.find((m) => m.name === highlighted);
 
+  // Enter confirms outright once the filters have narrowed to a single move.
+  // Unlike the species list this has to respect `taken` - that move is already
+  // in another slot, and its row is disabled for the same reason.
+  function handleEnter(){
+    if (visible.length !== 1) return;
+    const only: MoveSummary = visible[0];
+    if (takenMoves.includes(only.name)) return;
+    onConfirm(only.name);
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col ">
       <div className="flex shrink-0 flex-col ">
@@ -55,6 +65,11 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter") return;
+              e.preventDefault();
+              handleEnter();
+            }}
             placeholder="Search Moves"
           />
         </div>
