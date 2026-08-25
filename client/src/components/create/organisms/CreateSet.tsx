@@ -15,6 +15,8 @@ import { formLabel, isValidForm } from '@/data/forms.ts';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
+import AbilitySelect from '../molecules/AbilitySelect.tsx';
+import { ABILITY_BY_NAME } from '@/data/abilityLookup.ts';
 import NotificationList from '@/components/shared/NotificationList.tsx';
 import useNotifications from '@/components/shared/useNotifications.ts';
 
@@ -30,6 +32,15 @@ interface ApiMove{
   move: {name:string};
 }
 
+// One entry of PokeAPI's /pokemon/{name} abilities array.
+// slot is 1-2 for normal abilities and 3 for the hidden one, so sorting by it
+// keeps the picker in the game's own order.
+interface ApiAbility{
+  ability: {name:string};
+  is_hidden: boolean;
+  slot: number;
+}
+
 // Shown when an item slug has no file in public/sprites/items - which now only
 // happens for a slug added to itemData.ts without re-running build-items.mjs.
 const PLACEHOLDER_SPRITE = "/wireSquare.svg";
@@ -40,6 +51,7 @@ export default function CreateSet() {
   const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(true);
   const [editingSlot, setEditingSlot] = useState<number | null>(null);
   const [isNatureOpen, setIsNatureOpen] = useState<boolean>(false);
+  const [isAbilityOpen, setIsAbilityOpen] = useState<boolean>(false);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -99,9 +111,6 @@ export default function CreateSet() {
         // Reset nature
         setNature("Serious");
 
-        // Set ability list
-        setAbilityList(data.abilities);
-
         // Reset moves list
         setMoveList([null, null, null, null]);
       })
@@ -133,8 +142,16 @@ export default function CreateSet() {
           data.stats.map((s:ApiStat) => [s.stat.name, s.base_stat])
         ));
 
-        // Reset ability list on form change
-        setAbilityList(data.abilities);
+        // Abilities are per-form, not per-species: Alolan Ninetales has none of
+        // Kantonian's, and each mega has exactly one.
+        const abilities:string[] = [...data.abilities]
+          .sort((a:ApiAbility, b:ApiAbility) => a.slot - b.slot)
+          .map((a:ApiAbility) => a.ability.name);
+
+        setAbilityList(abilities);
+        // Unlike a move slot there's no partial state to preserve - the ability
+        // is either legal for this form or it isn't, so fall back to the first.
+        setAbility((prev) => (abilities.includes(prev) ? prev : abilities[0] ?? ""));
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
@@ -262,6 +279,12 @@ export default function CreateSet() {
     setIsNatureOpen(false);
   }
 
+  /* Ability selection functions */
+  function selectAbility(chosen:string){
+    setAbility(chosen);
+    setIsAbilityOpen(false);
+  }
+
   /* Move slot functions */
   function confirmMove(move:string){
     setMoveList((prev) => prev.map((m,i) => (i === editingSlot ? move: m))); // replace move in editing slot with new move
@@ -282,6 +305,15 @@ export default function CreateSet() {
           <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
           <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNature()}>Choose Nature</button>
           <p>{nature}</p>
+          <button
+            type="button"
+            className="hoverable-link rounded-[var(--rounded)]"
+            onClick={() => setIsAbilityOpen(true)}
+            disabled={abilityList.length === 0}
+          >
+            Choose Ability
+          </button>
+          <p>{ABILITY_BY_NAME.get(ability)?.label ?? ability}</p>
           <label className="flex flex-col">
             Select Item
             <div className='flex flex-row'>
@@ -334,9 +366,19 @@ export default function CreateSet() {
         title = "Select Nature"
         className="modal-lg"
       >
-        <NatureSelect 
-          currentNature={nature} 
+        <NatureSelect
+          currentNature={nature}
           onConfirm={selectNature}/>
+      </Modal>
+
+      {/* Ability select modal */}
+      <Modal
+        isOpen={isAbilityOpen}
+        onClose={() => setIsAbilityOpen(false)}
+        title = "Choose Ability"
+        className="modal-md"
+      >
+        <AbilitySelect abilityList={abilityList} currentAbility={ability} onConfirm={selectAbility}/>
       </Modal>
       {/* Move select modal */}
       <Modal 

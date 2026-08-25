@@ -199,6 +199,41 @@ input[type=range]{
   }
 }
 
+/* Ability selection */
+.ability-select-info{
+  display: flex;
+  flex-direction: row;
+}
+
+#ability-button-list{
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.ability-button{
+  border-radius: var(--rounded);
+  min-height: 3em;
+  padding: 0.5em;
+  width: 100%;
+}
+
+.ability-info{
+  width: 50%;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 676px){
+  .ability-select-info{
+    flex-direction: column;
+  }
+  .ability-info{
+    width: 100%;
+  }
+}
+
 /* Nature selection */
 #nature-grid{
   display: grid;
