@@ -1,11 +1,13 @@
 import { useEffect, useState} from "react";
 import { HELD_ITEMS, BERRIES } from "@/data/itemData";
 import GetMegaStones from "@/data/megaStones.ts";
+import { preferredMegaStone } from "@/data/forms.ts";
 
 interface Props {
   value: string;
   onSelect: (item: string) => void;
   name: string;
+  form: string;
   isMegaForm: boolean;
   itemType: string;
 }
@@ -18,7 +20,7 @@ function toLabel(slug: string): string {
     .join(" ");
 }
 
-export default function ItemSearch({ value, onSelect, name, isMegaForm, itemType }: Props) {
+export default function ItemSearch({ value, onSelect, name, form, isMegaForm, itemType }: Props) {
   const [megaStones, setMegaStones] = useState<string[]>([]);
 
   // Update the mega stones list when different species is chosen
@@ -33,11 +35,20 @@ export default function ItemSearch({ value, onSelect, name, isMegaForm, itemType
     HELD_ITEMS;
 
   // Only the mega filter auto-picks (a mega form must hold a stone); every other filter, and
-  // every species change, resets to "None". Keying off itemType rather than
+  // every species change, resets to "None".
   useEffect(() => {
+    // A mega form determines its own stone, so correct the choice even when the
+    // current one is a valid option - switching Charizard X -> Y leaves
+    // charizardite-x selected, which is still in `options` and would otherwise stick.
+    if (isMegaForm) {
+      const wanted: string = preferredMegaStone(form, options) ?? options[0] ?? "";
+      if (value !== wanted) onSelect(wanted);
+      return;
+    }
+
     if (options.includes(value)) return;
     onSelect(itemType === "mega" ? (options[0] ?? "") : "");
-  },[itemType, name, options, value])
+  },[itemType, name, form, isMegaForm, options, value])
 
   return (
     <select value={value} onChange={(e) => onSelect(e.target.value)}>

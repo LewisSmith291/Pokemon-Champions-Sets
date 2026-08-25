@@ -73,6 +73,10 @@
   --stat-down-fill: #0e6ea8;
   --on-stat-fill:   #ffffff;
 
+  --red-notif: #ff4949;
+  --orange-notif: #ffac23;
+  --green-notif: #89e459;
+
   /* Text sitting on the deep-purple chrome. Yellow in BOTH themes, because the
      chrome does not change colour between them. 9.07 on --p-deep, AAA. */
   --link-color:  var(--p-yellow);

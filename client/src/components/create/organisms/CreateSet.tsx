@@ -11,9 +11,12 @@ import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 import { itemSpritePath } from '@/data/itemDetails.ts';
+import { formLabel, isValidForm } from '@/data/forms.ts';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
+import NotificationList from '@/components/shared/NotificationList.tsx';
+import useNotifications from '@/components/shared/useNotifications.ts';
 
 // One entry of PokeAPI's /pokemon/{name} stats array 
 // This is the typing of the object returned that is needed to get name of stat and value of base stat
@@ -54,7 +57,6 @@ export default function CreateSet() {
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
   const [moveList, setMoveList] = useState<(string | null)[]>([null, null, null, null]);
-  const [droppedMoves, setDroppedMoves] = useState<string[]>([]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
@@ -62,6 +64,8 @@ export default function CreateSet() {
   const [nature, setNature] = useState<string>("Bold");
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  // notifications
+  const { notifications, notify, dismiss } = useNotifications();
 
   // Fill out list of forms (default and mega, and without filtering: gmax forms)
   useEffect(() => {
@@ -77,8 +81,9 @@ export default function CreateSet() {
         if (stale) return;
 
         const varieties:string[] = data.varieties.map((v: {pokemon: {name: string}}) => v.pokemon.name)
-        // Remove gmax forms
-        const filteredVarieties:string[] = varieties.filter((name:string) => !name.includes("-gmax"));
+        // Keep only the default form and the suffixes Champions actually has.
+        // PokeAPI also returns -gmax, -totem, -cap, -starter and friends.
+        const filteredVarieties:string[] = varieties.filter(isValidForm);
 
         // Enable mega stone selection if any variety is a mega form
         setCanMega(filteredVarieties.some((e: string) => e.includes("-mega")));
@@ -161,14 +166,25 @@ export default function CreateSet() {
         
         // A form change can invalidate moves the previous form knew
         const learnable = new Set(moves.map((m) => m.name));
-        const dropped = moveListRef.current.filter((m): m is string => m !== null && !learnable.has(m));
-        setDroppedMoves(dropped.map((n) => MOVE_BY_NAME.get(n)?.label ?? n));
+        const dropped = moveListRef.current
+          .filter((m): m is string => m !== null && !learnable.has(m))
+          .map((n) => MOVE_BY_NAME.get(n)?.label ?? n);
+
+        // Removing a move silently reads as a bug, so say what went and why
+        if (dropped.length > 0) {
+          notify(
+            `${formLabel(learnsetForm)} can't learn ${dropped.join(", ")}, so ` +
+            `${dropped.length === 1 ? "it was" : "they were"} removed from the set.`,
+            "orange"
+          );
+        }
+
         setMoveList((prev) => prev.map((m) => (m === null || learnable.has(m) ? m : null)));
       })
       .catch((error) => {console.log("Failed to load learnset: ", error)});
-
       return () => {stale = true};
-   }, [learnsetForm]);
+  }, [learnsetForm, notify]);
+
   
   const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
 
@@ -224,6 +240,7 @@ export default function CreateSet() {
     }
   }
    
+
   /* Species and pokemon selection functions */
   function choosePokemon(pokemon:string){
     setSelectedPokemon(pokemon);
@@ -258,6 +275,7 @@ export default function CreateSet() {
 
   return (
     <div id="create-container" className="w-10/10 flex flex-col items-center">
+      <NotificationList notifications={notifications} onDismissed={dismiss}/>
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
         <div id="species-form-select" className="flex flex-row"> 
           <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
@@ -268,7 +286,7 @@ export default function CreateSet() {
             Select Item
             <div className='flex flex-row'>
               <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
-              <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} isMegaForm={isMegaForm} itemType={itemType}/>
+              <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} form={selectedForm} isMegaForm={isMegaForm} itemType={itemType}/>
               {itemSprite !== "" ? 
                 (
                   <img

@@ -1,0 +1,93 @@
+.red{
+  background-color: var(--red-notif);
+  color: black;
+}
+
+.orange{
+  background-color: var(--orange-notif);
+  color: black;
+}
+
+.green{
+  background-color: var(--green-notif);
+  color: black;
+}
+
+/* The stack is the positioned element - the notifications themselves are static
+   flex children, which is what lets them sit below each other. Positioning each
+   .dismissable individually is what limited this to one at a time. */
+#notification-list{
+  position: fixed;
+  top: calc(var(--header-height) + 1rem);
+  left: 1rem;
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  max-width: min(28rem, calc(100vw - 2rem));
+}
+
+.dismissable{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem;
+
+  border: white solid 2px;
+  border-radius: var(--rounded);
+  cursor: pointer;
+
+  animation: notif-in 0.18s ease-out;
+  transition: transform 0.1s ease, opacity 0.18s ease;
+  transform-origin: center;
+}
+
+@keyframes notif-in{
+  from { opacity: 0; transform: translateX(-110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.dismissable:hover{
+  transform: scale(1.05);
+}
+
+/* Dismissable.tsx waits for the opacity transition to finish before removing
+   the item, so opacity is what has to change here. */
+.exiting-notif{
+  opacity: 0;
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+
+/* .dismissable:hover (0,2,0) would otherwise outrank .exiting-notif (0,1,0)
+   and cancel the slide-out if the cursor is still over the notification. */
+.dismissable.exiting-notif:hover{
+  transform: translateX(-110%);
+}
+
+.dismissable .exit{
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 676px){
+  #notification-list{
+    left: 0.5rem;
+    right: 0.5rem;
+    max-width: none;
+  }
+
+  .dismissable{
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+}
