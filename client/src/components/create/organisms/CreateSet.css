@@ -56,6 +56,28 @@
   grid-area: name;
 }
 
+/* Square, so it reads as an icon rather than another text button */
+#gender-button{
+  aspect-ratio: 1 / 1;
+  height: 100%;
+  min-height: 2.5rem;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  border-radius: var(--rounded);
+}
+
+/* Fixed-gender species keep the button visible so the row doesn't reflow, but it
+   shouldn't invite a click it won't answer */
+#gender-button:disabled{
+  opacity: 0.65;
+  cursor: default;
+}
+
+.gender-male{ color: var(--stat-down); }
+.gender-female{ color: var(--stat-up); }
+.gender-genderless{ color: var(--text-muted); }
+
 .cell-sprite{
   grid-area: sprite;
   justify-self: center;

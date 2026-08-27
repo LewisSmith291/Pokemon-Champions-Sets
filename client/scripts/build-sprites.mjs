@@ -32,14 +32,14 @@ const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 // jsDelivr throttles a bulk run with 403s, and answers 404 for a file that does
 // exist while its edge cache is cold - both clear on a retry, so treat every
 // failure as transient and back off. A genuine 404 just burns the attempts.
-async function fetchWithRetry(url) {
+async function fetchWithRetry(url, attempts = ATTEMPTS) {
   for (let attempt = 1; ; attempt++) {
     try {
       const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
       if (response.ok) return response;
-      if (attempt === ATTEMPTS) throw new Error(`${response.status} ${url}`);
+      if (attempt === attempts) throw new Error(`${response.status} ${url}`);
     } catch (error) {
-      if (attempt === ATTEMPTS) throw error;
+      if (attempt === attempts) throw error;
     }
     await sleep(500 * 2 ** (attempt - 1));
   }
@@ -112,15 +112,16 @@ const force = process.argv.includes("--force");
 const onDisk = new Set(await readdir(OUT_DIR));
 const wanted = force ? ids : ids.filter((id) => !onDisk.has(`${id}.png`));
 
-if (!wanted.length) {
-  console.log(`\nAll ${ids.length} sprites already in public/sprites - nothing to do.`);
-  process.exit(0);
+if (wanted.length) {
+  console.log(`Downloading ${wanted.length} sprites (${ids.length - wanted.length} already on disk)...`);
+} else {
+  console.log(`\nAll ${ids.length} sprites already in public/sprites.`);
 }
-
-console.log(`Downloading ${wanted.length} sprites (${ids.length - wanted.length} already on disk)...`);
 
 let done = 0;
 
+// Not an early exit even when there is nothing to fetch: the female pass below
+// still has to run, and on a re-run that is usually the only phase with work.
 const sizes = await pool(wanted, CONCURRENCY, async (id) => {
   try {
     const size = await download(id);
@@ -133,7 +134,47 @@ const sizes = await pool(wanted, CONCURRENCY, async (id) => {
   }
 });
 
-const total = sizes.reduce((sum, size) => sum + size, 0);
+// --- female sprites ---------------------------------------------------------
+// Some species look different by gender without being a separate variety
+// (Pikachu's tail, Venusaur's flower). Those need a second file, served from
+// sprites/female/{id}.png. Meowstic and Basculegion are excluded: their genders
+// are separate varieties with their own dex ids, so the loop above already has
+// them - and the repo has no sprites/female entry for those ids.
+//
+// Coverage is patchy for the rarer forms (Mega Venusaur has one, most megas
+// don't), so a 404 here is expected rather than a failure. Fewer attempts,
+// because the retry/backoff exists for jsDelivr throttling, not for real 404s -
+// and CreateSet falls back to the shared sprite when a file is missing.
+const FEMALE_DIR = resolve(OUT_DIR, "female");
+await mkdir(FEMALE_DIR, { recursive: true });
+
+const femaleIds = [...new Set(
+  idsPerSpecies
+    .filter((_, index) => SPECIES[index].hasGenderDifferences && !SPECIES[index].hasGenderForms)
+    .flat()
+)].sort((a, b) => a - b);
+
+const femaleOnDisk = new Set(await readdir(FEMALE_DIR));
+const femaleWanted = force ? femaleIds : femaleIds.filter((id) => !femaleOnDisk.has(`${id}.png`));
+
+console.log(`\nProbing ${femaleWanted.length} female sprites...`);
+
+let femaleFound = 0;
+const femaleSizes = await pool(femaleWanted, CONCURRENCY, async (id) => {
+  try {
+    const response = await fetchWithRetry(`${SPRITE_BASE}/female/${id}.png`, 2);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    await writeFile(resolve(FEMALE_DIR, `${id}.png`), bytes);
+    femaleFound++;
+    return bytes.length;
+  } catch {
+    return 0; // no female variant for this form - expected, not an error
+  }
+});
+
+console.log(`  ${femaleFound}/${femaleWanted.length} had a female variant`);
+
+const total = [...sizes, ...femaleSizes].reduce((sum, size) => sum + size, 0);
 const written = (await readdir(OUT_DIR)).length;
 
 console.log(`\nWrote ${written} files to public/sprites (${(total / 1024 / 1024).toFixed(2)} MB)`);

@@ -15,6 +15,8 @@ export interface Species {
   genderRate: number;
   /** True when gender is a *form* here (Meowstic, Basculegion), not just a flag */
   hasGenderForms: boolean;
+  /** True when the female sprite differs - served from public/sprites/female/ */
+  hasGenderDifferences: boolean;
   types: string[];
   abilities: string[];
   hiddenAbility: string | null;
@@ -29,6 +31,7 @@ export const SPECIES: Species[] = [
     "id": 3,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "grass",
       "poison"
@@ -52,6 +55,7 @@ export const SPECIES: Species[] = [
     "id": 6,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "flying"
@@ -75,6 +79,7 @@ export const SPECIES: Species[] = [
     "id": 9,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -97,6 +102,7 @@ export const SPECIES: Species[] = [
     "id": 15,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "poison"
@@ -120,6 +126,7 @@ export const SPECIES: Species[] = [
     "id": 18,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "flying"
@@ -144,6 +151,7 @@ export const SPECIES: Species[] = [
     "id": 24,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "poison"
     ],
@@ -167,6 +175,7 @@ export const SPECIES: Species[] = [
     "id": 25,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "electric"
     ],
@@ -189,6 +198,7 @@ export const SPECIES: Species[] = [
     "id": 26,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "electric"
     ],
@@ -211,6 +221,7 @@ export const SPECIES: Species[] = [
     "id": 36,
     "genderRate": 6,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -234,6 +245,7 @@ export const SPECIES: Species[] = [
     "id": 38,
     "genderRate": 6,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -256,6 +268,7 @@ export const SPECIES: Species[] = [
     "id": 45,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "grass",
       "poison"
@@ -279,6 +292,7 @@ export const SPECIES: Species[] = [
     "id": 59,
     "genderRate": 2,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -302,6 +316,7 @@ export const SPECIES: Species[] = [
     "id": 65,
     "genderRate": 2,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "psychic"
     ],
@@ -325,6 +340,7 @@ export const SPECIES: Species[] = [
     "id": 68,
     "genderRate": 2,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting"
     ],
@@ -348,6 +364,7 @@ export const SPECIES: Species[] = [
     "id": 71,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "poison"
@@ -371,6 +388,7 @@ export const SPECIES: Species[] = [
     "id": 80,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "psychic"
@@ -395,6 +413,7 @@ export const SPECIES: Species[] = [
     "id": 94,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "poison"
@@ -418,6 +437,7 @@ export const SPECIES: Species[] = [
     "id": 115,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -441,6 +461,7 @@ export const SPECIES: Species[] = [
     "id": 121,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "psychic"
@@ -465,6 +486,7 @@ export const SPECIES: Species[] = [
     "id": 127,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug"
     ],
@@ -488,6 +510,7 @@ export const SPECIES: Species[] = [
     "id": 128,
     "genderRate": 0,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -511,6 +534,7 @@ export const SPECIES: Species[] = [
     "id": 130,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "water",
       "flying"
@@ -534,6 +558,7 @@ export const SPECIES: Species[] = [
     "id": 132,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -556,6 +581,7 @@ export const SPECIES: Species[] = [
     "id": 134,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -578,6 +604,7 @@ export const SPECIES: Species[] = [
     "id": 135,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric"
     ],
@@ -600,6 +627,7 @@ export const SPECIES: Species[] = [
     "id": 136,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -622,6 +650,7 @@ export const SPECIES: Species[] = [
     "id": 142,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "flying"
@@ -646,6 +675,7 @@ export const SPECIES: Species[] = [
     "id": 143,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -669,6 +699,7 @@ export const SPECIES: Species[] = [
     "id": 149,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dragon",
       "flying"
@@ -692,6 +723,7 @@ export const SPECIES: Species[] = [
     "id": 154,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "grass"
     ],
@@ -714,6 +746,7 @@ export const SPECIES: Species[] = [
     "id": 157,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -736,6 +769,7 @@ export const SPECIES: Species[] = [
     "id": 160,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -758,6 +792,7 @@ export const SPECIES: Species[] = [
     "id": 168,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "poison"
@@ -782,6 +817,7 @@ export const SPECIES: Species[] = [
     "id": 181,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric"
     ],
@@ -804,6 +840,7 @@ export const SPECIES: Species[] = [
     "id": 184,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "fairy"
@@ -828,6 +865,7 @@ export const SPECIES: Species[] = [
     "id": 186,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "water"
     ],
@@ -851,6 +889,7 @@ export const SPECIES: Species[] = [
     "id": 196,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic"
     ],
@@ -873,6 +912,7 @@ export const SPECIES: Species[] = [
     "id": 197,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark"
     ],
@@ -895,6 +935,7 @@ export const SPECIES: Species[] = [
     "id": 199,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "psychic"
@@ -919,6 +960,7 @@ export const SPECIES: Species[] = [
     "id": 205,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "steel"
@@ -942,6 +984,7 @@ export const SPECIES: Species[] = [
     "id": 208,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "steel",
       "ground"
@@ -966,6 +1009,7 @@ export const SPECIES: Species[] = [
     "id": 211,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "poison"
@@ -990,6 +1034,7 @@ export const SPECIES: Species[] = [
     "id": 212,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "bug",
       "steel"
@@ -1014,6 +1059,7 @@ export const SPECIES: Species[] = [
     "id": 214,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "bug",
       "fighting"
@@ -1038,6 +1084,7 @@ export const SPECIES: Species[] = [
     "id": 227,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "flying"
@@ -1062,6 +1109,7 @@ export const SPECIES: Species[] = [
     "id": 229,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "dark",
       "fire"
@@ -1086,6 +1134,7 @@ export const SPECIES: Species[] = [
     "id": 248,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "dark"
@@ -1109,6 +1158,7 @@ export const SPECIES: Species[] = [
     "id": 254,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass"
     ],
@@ -1131,6 +1181,7 @@ export const SPECIES: Species[] = [
     "id": 257,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "fire",
       "fighting"
@@ -1154,6 +1205,7 @@ export const SPECIES: Species[] = [
     "id": 260,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "ground"
@@ -1177,6 +1229,7 @@ export const SPECIES: Species[] = [
     "id": 279,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "flying"
@@ -1201,6 +1254,7 @@ export const SPECIES: Species[] = [
     "id": 282,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic",
       "fairy"
@@ -1225,6 +1279,7 @@ export const SPECIES: Species[] = [
     "id": 302,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "ghost"
@@ -1249,6 +1304,7 @@ export const SPECIES: Species[] = [
     "id": 303,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "fairy"
@@ -1273,6 +1329,7 @@ export const SPECIES: Species[] = [
     "id": 306,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "rock"
@@ -1297,6 +1354,7 @@ export const SPECIES: Species[] = [
     "id": 308,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "fighting",
       "psychic"
@@ -1320,6 +1378,7 @@ export const SPECIES: Species[] = [
     "id": 310,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric"
     ],
@@ -1343,6 +1402,7 @@ export const SPECIES: Species[] = [
     "id": 319,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "dark"
@@ -1366,6 +1426,7 @@ export const SPECIES: Species[] = [
     "id": 323,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "fire",
       "ground"
@@ -1390,6 +1451,7 @@ export const SPECIES: Species[] = [
     "id": 324,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -1413,6 +1475,7 @@ export const SPECIES: Species[] = [
     "id": 334,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dragon",
       "flying"
@@ -1436,6 +1499,7 @@ export const SPECIES: Species[] = [
     "id": 350,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "water"
     ],
@@ -1459,6 +1523,7 @@ export const SPECIES: Species[] = [
     "id": 351,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -1481,6 +1546,7 @@ export const SPECIES: Species[] = [
     "id": 354,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost"
     ],
@@ -1504,6 +1570,7 @@ export const SPECIES: Species[] = [
     "id": 358,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic"
     ],
@@ -1526,6 +1593,7 @@ export const SPECIES: Species[] = [
     "id": 359,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark"
     ],
@@ -1549,6 +1617,7 @@ export const SPECIES: Species[] = [
     "id": 362,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice"
     ],
@@ -1572,6 +1641,7 @@ export const SPECIES: Species[] = [
     "id": 376,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "psychic"
@@ -1595,6 +1665,7 @@ export const SPECIES: Species[] = [
     "id": 389,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "ground"
@@ -1618,6 +1689,7 @@ export const SPECIES: Species[] = [
     "id": 392,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "fighting"
@@ -1641,6 +1713,7 @@ export const SPECIES: Species[] = [
     "id": 395,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "steel"
@@ -1664,6 +1737,7 @@ export const SPECIES: Species[] = [
     "id": 398,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "normal",
       "flying"
@@ -1687,6 +1761,7 @@ export const SPECIES: Species[] = [
     "id": 405,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "electric"
     ],
@@ -1710,6 +1785,7 @@ export const SPECIES: Species[] = [
     "id": 407,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "grass",
       "poison"
@@ -1734,6 +1810,7 @@ export const SPECIES: Species[] = [
     "id": 409,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock"
     ],
@@ -1756,6 +1833,7 @@ export const SPECIES: Species[] = [
     "id": 411,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "steel"
@@ -1779,6 +1857,7 @@ export const SPECIES: Species[] = [
     "id": 428,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -1802,6 +1881,7 @@ export const SPECIES: Species[] = [
     "id": 442,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "dark"
@@ -1825,6 +1905,7 @@ export const SPECIES: Species[] = [
     "id": 445,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "dragon",
       "ground"
@@ -1848,6 +1929,7 @@ export const SPECIES: Species[] = [
     "id": 448,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "steel"
@@ -1872,6 +1954,7 @@ export const SPECIES: Species[] = [
     "id": 450,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "ground"
     ],
@@ -1894,6 +1977,7 @@ export const SPECIES: Species[] = [
     "id": 454,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "poison",
       "fighting"
@@ -1918,6 +2002,7 @@ export const SPECIES: Species[] = [
     "id": 460,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "grass",
       "ice"
@@ -1941,6 +2026,7 @@ export const SPECIES: Species[] = [
     "id": 461,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "dark",
       "ice"
@@ -1964,6 +2050,7 @@ export const SPECIES: Species[] = [
     "id": 464,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "ground",
       "rock"
@@ -1988,6 +2075,7 @@ export const SPECIES: Species[] = [
     "id": 470,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass"
     ],
@@ -2010,6 +2098,7 @@ export const SPECIES: Species[] = [
     "id": 471,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice"
     ],
@@ -2032,6 +2121,7 @@ export const SPECIES: Species[] = [
     "id": 472,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "flying"
@@ -2056,6 +2146,7 @@ export const SPECIES: Species[] = [
     "id": 473,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "ice",
       "ground"
@@ -2080,6 +2171,7 @@ export const SPECIES: Species[] = [
     "id": 475,
     "genderRate": 0,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic",
       "fighting"
@@ -2104,6 +2196,7 @@ export const SPECIES: Species[] = [
     "id": 478,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice",
       "ghost"
@@ -2127,6 +2220,7 @@ export const SPECIES: Species[] = [
     "id": 479,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric",
       "ghost"
@@ -2150,6 +2244,7 @@ export const SPECIES: Species[] = [
     "id": 497,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass"
     ],
@@ -2172,6 +2267,7 @@ export const SPECIES: Species[] = [
     "id": 500,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "fighting"
@@ -2195,6 +2291,7 @@ export const SPECIES: Species[] = [
     "id": 503,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -2217,6 +2314,7 @@ export const SPECIES: Species[] = [
     "id": 505,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -2240,6 +2338,7 @@ export const SPECIES: Species[] = [
     "id": 510,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark"
     ],
@@ -2263,6 +2362,7 @@ export const SPECIES: Species[] = [
     "id": 512,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass"
     ],
@@ -2285,6 +2385,7 @@ export const SPECIES: Species[] = [
     "id": 514,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire"
     ],
@@ -2307,6 +2408,7 @@ export const SPECIES: Species[] = [
     "id": 516,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -2329,6 +2431,7 @@ export const SPECIES: Species[] = [
     "id": 518,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic"
     ],
@@ -2352,6 +2455,7 @@ export const SPECIES: Species[] = [
     "id": 530,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "steel"
@@ -2376,6 +2480,7 @@ export const SPECIES: Species[] = [
     "id": 531,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -2399,6 +2504,7 @@ export const SPECIES: Species[] = [
     "id": 534,
     "genderRate": 2,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting"
     ],
@@ -2422,6 +2528,7 @@ export const SPECIES: Species[] = [
     "id": 545,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "poison"
@@ -2446,6 +2553,7 @@ export const SPECIES: Species[] = [
     "id": 547,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "fairy"
@@ -2470,6 +2578,7 @@ export const SPECIES: Species[] = [
     "id": 553,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "dark"
@@ -2494,6 +2603,7 @@ export const SPECIES: Species[] = [
     "id": 560,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "fighting"
@@ -2518,6 +2628,7 @@ export const SPECIES: Species[] = [
     "id": 563,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost"
     ],
@@ -2540,6 +2651,7 @@ export const SPECIES: Species[] = [
     "id": 569,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "poison"
     ],
@@ -2563,6 +2675,7 @@ export const SPECIES: Species[] = [
     "id": 571,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark"
     ],
@@ -2585,6 +2698,7 @@ export const SPECIES: Species[] = [
     "id": 579,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic"
     ],
@@ -2608,6 +2722,7 @@ export const SPECIES: Species[] = [
     "id": 584,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice"
     ],
@@ -2631,6 +2746,7 @@ export const SPECIES: Species[] = [
     "id": 587,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric",
       "flying"
@@ -2654,6 +2770,7 @@ export const SPECIES: Species[] = [
     "id": 604,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric"
     ],
@@ -2676,6 +2793,7 @@ export const SPECIES: Species[] = [
     "id": 609,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "fire"
@@ -2700,6 +2818,7 @@ export const SPECIES: Species[] = [
     "id": 614,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice"
     ],
@@ -2723,6 +2842,7 @@ export const SPECIES: Species[] = [
     "id": 618,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "electric"
@@ -2747,6 +2867,7 @@ export const SPECIES: Species[] = [
     "id": 623,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "ghost"
@@ -2771,6 +2892,7 @@ export const SPECIES: Species[] = [
     "id": 635,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "dragon"
@@ -2794,6 +2916,7 @@ export const SPECIES: Species[] = [
     "id": 637,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "fire"
@@ -2817,6 +2940,7 @@ export const SPECIES: Species[] = [
     "id": 652,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "fighting"
@@ -2840,6 +2964,7 @@ export const SPECIES: Species[] = [
     "id": 655,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "psychic"
@@ -2863,6 +2988,7 @@ export const SPECIES: Species[] = [
     "id": 658,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "dark"
@@ -2886,6 +3012,7 @@ export const SPECIES: Species[] = [
     "id": 660,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "ground"
@@ -2910,6 +3037,7 @@ export const SPECIES: Species[] = [
     "id": 663,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "flying"
@@ -2933,6 +3061,7 @@ export const SPECIES: Species[] = [
     "id": 666,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "flying"
@@ -2957,6 +3086,7 @@ export const SPECIES: Species[] = [
     "id": 668,
     "genderRate": 7,
     "hasGenderForms": false,
+    "hasGenderDifferences": true,
     "types": [
       "fire",
       "normal"
@@ -2981,6 +3111,7 @@ export const SPECIES: Species[] = [
     "id": 670,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -3003,6 +3134,7 @@ export const SPECIES: Species[] = [
     "id": 671,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -3025,6 +3157,7 @@ export const SPECIES: Species[] = [
     "id": 675,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "dark"
@@ -3049,6 +3182,7 @@ export const SPECIES: Species[] = [
     "id": 676,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -3071,6 +3205,7 @@ export const SPECIES: Species[] = [
     "id": 678,
     "genderRate": 4,
     "hasGenderForms": true,
+    "hasGenderDifferences": true,
     "types": [
       "psychic"
     ],
@@ -3094,6 +3229,7 @@ export const SPECIES: Species[] = [
     "id": 681,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "ghost"
@@ -3117,6 +3253,7 @@ export const SPECIES: Species[] = [
     "id": 683,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -3139,6 +3276,7 @@ export const SPECIES: Species[] = [
     "id": 685,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -3161,6 +3299,7 @@ export const SPECIES: Species[] = [
     "id": 687,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "psychic"
@@ -3185,6 +3324,7 @@ export const SPECIES: Species[] = [
     "id": 689,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "water"
@@ -3209,6 +3349,7 @@ export const SPECIES: Species[] = [
     "id": 691,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "poison",
       "dragon"
@@ -3233,6 +3374,7 @@ export const SPECIES: Species[] = [
     "id": 693,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -3255,6 +3397,7 @@ export const SPECIES: Species[] = [
     "id": 695,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric",
       "normal"
@@ -3279,6 +3422,7 @@ export const SPECIES: Species[] = [
     "id": 697,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "dragon"
@@ -3302,6 +3446,7 @@ export const SPECIES: Species[] = [
     "id": 699,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "ice"
@@ -3325,6 +3470,7 @@ export const SPECIES: Species[] = [
     "id": 700,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -3347,6 +3493,7 @@ export const SPECIES: Species[] = [
     "id": 701,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "flying"
@@ -3371,6 +3518,7 @@ export const SPECIES: Species[] = [
     "id": 702,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric",
       "fairy"
@@ -3395,6 +3543,7 @@ export const SPECIES: Species[] = [
     "id": 706,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dragon"
     ],
@@ -3418,6 +3567,7 @@ export const SPECIES: Species[] = [
     "id": 707,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "fairy"
@@ -3441,6 +3591,7 @@ export const SPECIES: Species[] = [
     "id": 709,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "grass"
@@ -3465,6 +3616,7 @@ export const SPECIES: Species[] = [
     "id": 711,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "grass"
@@ -3489,6 +3641,7 @@ export const SPECIES: Species[] = [
     "id": 713,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice"
     ],
@@ -3512,6 +3665,7 @@ export const SPECIES: Species[] = [
     "id": 715,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "flying",
       "dragon"
@@ -3536,6 +3690,7 @@ export const SPECIES: Species[] = [
     "id": 724,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "ghost"
@@ -3559,6 +3714,7 @@ export const SPECIES: Species[] = [
     "id": 727,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "dark"
@@ -3582,6 +3738,7 @@ export const SPECIES: Species[] = [
     "id": 730,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "fairy"
@@ -3605,6 +3762,7 @@ export const SPECIES: Species[] = [
     "id": 733,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "flying"
@@ -3629,6 +3787,7 @@ export const SPECIES: Species[] = [
     "id": 740,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "ice"
@@ -3653,6 +3812,7 @@ export const SPECIES: Species[] = [
     "id": 745,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock"
     ],
@@ -3676,6 +3836,7 @@ export const SPECIES: Species[] = [
     "id": 748,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "poison",
       "water"
@@ -3700,6 +3861,7 @@ export const SPECIES: Species[] = [
     "id": 750,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground"
     ],
@@ -3723,6 +3885,7 @@ export const SPECIES: Species[] = [
     "id": 752,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "bug"
@@ -3746,6 +3909,7 @@ export const SPECIES: Species[] = [
     "id": 758,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "poison",
       "fire"
@@ -3769,6 +3933,7 @@ export const SPECIES: Species[] = [
     "id": 763,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass"
     ],
@@ -3792,6 +3957,7 @@ export const SPECIES: Species[] = [
     "id": 765,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "psychic"
@@ -3816,6 +3982,7 @@ export const SPECIES: Species[] = [
     "id": 766,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting"
     ],
@@ -3838,6 +4005,7 @@ export const SPECIES: Species[] = [
     "id": 778,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost",
       "fairy"
@@ -3861,6 +4029,7 @@ export const SPECIES: Species[] = [
     "id": 780,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "dragon"
@@ -3885,6 +4054,7 @@ export const SPECIES: Species[] = [
     "id": 784,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dragon",
       "fighting"
@@ -3909,6 +4079,7 @@ export const SPECIES: Species[] = [
     "id": 823,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "flying",
       "steel"
@@ -3933,6 +4104,7 @@ export const SPECIES: Species[] = [
     "id": 841,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "dragon"
@@ -3957,6 +4129,7 @@ export const SPECIES: Species[] = [
     "id": 842,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "dragon"
@@ -3981,6 +4154,7 @@ export const SPECIES: Species[] = [
     "id": 844,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground"
     ],
@@ -4004,6 +4178,7 @@ export const SPECIES: Species[] = [
     "id": 855,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost"
     ],
@@ -4026,6 +4201,7 @@ export const SPECIES: Species[] = [
     "id": 858,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic",
       "fairy"
@@ -4050,6 +4226,7 @@ export const SPECIES: Species[] = [
     "id": 861,
     "genderRate": 0,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "fairy"
@@ -4074,6 +4251,7 @@ export const SPECIES: Species[] = [
     "id": 866,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ice",
       "psychic"
@@ -4098,6 +4276,7 @@ export const SPECIES: Species[] = [
     "id": 867,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ground",
       "ghost"
@@ -4121,6 +4300,7 @@ export const SPECIES: Species[] = [
     "id": 869,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy"
     ],
@@ -4143,6 +4323,7 @@ export const SPECIES: Species[] = [
     "id": 870,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting"
     ],
@@ -4165,6 +4346,7 @@ export const SPECIES: Species[] = [
     "id": 877,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric",
       "dark"
@@ -4188,6 +4370,7 @@ export const SPECIES: Species[] = [
     "id": 887,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dragon",
       "ghost"
@@ -4212,6 +4395,7 @@ export const SPECIES: Species[] = [
     "id": 899,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "psychic"
@@ -4236,6 +4420,7 @@ export const SPECIES: Species[] = [
     "id": 900,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "bug",
       "rock"
@@ -4260,6 +4445,7 @@ export const SPECIES: Species[] = [
     "id": 902,
     "genderRate": 4,
     "hasGenderForms": true,
+    "hasGenderDifferences": true,
     "types": [
       "water",
       "ghost"
@@ -4284,6 +4470,7 @@ export const SPECIES: Species[] = [
     "id": 903,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "poison"
@@ -4308,6 +4495,7 @@ export const SPECIES: Species[] = [
     "id": 904,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "poison"
@@ -4332,6 +4520,7 @@ export const SPECIES: Species[] = [
     "id": 908,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "dark"
@@ -4355,6 +4544,7 @@ export const SPECIES: Species[] = [
     "id": 911,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "ghost"
@@ -4378,6 +4568,7 @@ export const SPECIES: Species[] = [
     "id": 914,
     "genderRate": 1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water",
       "fighting"
@@ -4401,6 +4592,7 @@ export const SPECIES: Species[] = [
     "id": 925,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal"
     ],
@@ -4424,6 +4616,7 @@ export const SPECIES: Species[] = [
     "id": 934,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock"
     ],
@@ -4447,6 +4640,7 @@ export const SPECIES: Species[] = [
     "id": 936,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "psychic"
@@ -4470,6 +4664,7 @@ export const SPECIES: Species[] = [
     "id": 937,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fire",
       "ghost"
@@ -4493,6 +4688,7 @@ export const SPECIES: Species[] = [
     "id": 939,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "electric"
     ],
@@ -4516,6 +4712,7 @@ export const SPECIES: Species[] = [
     "id": 952,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "fire"
@@ -4540,6 +4737,7 @@ export const SPECIES: Species[] = [
     "id": 956,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "psychic"
     ],
@@ -4563,6 +4761,7 @@ export const SPECIES: Species[] = [
     "id": 959,
     "genderRate": 8,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fairy",
       "steel"
@@ -4587,6 +4786,7 @@ export const SPECIES: Species[] = [
     "id": 964,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "water"
     ],
@@ -4609,6 +4809,7 @@ export const SPECIES: Species[] = [
     "id": 968,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel"
     ],
@@ -4631,6 +4832,7 @@ export const SPECIES: Species[] = [
     "id": 970,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "rock",
       "poison"
@@ -4654,6 +4856,7 @@ export const SPECIES: Species[] = [
     "id": 972,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "ghost"
     ],
@@ -4676,6 +4879,7 @@ export const SPECIES: Species[] = [
     "id": 979,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "fighting",
       "ghost"
@@ -4700,6 +4904,7 @@ export const SPECIES: Species[] = [
     "id": 981,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "normal",
       "psychic"
@@ -4724,6 +4929,7 @@ export const SPECIES: Species[] = [
     "id": 983,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "dark",
       "steel"
@@ -4748,6 +4954,7 @@ export const SPECIES: Species[] = [
     "id": 1000,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "ghost"
@@ -4771,6 +4978,7 @@ export const SPECIES: Species[] = [
     "id": 1013,
     "genderRate": -1,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "ghost"
@@ -4794,6 +5002,7 @@ export const SPECIES: Species[] = [
     "id": 1018,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "steel",
       "dragon"
@@ -4818,6 +5027,7 @@ export const SPECIES: Species[] = [
     "id": 1019,
     "genderRate": 4,
     "hasGenderForms": false,
+    "hasGenderDifferences": false,
     "types": [
       "grass",
       "dragon"

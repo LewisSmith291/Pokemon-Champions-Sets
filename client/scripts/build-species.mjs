@@ -88,6 +88,9 @@ const species = await pool(names, CONCURRENCY, async (name) => {
     // abilities and learnsets. Pyroar's default is *named* pyroar-male but has no
     // female counterpart, so testing for -female is what separates the two cases.
     hasGenderForms: speciesJson.varieties.some((v) => v.pokemon.name.endsWith("-female")),
+    // Sprite differs by gender without being a separate variety (Pikachu's tail,
+    // Venusaur's flower). build-sprites.mjs fetches those into sprites/female/.
+    hasGenderDifferences: speciesJson.has_gender_differences,
     types: form.types.map((t) => t.type.name),
     abilities: form.abilities.filter((a) => !a.is_hidden).map((a) => a.ability.name),
     hiddenAbility: form.abilities.find((a) => a.is_hidden)?.ability.name ?? null,
@@ -115,6 +118,8 @@ export interface Species {
   genderRate: number;
   /** True when gender is a *form* here (Meowstic, Basculegion), not just a flag */
   hasGenderForms: boolean;
+  /** True when the female sprite differs - served from public/sprites/female/ */
+  hasGenderDifferences: boolean;
   types: string[];
   abilities: string[];
   hiddenAbility: string | null;

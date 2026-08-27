@@ -11,7 +11,8 @@ import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
 import { itemSpritePath, ITEM_DETAILS } from '@/data/itemDetails.ts';
-import { formLabel, isValidForm, preferredMegaStone } from '@/data/forms.ts';
+import { formLabel, isValidForm, preferredMegaStone, allowedGenders, genderFromForm, withGender, SPECIES_BY_NAME, type Gender } from '@/data/forms.ts';
+import GenderButton from '../atoms/GenderButton.tsx';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
@@ -59,8 +60,11 @@ export default function CreateSet() {
   const [selectedForm, setSelectedForm] = useState<string>("");
   const [isMegaForm, setIsMegaForm] = useState<boolean>(false);
   const [formTypes, setFormTypes] = useState<string[]>([]);
+  const [gender, setGender] = useState<Gender>("genderless");
   // sprite
-  const [sprite, setSprite] = useState<string>();
+  // The form's dex id rather than a finished path: gender can change the sprite
+  // without a form fetch, so the src has to be derived at render.
+  const [formId, setFormId] = useState<number | null>(null);
   // items
   // The held/berry/mega filter and whether the species has a mega at all are
   // concerns of the item picker, so they'll live inside that modal rather than here.
@@ -106,6 +110,10 @@ export default function CreateSet() {
         // Reset item
         setSelectedItem("");
 
+        // Gender is fixed for 22 of the 208 species, so start from what this one
+        // permits rather than carrying the previous pick over
+        setGender(allowedGenders(selectedPokemon)[0]);
+
         // Reset nature
         setNature("Serious");
 
@@ -132,7 +140,7 @@ export default function CreateSet() {
         // Served from public/sprites, not data.sprites.front_default: that field
         // points at raw.githubusercontent.com, which 429s under GitHub's abuse
         // protection. data.id is the *form's* dex id, so megas resolve correctly.
-        setSprite(`/sprites/${data.id}.png`);
+        setFormId(data.id);
         setIsMegaForm(data.name.includes("-mega"));
         // Typing is per-form too: Galarian Slowbro is Poison/Psychic, not Water/Psychic
         setFormTypes(data.types.map((t: {type: {name: string}}) => t.type.name));
@@ -158,6 +166,13 @@ export default function CreateSet() {
       });
     return () => { stale = true; };
   }, [selectedForm])
+
+  // Meowstic and Basculegion carry gender in the variety name, so choosing one of
+  // those forms from the form picker has to move the gender button with it.
+  useEffect(() => {
+    const implied: Gender | null = genderFromForm(selectedForm);
+    if (implied) setGender(implied);
+  }, [selectedForm]);
 
   // A mega form must hold its own stone, and which one depends on the form
   // (Charizardite X vs Y). This used to live in ItemSearch, but it's a rule about
@@ -215,6 +230,19 @@ export default function CreateSet() {
   
   const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
 
+  // Pikachu's tail and Venusaur's flower differ by gender without being separate
+  // varieties, so those species get a second file under sprites/female/. Meowstic
+  // and Basculegion are excluded - their genders are already distinct forms with
+  // their own dex ids, which the shared path already resolves.
+  const speciesRecord = SPECIES_BY_NAME.get(selectedPokemon);
+  const useFemaleSprite: boolean =
+    gender === "female" &&
+    (speciesRecord?.hasGenderDifferences ?? false) &&
+    !(speciesRecord?.hasGenderForms ?? false);
+
+  const spriteSrc: string =
+    formId === null ? QUESTION_MARK : `/sprites/${useFemaleSprite ? "female/" : ""}${formId}.png`;
+
   // Function to clamp a stat boost slider
   function updateBoost(key:BoostKey, value:number){
     setStatBoosts((prev) => {
@@ -235,8 +263,7 @@ export default function CreateSet() {
     form: selectedForm,
     // Schema is nullable — null means "no held item", "" would be a string that passes validation but means nothing
     item: selectedItem === "" ? null : selectedItem,
-    // Hardcoded placeholders — replaced by real inputs one at a time
-    gender: "male",
+    gender: gender,
     ability: ability,
     nature: nature.toLowerCase(),
     ...statBoosts,
@@ -289,6 +316,15 @@ export default function CreateSet() {
     setIsNatureOpen(false);
   }
 
+  /* Gender selection */
+  function chooseGender(next:Gender){
+    setGender(next);
+    // For Meowstic and Basculegion gender *is* the form - different stats,
+    // abilities and learnsets - so the form has to follow the button.
+    const swapped:string = withGender(selectedForm, next);
+    if (swapped !== selectedForm) setSelectedForm(swapped);
+  }
+
   /* Ability selection functions */
   function selectAbility(chosen:string){
     setAbility(chosen);
@@ -310,9 +346,16 @@ export default function CreateSet() {
     <div id="create-container" className="w-10/10 flex flex-col items-center">
       <NotificationList notifications={notifications} onDismissed={dismiss}/>
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
-        <button type="button" className="hoverable-link rounded-[var(--rounded)] cell-name grid-cell" onClick={() => chooseNewPokemon()}>
-          {selectedForm === "" ? "Choose a Pokémon" : formLabel(selectedForm)}
-        </button>
+        <div className="cell-name grid-cell flex flex-row items-center gap-2">
+          <GenderButton
+            gender={gender}
+            options={allowedGenders(selectedPokemon)}
+            onChange={chooseGender}
+          />
+          <button type="button" className="hoverable-link rounded-[var(--rounded)] flex-1 h-full" onClick={() => chooseNewPokemon()}>
+            {selectedForm === "" ? "Choose a Pokémon" : formLabel(selectedForm)}
+          </button>
+        </div>
 
         <button
           type="button"
@@ -353,11 +396,19 @@ export default function CreateSet() {
         <img
           className="cell-sprite grid-cell"
           id="pokemon-sprite"
-          src={!sprite ? QUESTION_MARK : sprite}
+          src={spriteSrc}
           alt={selectedForm}
-          // A handful of forms have no sprite in the PokeAPI repo (pikachu-starter),
-          // so there is nothing in public/sprites to serve for them
-          onError={(e) => { e.currentTarget.src = QUESTION_MARK; }}
+          onError={(e) => {
+            const img = e.currentTarget;
+            // Female coverage is patchy for the rarer forms - Mega Venusaur has one,
+            // most megas don't - so drop back to the shared sprite before the placeholder.
+            if (img.src.includes("/female/") && formId !== null) {
+              img.src = `/sprites/${formId}.png`;
+              return;
+            }
+            // A handful of forms have no sprite in the PokeAPI repo at all
+            if (!img.src.endsWith(QUESTION_MARK)) img.src = QUESTION_MARK;
+          }}
         />
         <div className="cell-moves grid-cell">
           <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>

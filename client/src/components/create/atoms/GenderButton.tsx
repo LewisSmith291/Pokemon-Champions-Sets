@@ -1,0 +1,40 @@
+import { type Gender } from "@/data/forms";
+
+interface Props {
+  gender: Gender;
+  /** What this species permits - one entry means there's nothing to choose */
+  options: Gender[];
+  onChange: (gender: Gender) => void;
+}
+
+const SYMBOL: Record<Gender, string> = {
+  male: "♂",
+  female: "♀",
+  genderless: "—",
+};
+
+const LABEL: Record<Gender, string> = {
+  male: "Male",
+  female: "Female",
+  genderless: "Genderless",
+};
+
+export default function GenderButton({ gender, options, onChange }: Props) {
+  const canChoose: boolean = options.length > 1;
+
+  return (
+    <button
+      type="button"
+      id="gender-button"
+      className={`hoverable-link rounded-[var(--rounded)] gender-${gender}`}
+      // Shown but inert for the 22 species that are fixed - hiding it would make
+      // the row jump around and wouldn't tell the user the constraint exists
+      disabled={!canChoose}
+      onClick={() => onChange(gender === "male" ? "female" : "male")}
+      aria-label={canChoose ? `Gender: ${LABEL[gender]}, change` : `Gender: ${LABEL[gender]}`}
+      title={canChoose ? "Change gender" : `Always ${LABEL[gender].toLowerCase()}`}
+    >
+      {SYMBOL[gender]}
+    </button>
+  );
+}
