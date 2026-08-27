@@ -7,6 +7,7 @@
 
 #set-creation{
   display: grid;
+  max-width:1278px;
   grid-template-columns: 1fr 1fr 1.5fr;
   grid-template-rows: auto auto auto auto auto;
   grid-template-areas:
@@ -56,15 +57,34 @@
   grid-area: name;
 }
 
-/* Square, so it reads as an icon rather than another text button */
+/* Square, so it reads as an icon rather than another text button. Deliberately
+   no height: .cell-name stretches its children, so the species button beside it
+   sets the row height and aspect-ratio derives this one's width from that.
+   min-width is a floor in case aspect-ratio can't resolve against a stretched
+   cross size - without it the button could collapse to nothing. */
 #gender-button{
+  position: relative;
   aspect-ratio: 1 / 1;
-  height: 100%;
-  min-height: 2.5rem;
+  min-width: 2.75rem;
   flex-shrink: 0;
-  font-size: 1.5rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.5rem;   /* only the genderless dash uses this */
   line-height: 1;
   border-radius: var(--rounded);
+}
+
+/* Absolutely positioned on purpose. The icon files declare width="800px", and an
+   in-flow <img> feeds that intrinsic size back into the row height - which is the
+   very thing its own height:100% was trying to measure. Out of flow, it can only
+   read the button's size, never set it. */
+#gender-button img{
+  position: absolute;
+  inset: 18%;
+  width: 64%;
+  height: 64%;
+  object-fit: contain;
 }
 
 /* Fixed-gender species keep the button visible so the row doesn't reflow, but it

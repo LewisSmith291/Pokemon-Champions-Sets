@@ -1,4 +1,6 @@
 import { type Gender } from "@/data/forms";
+import Female from '/gender-female.svg'
+import Male from '/gender-male.svg'
 
 interface Props {
   gender: Gender;
@@ -8,8 +10,8 @@ interface Props {
 }
 
 const SYMBOL: Record<Gender, string> = {
-  male: "♂",
-  female: "♀",
+  male: Male,
+  female: Female,
   genderless: "—",
 };
 
@@ -34,7 +36,12 @@ export default function GenderButton({ gender, options, onChange }: Props) {
       aria-label={canChoose ? `Gender: ${LABEL[gender]}, change` : `Gender: ${LABEL[gender]}`}
       title={canChoose ? "Change gender" : `Always ${LABEL[gender].toLowerCase()}`}
     >
-      {SYMBOL[gender]}
+      {/* genderless is still a text glyph, so it can't go through <img>.
+          alt is empty because the button's aria-label already names the state -
+          otherwise a screen reader reads out the file name. */}
+      {gender === "genderless"
+        ? SYMBOL[gender]
+        : <img src={SYMBOL[gender]} alt="" />}
     </button>
   );
 }

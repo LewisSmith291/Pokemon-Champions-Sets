@@ -346,7 +346,7 @@ export default function CreateSet() {
     <div id="create-container" className="w-10/10 flex flex-col items-center">
       <NotificationList notifications={notifications} onDismissed={dismiss}/>
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
-        <div className="cell-name grid-cell flex flex-row items-center gap-2">
+        <div className="cell-name grid-cell flex flex-row items-stretch gap-2">
           <GenderButton
             gender={gender}
             options={allowedGenders(selectedPokemon)}
@@ -364,7 +364,7 @@ export default function CreateSet() {
           // Nothing to choose between when a species has only its default form
           disabled={pokemonForms.length < 2}
         >
-          {selectedForm === "" ? "Form" : formLabel(selectedForm)}
+          {pokemonForms.length === 0 ? "Forms" : (selectedForm === "" ? "Select Form" : "Form: "+ formLabel(selectedForm))}
         </button>
 
         <div className="cell-typing grid-cell flex flex-row items-center justify-center gap-2">
