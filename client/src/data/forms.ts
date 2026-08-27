@@ -6,8 +6,14 @@ export const SPECIES_BY_NAME: Map<string, Species> = new Map(
 
 // The only variety suffixes Champions uses. PokeAPI hands back plenty more
 // (-gmax, -totem, -cap, -starter, ...) and none of those are playable here.
-// Longest first so "-mega-x" is tested before "-mega".
-export const FORM_SUFFIXES = ["mega-x", "mega-y", "mega", "alola", "galar", "hisui"] as const;
+// Longest first: "-male-mega" has to be tested before "-mega", and "-mega-x"
+// before "-mega", or the wrong tail gets stripped.
+export const FORM_SUFFIXES = [
+  "male-mega", "female-mega",
+  "mega-x", "mega-y", "mega",
+  "alola", "galar", "hisui",
+  "male", "female",
+] as const;
 
 export type FormSuffix = (typeof FORM_SUFFIXES)[number] | "";
 

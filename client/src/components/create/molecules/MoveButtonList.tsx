@@ -10,7 +10,7 @@ export default function MoveButtonList({moveList, onEditSlot}: Props) {
 
 
   return (
-    <div id="move-button-list">
+    <div id="move-button-list" className="moves grid-cell">
       {moveList.map((name, slot) => {
         const move = name ? MOVE_BY_NAME.get(name) : undefined;
         return (

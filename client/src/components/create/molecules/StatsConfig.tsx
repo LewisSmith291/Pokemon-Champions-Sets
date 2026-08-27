@@ -12,7 +12,7 @@ export default function StatsConfig({baseStats, statBoosts, nature, setBoosts}: 
   const natureChanges = GetNatureChanges(nature);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 stats grid-cell">
       {STATS.map((stat) => (
         <div className="stat-row" key={stat.key}>
           <BoostSlider 

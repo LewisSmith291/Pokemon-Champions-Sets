@@ -82,6 +82,12 @@ const species = await pool(names, CONCURRENCY, async (name) => {
     label: englishName(speciesJson),
     // The default form's id, which is what the sprite filename uses
     id: form.id,
+    // -1 genderless, 0 always male, 8 always female, 1-7 both possible
+    genderRate: speciesJson.gender_rate,
+    // Meowstic and Basculegion have a variety per gender, with different stats,
+    // abilities and learnsets. Pyroar's default is *named* pyroar-male but has no
+    // female counterpart, so testing for -female is what separates the two cases.
+    hasGenderForms: speciesJson.varieties.some((v) => v.pokemon.name.endsWith("-female")),
     types: form.types.map((t) => t.type.name),
     abilities: form.abilities.filter((a) => !a.is_hidden).map((a) => a.ability.name),
     hiddenAbility: form.abilities.find((a) => a.is_hidden)?.ability.name ?? null,
@@ -105,6 +111,10 @@ export interface Species {
   label: string;
   /** Dex id of the default form, used to build the sprite URL */
   id: number;
+  /** PokeAPI gender_rate: -1 genderless, 0 always male, 8 always female, 1-7 either */
+  genderRate: number;
+  /** True when gender is a *form* here (Meowstic, Basculegion), not just a flag */
+  hasGenderForms: boolean;
   types: string[];
   abilities: string[];
   hiddenAbility: string | null;

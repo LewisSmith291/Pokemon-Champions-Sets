@@ -1,17 +1,17 @@
 import { useEffect, useState, type SyntheticEvent, useRef} from 'react'
 import "./CreateSet.css"
 import SpeciesSearch from '../organisms/SpeciesSearch.tsx';
-import FormSearch from '../atoms/FormSearch.tsx'
-import ItemSearch from '../atoms/ItemSearch.tsx';
-import ItemRadio from '../atoms/ItemRadio.tsx';
+import FormSelect from '../molecules/FormSelect.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
+import TypeDisplay from '@/components/shared/TypeDisplay.tsx';
+import GetMegaStones from '@/data/megaStones.ts';
 import { API_URL } from '@/services/api.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
 import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
-import { itemSpritePath } from '@/data/itemDetails.ts';
-import { formLabel, isValidForm } from '@/data/forms.ts';
+import { itemSpritePath, ITEM_DETAILS } from '@/data/itemDetails.ts';
+import { formLabel, isValidForm, preferredMegaStone } from '@/data/forms.ts';
 import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
@@ -52,17 +52,19 @@ export default function CreateSet() {
   const [editingSlot, setEditingSlot] = useState<number | null>(null);
   const [isNatureOpen, setIsNatureOpen] = useState<boolean>(false);
   const [isAbilityOpen, setIsAbilityOpen] = useState<boolean>(false);
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>("");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
   const [selectedForm, setSelectedForm] = useState<string>("");
   const [isMegaForm, setIsMegaForm] = useState<boolean>(false);
+  const [formTypes, setFormTypes] = useState<string[]>([]);
   // sprite
   const [sprite, setSprite] = useState<string>();
   // items
+  // The held/berry/mega filter and whether the species has a mega at all are
+  // concerns of the item picker, so they'll live inside that modal rather than here.
   const [selectedItem, setSelectedItem] = useState<string>("");
-  const [canMega, setCanMega] = useState<boolean>(false);
-  const [itemType, setItemType] = useState<string>("held");
   // ability
   const [abilityList, setAbilityList] = useState<string[]>(["overgrow"]);
   const [ability, setAbility] = useState<string>("");
@@ -97,15 +99,11 @@ export default function CreateSet() {
         // PokeAPI also returns -gmax, -totem, -cap, -starter and friends.
         const filteredVarieties:string[] = varieties.filter(isValidForm);
 
-        // Enable mega stone selection if any variety is a mega form
-        setCanMega(filteredVarieties.some((e: string) => e.includes("-mega")));
-
         // Set forms
         setPokemonForms(filteredVarieties);
         setSelectedForm(filteredVarieties[0]);
 
         // Reset item
-        setItemType("held");
         setSelectedItem("");
 
         // Reset nature
@@ -136,6 +134,8 @@ export default function CreateSet() {
         // protection. data.id is the *form's* dex id, so megas resolve correctly.
         setSprite(`/sprites/${data.id}.png`);
         setIsMegaForm(data.name.includes("-mega"));
+        // Typing is per-form too: Galarian Slowbro is Poison/Psychic, not Water/Psychic
+        setFormTypes(data.types.map((t: {type: {name: string}}) => t.type.name));
         // Object.fromEntries: takes the list of pairs: [["hp", 45],["atk",32],...]
         // then collapses it into a single object: {hp:45, attack:32, ...}
         setBaseStats(Object.fromEntries(
@@ -158,6 +158,16 @@ export default function CreateSet() {
       });
     return () => { stale = true; };
   }, [selectedForm])
+
+  // A mega form must hold its own stone, and which one depends on the form
+  // (Charizardite X vs Y). This used to live in ItemSearch, but it's a rule about
+  // the set rather than about the picker - so it stays put while the item control
+  // is being rebuilt as a modal.
+  useEffect(() => {
+    if (!isMegaForm) return;
+    const stones: string[] = GetMegaStones(selectedPokemon as "string");
+    setSelectedItem(preferredMegaStone(selectedForm, stones) ?? stones[0] ?? "");
+  }, [isMegaForm, selectedForm, selectedPokemon]);
 
   // update moveListRef
   const moveListRef = useRef(moveList);
@@ -300,53 +310,64 @@ export default function CreateSet() {
     <div id="create-container" className="w-10/10 flex flex-col items-center">
       <NotificationList notifications={notifications} onDismissed={dismiss}/>
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
-        <div id="species-form-select" className="flex flex-row"> 
-          <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNewPokemon()}>Choose new pokemon</button>
-          <FormSearch currentForm={selectedForm} setSelectedForm={setSelectedForm} pokemonForms={pokemonForms}/>
-          <button type="button" className="hoverable-link rounded-[var(--rounded)]" onClick={() => chooseNature()}>Choose Nature</button>
-          <p>{nature}</p>
-          <button
-            type="button"
-            className="hoverable-link rounded-[var(--rounded)]"
-            onClick={() => setIsAbilityOpen(true)}
-            disabled={abilityList.length === 0}
-          >
-            Choose Ability
-          </button>
-          <p>{ABILITY_BY_NAME.get(ability)?.label ?? ability}</p>
-          <label className="flex flex-col">
-            Select Item
-            <div className='flex flex-row'>
-              <ItemRadio canMega={canMega} isMega={isMegaForm} get={itemType} set={setItemType} />
-              <ItemSearch value={selectedItem} onSelect={setSelectedItem} name={selectedPokemon} form={selectedForm} isMegaForm={isMegaForm} itemType={itemType}/>
-              {itemSprite !== "" ? 
-                (
-                  <img
-                    id="item-sprite" 
-                    src={itemSprite}
-                    alt={selectedItem}
-                    onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
-                  />
-                ) : (
-                  <div id="item-sprite"></div>
-                )
-              }
-            </div>
-          </label>
+        <button type="button" className="hoverable-link rounded-[var(--rounded)] cell-name grid-cell" onClick={() => chooseNewPokemon()}>
+          {selectedForm === "" ? "Choose a Pokémon" : formLabel(selectedForm)}
+        </button>
+
+        <button
+          type="button"
+          className="hoverable-link rounded-[var(--rounded)] cell-form grid-cell"
+          onClick={() => setIsFormOpen(true)}
+          // Nothing to choose between when a species has only its default form
+          disabled={pokemonForms.length < 2}
+        >
+          {selectedForm === "" ? "Form" : formLabel(selectedForm)}
+        </button>
+
+        <div className="cell-typing grid-cell flex flex-row items-center justify-center gap-2">
+          {formTypes.map((type: string) => <TypeDisplay key={type} type={type}/>)}
         </div>
-        <div id="sprite-and-stats" className="flex flex-row gap-4">
-          <img
-            id="pokemon-sprite"
-            src={!sprite ? QUESTION_MARK : sprite}
-            alt={selectedForm}
-            // A handful of forms have no sprite in the PokeAPI repo (pikachu-starter),
-            // so there is nothing in public/sprites to serve for them
-            onError={(e) => { e.currentTarget.src = QUESTION_MARK; }}
-          />
+        <button type="button" className="hoverable-link rounded-[var(--rounded)] cell-nature grid-cell" onClick={() => chooseNature()}>{nature}</button>
+        <button
+          type="button"
+          className="hoverable-link rounded-[var(--rounded)] cell-ability grid-cell"
+          onClick={() => setIsAbilityOpen(true)}
+          disabled={abilityList.length === 0}
+        >
+          {ABILITY_BY_NAME.get(ability)?.label ?? ability}
+        </button>
+        {/* TODO: open an item select modal - inert until that exists */}
+        <button type="button" className="hoverable-link rounded-[var(--rounded)] cell-items grid-cell flex flex-row items-center justify-center gap-2">
+          {itemSprite !== "" ? (
+            <img
+              id="item-sprite"
+              src={itemSprite}
+              alt=""
+              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+            />
+          ) : (
+            <div id="item-sprite"></div>
+          )}
+          {selectedItem === "" ? "Select Item" : ITEM_DETAILS[selectedItem]?.label ?? selectedItem}
+        </button>
+        <img
+          className="cell-sprite grid-cell"
+          id="pokemon-sprite"
+          src={!sprite ? QUESTION_MARK : sprite}
+          alt={selectedForm}
+          // A handful of forms have no sprite in the PokeAPI repo (pikachu-starter),
+          // so there is nothing in public/sprites to serve for them
+          onError={(e) => { e.currentTarget.src = QUESTION_MARK; }}
+        />
+        <div className="cell-moves grid-cell">
           <MoveButtonList moveList={moveList} onEditSlot={setEditingSlot}/>
+        </div>
+
+        <div className="cell-stats grid-cell">
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
-        <button type="submit" className="hoverable-link rounded-[var(--rounded)]" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
+
+        <button type="submit" className="hoverable-link rounded-[var(--rounded)] cell-submit grid-cell" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
       </form>
       {/* Species select modal */}
       <Modal 
@@ -355,10 +376,22 @@ export default function CreateSet() {
         title = "Choose a Pokémon"
         className="modal-full"
       >
-        <SpeciesSearch 
-          onSelect={choosePokemon} 
-          setItemType={setItemType} />
+        <SpeciesSearch onSelect={choosePokemon} />
       </Modal>
+      {/* Form select modal */}
+      <Modal
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        title = "Choose Form"
+        className="modal-sm"
+      >
+        <FormSelect
+          pokemonForms={pokemonForms}
+          currentForm={selectedForm}
+          onConfirm={(form) => { setSelectedForm(form); setIsFormOpen(false); }}
+        />
+      </Modal>
+
       {/* Nature select modal */}
       <Modal
         isOpen={isNatureOpen}

@@ -11,6 +11,10 @@ export interface Species {
   label: string;
   /** Dex id of the default form, used to build the sprite URL */
   id: number;
+  /** PokeAPI gender_rate: -1 genderless, 0 always male, 8 always female, 1-7 either */
+  genderRate: number;
+  /** True when gender is a *form* here (Meowstic, Basculegion), not just a flag */
+  hasGenderForms: boolean;
   types: string[];
   abilities: string[];
   hiddenAbility: string | null;
@@ -23,6 +27,8 @@ export const SPECIES: Species[] = [
     "name": "venusaur",
     "label": "Venusaur",
     "id": 3,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "poison"
@@ -44,6 +50,8 @@ export const SPECIES: Species[] = [
     "name": "charizard",
     "label": "Charizard",
     "id": 6,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "flying"
@@ -65,6 +73,8 @@ export const SPECIES: Species[] = [
     "name": "blastoise",
     "label": "Blastoise",
     "id": 9,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -85,6 +95,8 @@ export const SPECIES: Species[] = [
     "name": "beedrill",
     "label": "Beedrill",
     "id": 15,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "poison"
@@ -106,6 +118,8 @@ export const SPECIES: Species[] = [
     "name": "pidgeot",
     "label": "Pidgeot",
     "id": 18,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "flying"
@@ -128,6 +142,8 @@ export const SPECIES: Species[] = [
     "name": "arbok",
     "label": "Arbok",
     "id": 24,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "poison"
     ],
@@ -149,6 +165,8 @@ export const SPECIES: Species[] = [
     "name": "pikachu",
     "label": "Pikachu",
     "id": 25,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -169,6 +187,8 @@ export const SPECIES: Species[] = [
     "name": "raichu",
     "label": "Raichu",
     "id": 26,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -189,6 +209,8 @@ export const SPECIES: Species[] = [
     "name": "clefable",
     "label": "Clefable",
     "id": 36,
+    "genderRate": 6,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -210,6 +232,8 @@ export const SPECIES: Species[] = [
     "name": "ninetales",
     "label": "Ninetales",
     "id": 38,
+    "genderRate": 6,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -230,6 +254,8 @@ export const SPECIES: Species[] = [
     "name": "vileplume",
     "label": "Vileplume",
     "id": 45,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "poison"
@@ -251,6 +277,8 @@ export const SPECIES: Species[] = [
     "name": "arcanine",
     "label": "Arcanine",
     "id": 59,
+    "genderRate": 2,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -272,6 +300,8 @@ export const SPECIES: Species[] = [
     "name": "alakazam",
     "label": "Alakazam",
     "id": 65,
+    "genderRate": 2,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -293,6 +323,8 @@ export const SPECIES: Species[] = [
     "name": "machamp",
     "label": "Machamp",
     "id": 68,
+    "genderRate": 2,
+    "hasGenderForms": false,
     "types": [
       "fighting"
     ],
@@ -314,6 +346,8 @@ export const SPECIES: Species[] = [
     "name": "victreebel",
     "label": "Victreebel",
     "id": 71,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "poison"
@@ -335,6 +369,8 @@ export const SPECIES: Species[] = [
     "name": "slowbro",
     "label": "Slowbro",
     "id": 80,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "psychic"
@@ -357,6 +393,8 @@ export const SPECIES: Species[] = [
     "name": "gengar",
     "label": "Gengar",
     "id": 94,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "poison"
@@ -378,6 +416,8 @@ export const SPECIES: Species[] = [
     "name": "kangaskhan",
     "label": "Kangaskhan",
     "id": 115,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -399,6 +439,8 @@ export const SPECIES: Species[] = [
     "name": "starmie",
     "label": "Starmie",
     "id": 121,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "psychic"
@@ -421,6 +463,8 @@ export const SPECIES: Species[] = [
     "name": "pinsir",
     "label": "Pinsir",
     "id": 127,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug"
     ],
@@ -442,6 +486,8 @@ export const SPECIES: Species[] = [
     "name": "tauros",
     "label": "Tauros",
     "id": 128,
+    "genderRate": 0,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -463,6 +509,8 @@ export const SPECIES: Species[] = [
     "name": "gyarados",
     "label": "Gyarados",
     "id": 130,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "flying"
@@ -484,6 +532,8 @@ export const SPECIES: Species[] = [
     "name": "ditto",
     "label": "Ditto",
     "id": 132,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -504,6 +554,8 @@ export const SPECIES: Species[] = [
     "name": "vaporeon",
     "label": "Vaporeon",
     "id": 134,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -524,6 +576,8 @@ export const SPECIES: Species[] = [
     "name": "jolteon",
     "label": "Jolteon",
     "id": 135,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -544,6 +598,8 @@ export const SPECIES: Species[] = [
     "name": "flareon",
     "label": "Flareon",
     "id": 136,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -564,6 +620,8 @@ export const SPECIES: Species[] = [
     "name": "aerodactyl",
     "label": "Aerodactyl",
     "id": 142,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "flying"
@@ -586,6 +644,8 @@ export const SPECIES: Species[] = [
     "name": "snorlax",
     "label": "Snorlax",
     "id": 143,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -607,6 +667,8 @@ export const SPECIES: Species[] = [
     "name": "dragonite",
     "label": "Dragonite",
     "id": 149,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon",
       "flying"
@@ -628,6 +690,8 @@ export const SPECIES: Species[] = [
     "name": "meganium",
     "label": "Meganium",
     "id": 154,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -648,6 +712,8 @@ export const SPECIES: Species[] = [
     "name": "typhlosion",
     "label": "Typhlosion",
     "id": 157,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -668,6 +734,8 @@ export const SPECIES: Species[] = [
     "name": "feraligatr",
     "label": "Feraligatr",
     "id": 160,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -688,6 +756,8 @@ export const SPECIES: Species[] = [
     "name": "ariados",
     "label": "Ariados",
     "id": 168,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "poison"
@@ -710,6 +780,8 @@ export const SPECIES: Species[] = [
     "name": "ampharos",
     "label": "Ampharos",
     "id": 181,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -730,6 +802,8 @@ export const SPECIES: Species[] = [
     "name": "azumarill",
     "label": "Azumarill",
     "id": 184,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "fairy"
@@ -752,6 +826,8 @@ export const SPECIES: Species[] = [
     "name": "politoed",
     "label": "Politoed",
     "id": 186,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -773,6 +849,8 @@ export const SPECIES: Species[] = [
     "name": "espeon",
     "label": "Espeon",
     "id": 196,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -793,6 +871,8 @@ export const SPECIES: Species[] = [
     "name": "umbreon",
     "label": "Umbreon",
     "id": 197,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "dark"
     ],
@@ -813,6 +893,8 @@ export const SPECIES: Species[] = [
     "name": "slowking",
     "label": "Slowking",
     "id": 199,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "psychic"
@@ -835,6 +917,8 @@ export const SPECIES: Species[] = [
     "name": "forretress",
     "label": "Forretress",
     "id": 205,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "steel"
@@ -856,6 +940,8 @@ export const SPECIES: Species[] = [
     "name": "steelix",
     "label": "Steelix",
     "id": 208,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "ground"
@@ -878,6 +964,8 @@ export const SPECIES: Species[] = [
     "name": "qwilfish",
     "label": "Qwilfish",
     "id": 211,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "poison"
@@ -900,6 +988,8 @@ export const SPECIES: Species[] = [
     "name": "scizor",
     "label": "Scizor",
     "id": 212,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "steel"
@@ -922,6 +1012,8 @@ export const SPECIES: Species[] = [
     "name": "heracross",
     "label": "Heracross",
     "id": 214,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "fighting"
@@ -944,6 +1036,8 @@ export const SPECIES: Species[] = [
     "name": "skarmory",
     "label": "Skarmory",
     "id": 227,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "flying"
@@ -966,6 +1060,8 @@ export const SPECIES: Species[] = [
     "name": "houndoom",
     "label": "Houndoom",
     "id": 229,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "fire"
@@ -988,6 +1084,8 @@ export const SPECIES: Species[] = [
     "name": "tyranitar",
     "label": "Tyranitar",
     "id": 248,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "dark"
@@ -1009,6 +1107,8 @@ export const SPECIES: Species[] = [
     "name": "sceptile",
     "label": "Sceptile",
     "id": 254,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -1029,6 +1129,8 @@ export const SPECIES: Species[] = [
     "name": "blaziken",
     "label": "Blaziken",
     "id": 257,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "fighting"
@@ -1050,6 +1152,8 @@ export const SPECIES: Species[] = [
     "name": "swampert",
     "label": "Swampert",
     "id": 260,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "ground"
@@ -1071,6 +1175,8 @@ export const SPECIES: Species[] = [
     "name": "pelipper",
     "label": "Pelipper",
     "id": 279,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "flying"
@@ -1093,6 +1199,8 @@ export const SPECIES: Species[] = [
     "name": "gardevoir",
     "label": "Gardevoir",
     "id": 282,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "psychic",
       "fairy"
@@ -1115,6 +1223,8 @@ export const SPECIES: Species[] = [
     "name": "sableye",
     "label": "Sableye",
     "id": 302,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "ghost"
@@ -1137,6 +1247,8 @@ export const SPECIES: Species[] = [
     "name": "mawile",
     "label": "Mawile",
     "id": 303,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "fairy"
@@ -1159,6 +1271,8 @@ export const SPECIES: Species[] = [
     "name": "aggron",
     "label": "Aggron",
     "id": 306,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "rock"
@@ -1181,6 +1295,8 @@ export const SPECIES: Species[] = [
     "name": "medicham",
     "label": "Medicham",
     "id": 308,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "psychic"
@@ -1202,6 +1318,8 @@ export const SPECIES: Species[] = [
     "name": "manectric",
     "label": "Manectric",
     "id": 310,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -1223,6 +1341,8 @@ export const SPECIES: Species[] = [
     "name": "sharpedo",
     "label": "Sharpedo",
     "id": 319,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "dark"
@@ -1244,6 +1364,8 @@ export const SPECIES: Species[] = [
     "name": "camerupt",
     "label": "Camerupt",
     "id": 323,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "ground"
@@ -1266,6 +1388,8 @@ export const SPECIES: Species[] = [
     "name": "torkoal",
     "label": "Torkoal",
     "id": 324,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -1287,6 +1411,8 @@ export const SPECIES: Species[] = [
     "name": "altaria",
     "label": "Altaria",
     "id": 334,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon",
       "flying"
@@ -1308,6 +1434,8 @@ export const SPECIES: Species[] = [
     "name": "milotic",
     "label": "Milotic",
     "id": 350,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -1329,6 +1457,8 @@ export const SPECIES: Species[] = [
     "name": "castform",
     "label": "Castform",
     "id": 351,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -1349,6 +1479,8 @@ export const SPECIES: Species[] = [
     "name": "banette",
     "label": "Banette",
     "id": 354,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost"
     ],
@@ -1370,6 +1502,8 @@ export const SPECIES: Species[] = [
     "name": "chimecho",
     "label": "Chimecho",
     "id": 358,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -1390,6 +1524,8 @@ export const SPECIES: Species[] = [
     "name": "absol",
     "label": "Absol",
     "id": 359,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark"
     ],
@@ -1411,6 +1547,8 @@ export const SPECIES: Species[] = [
     "name": "glalie",
     "label": "Glalie",
     "id": 362,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice"
     ],
@@ -1432,6 +1570,8 @@ export const SPECIES: Species[] = [
     "name": "metagross",
     "label": "Metagross",
     "id": 376,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "psychic"
@@ -1453,6 +1593,8 @@ export const SPECIES: Species[] = [
     "name": "torterra",
     "label": "Torterra",
     "id": 389,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "ground"
@@ -1474,6 +1616,8 @@ export const SPECIES: Species[] = [
     "name": "infernape",
     "label": "Infernape",
     "id": 392,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "fighting"
@@ -1495,6 +1639,8 @@ export const SPECIES: Species[] = [
     "name": "empoleon",
     "label": "Empoleon",
     "id": 395,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "steel"
@@ -1516,6 +1662,8 @@ export const SPECIES: Species[] = [
     "name": "staraptor",
     "label": "Staraptor",
     "id": 398,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "flying"
@@ -1537,6 +1685,8 @@ export const SPECIES: Species[] = [
     "name": "luxray",
     "label": "Luxray",
     "id": 405,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -1558,6 +1708,8 @@ export const SPECIES: Species[] = [
     "name": "roserade",
     "label": "Roserade",
     "id": 407,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "poison"
@@ -1580,6 +1732,8 @@ export const SPECIES: Species[] = [
     "name": "rampardos",
     "label": "Rampardos",
     "id": 409,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "rock"
     ],
@@ -1600,6 +1754,8 @@ export const SPECIES: Species[] = [
     "name": "bastiodon",
     "label": "Bastiodon",
     "id": 411,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "steel"
@@ -1621,6 +1777,8 @@ export const SPECIES: Species[] = [
     "name": "lopunny",
     "label": "Lopunny",
     "id": 428,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -1642,6 +1800,8 @@ export const SPECIES: Species[] = [
     "name": "spiritomb",
     "label": "Spiritomb",
     "id": 442,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "dark"
@@ -1663,6 +1823,8 @@ export const SPECIES: Species[] = [
     "name": "garchomp",
     "label": "Garchomp",
     "id": 445,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon",
       "ground"
@@ -1684,6 +1846,8 @@ export const SPECIES: Species[] = [
     "name": "lucario",
     "label": "Lucario",
     "id": 448,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "steel"
@@ -1706,6 +1870,8 @@ export const SPECIES: Species[] = [
     "name": "hippowdon",
     "label": "Hippowdon",
     "id": 450,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground"
     ],
@@ -1726,6 +1892,8 @@ export const SPECIES: Species[] = [
     "name": "toxicroak",
     "label": "Toxicroak",
     "id": 454,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "poison",
       "fighting"
@@ -1748,6 +1916,8 @@ export const SPECIES: Species[] = [
     "name": "abomasnow",
     "label": "Abomasnow",
     "id": 460,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "ice"
@@ -1769,6 +1939,8 @@ export const SPECIES: Species[] = [
     "name": "weavile",
     "label": "Weavile",
     "id": 461,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "ice"
@@ -1790,6 +1962,8 @@ export const SPECIES: Species[] = [
     "name": "rhyperior",
     "label": "Rhyperior",
     "id": 464,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "rock"
@@ -1812,6 +1986,8 @@ export const SPECIES: Species[] = [
     "name": "leafeon",
     "label": "Leafeon",
     "id": 470,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -1832,6 +2008,8 @@ export const SPECIES: Species[] = [
     "name": "glaceon",
     "label": "Glaceon",
     "id": 471,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "ice"
     ],
@@ -1852,6 +2030,8 @@ export const SPECIES: Species[] = [
     "name": "gliscor",
     "label": "Gliscor",
     "id": 472,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "flying"
@@ -1874,6 +2054,8 @@ export const SPECIES: Species[] = [
     "name": "mamoswine",
     "label": "Mamoswine",
     "id": 473,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice",
       "ground"
@@ -1896,6 +2078,8 @@ export const SPECIES: Species[] = [
     "name": "gallade",
     "label": "Gallade",
     "id": 475,
+    "genderRate": 0,
+    "hasGenderForms": false,
     "types": [
       "psychic",
       "fighting"
@@ -1918,6 +2102,8 @@ export const SPECIES: Species[] = [
     "name": "froslass",
     "label": "Froslass",
     "id": 478,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "ice",
       "ghost"
@@ -1939,6 +2125,8 @@ export const SPECIES: Species[] = [
     "name": "rotom",
     "label": "Rotom",
     "id": 479,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "electric",
       "ghost"
@@ -1960,6 +2148,8 @@ export const SPECIES: Species[] = [
     "name": "serperior",
     "label": "Serperior",
     "id": 497,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -1980,6 +2170,8 @@ export const SPECIES: Species[] = [
     "name": "emboar",
     "label": "Emboar",
     "id": 500,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "fighting"
@@ -2001,6 +2193,8 @@ export const SPECIES: Species[] = [
     "name": "samurott",
     "label": "Samurott",
     "id": 503,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -2021,6 +2215,8 @@ export const SPECIES: Species[] = [
     "name": "watchog",
     "label": "Watchog",
     "id": 505,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -2042,6 +2238,8 @@ export const SPECIES: Species[] = [
     "name": "liepard",
     "label": "Liepard",
     "id": 510,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark"
     ],
@@ -2063,6 +2261,8 @@ export const SPECIES: Species[] = [
     "name": "simisage",
     "label": "Simisage",
     "id": 512,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -2083,6 +2283,8 @@ export const SPECIES: Species[] = [
     "name": "simisear",
     "label": "Simisear",
     "id": 514,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire"
     ],
@@ -2103,6 +2305,8 @@ export const SPECIES: Species[] = [
     "name": "simipour",
     "label": "Simipour",
     "id": 516,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -2123,6 +2327,8 @@ export const SPECIES: Species[] = [
     "name": "musharna",
     "label": "Musharna",
     "id": 518,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -2144,6 +2350,8 @@ export const SPECIES: Species[] = [
     "name": "excadrill",
     "label": "Excadrill",
     "id": 530,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "steel"
@@ -2166,6 +2374,8 @@ export const SPECIES: Species[] = [
     "name": "audino",
     "label": "Audino",
     "id": 531,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -2187,6 +2397,8 @@ export const SPECIES: Species[] = [
     "name": "conkeldurr",
     "label": "Conkeldurr",
     "id": 534,
+    "genderRate": 2,
+    "hasGenderForms": false,
     "types": [
       "fighting"
     ],
@@ -2208,6 +2420,8 @@ export const SPECIES: Species[] = [
     "name": "scolipede",
     "label": "Scolipede",
     "id": 545,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "poison"
@@ -2230,6 +2444,8 @@ export const SPECIES: Species[] = [
     "name": "whimsicott",
     "label": "Whimsicott",
     "id": 547,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "fairy"
@@ -2252,6 +2468,8 @@ export const SPECIES: Species[] = [
     "name": "krookodile",
     "label": "Krookodile",
     "id": 553,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "dark"
@@ -2274,6 +2492,8 @@ export const SPECIES: Species[] = [
     "name": "scrafty",
     "label": "Scrafty",
     "id": 560,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "fighting"
@@ -2296,6 +2516,8 @@ export const SPECIES: Species[] = [
     "name": "cofagrigus",
     "label": "Cofagrigus",
     "id": 563,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost"
     ],
@@ -2316,6 +2538,8 @@ export const SPECIES: Species[] = [
     "name": "garbodor",
     "label": "Garbodor",
     "id": 569,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "poison"
     ],
@@ -2337,6 +2561,8 @@ export const SPECIES: Species[] = [
     "name": "zoroark",
     "label": "Zoroark",
     "id": 571,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "dark"
     ],
@@ -2357,6 +2583,8 @@ export const SPECIES: Species[] = [
     "name": "reuniclus",
     "label": "Reuniclus",
     "id": 579,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -2378,6 +2606,8 @@ export const SPECIES: Species[] = [
     "name": "vanilluxe",
     "label": "Vanilluxe",
     "id": 584,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice"
     ],
@@ -2399,6 +2629,8 @@ export const SPECIES: Species[] = [
     "name": "emolga",
     "label": "Emolga",
     "id": 587,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric",
       "flying"
@@ -2420,6 +2652,8 @@ export const SPECIES: Species[] = [
     "name": "eelektross",
     "label": "Eelektross",
     "id": 604,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -2440,6 +2674,8 @@ export const SPECIES: Species[] = [
     "name": "chandelure",
     "label": "Chandelure",
     "id": 609,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "fire"
@@ -2462,6 +2698,8 @@ export const SPECIES: Species[] = [
     "name": "beartic",
     "label": "Beartic",
     "id": 614,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice"
     ],
@@ -2483,6 +2721,8 @@ export const SPECIES: Species[] = [
     "name": "stunfisk",
     "label": "Stunfisk",
     "id": 618,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "electric"
@@ -2505,6 +2745,8 @@ export const SPECIES: Species[] = [
     "name": "golurk",
     "label": "Golurk",
     "id": 623,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "ghost"
@@ -2527,6 +2769,8 @@ export const SPECIES: Species[] = [
     "name": "hydreigon",
     "label": "Hydreigon",
     "id": 635,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "dragon"
@@ -2548,6 +2792,8 @@ export const SPECIES: Species[] = [
     "name": "volcarona",
     "label": "Volcarona",
     "id": 637,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "fire"
@@ -2569,6 +2815,8 @@ export const SPECIES: Species[] = [
     "name": "chesnaught",
     "label": "Chesnaught",
     "id": 652,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "fighting"
@@ -2590,6 +2838,8 @@ export const SPECIES: Species[] = [
     "name": "delphox",
     "label": "Delphox",
     "id": 655,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "psychic"
@@ -2611,6 +2861,8 @@ export const SPECIES: Species[] = [
     "name": "greninja",
     "label": "Greninja",
     "id": 658,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "dark"
@@ -2632,6 +2884,8 @@ export const SPECIES: Species[] = [
     "name": "diggersby",
     "label": "Diggersby",
     "id": 660,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "ground"
@@ -2654,6 +2908,8 @@ export const SPECIES: Species[] = [
     "name": "talonflame",
     "label": "Talonflame",
     "id": 663,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "flying"
@@ -2675,6 +2931,8 @@ export const SPECIES: Species[] = [
     "name": "vivillon",
     "label": "Vivillon",
     "id": 666,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "flying"
@@ -2697,6 +2955,8 @@ export const SPECIES: Species[] = [
     "name": "pyroar",
     "label": "Pyroar",
     "id": 668,
+    "genderRate": 7,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "normal"
@@ -2719,6 +2979,8 @@ export const SPECIES: Species[] = [
     "name": "floette",
     "label": "Floette",
     "id": 670,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -2739,6 +3001,8 @@ export const SPECIES: Species[] = [
     "name": "florges",
     "label": "Florges",
     "id": 671,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -2759,6 +3023,8 @@ export const SPECIES: Species[] = [
     "name": "pangoro",
     "label": "Pangoro",
     "id": 675,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "dark"
@@ -2781,6 +3047,8 @@ export const SPECIES: Species[] = [
     "name": "furfrou",
     "label": "Furfrou",
     "id": 676,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -2801,6 +3069,8 @@ export const SPECIES: Species[] = [
     "name": "meowstic",
     "label": "Meowstic",
     "id": 678,
+    "genderRate": 4,
+    "hasGenderForms": true,
     "types": [
       "psychic"
     ],
@@ -2822,6 +3092,8 @@ export const SPECIES: Species[] = [
     "name": "aegislash",
     "label": "Aegislash",
     "id": 681,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "ghost"
@@ -2843,6 +3115,8 @@ export const SPECIES: Species[] = [
     "name": "aromatisse",
     "label": "Aromatisse",
     "id": 683,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -2863,6 +3137,8 @@ export const SPECIES: Species[] = [
     "name": "slurpuff",
     "label": "Slurpuff",
     "id": 685,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -2883,6 +3159,8 @@ export const SPECIES: Species[] = [
     "name": "malamar",
     "label": "Malamar",
     "id": 687,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "psychic"
@@ -2905,6 +3183,8 @@ export const SPECIES: Species[] = [
     "name": "barbaracle",
     "label": "Barbaracle",
     "id": 689,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "water"
@@ -2927,6 +3207,8 @@ export const SPECIES: Species[] = [
     "name": "dragalge",
     "label": "Dragalge",
     "id": 691,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "poison",
       "dragon"
@@ -2949,6 +3231,8 @@ export const SPECIES: Species[] = [
     "name": "clawitzer",
     "label": "Clawitzer",
     "id": 693,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -2969,6 +3253,8 @@ export const SPECIES: Species[] = [
     "name": "heliolisk",
     "label": "Heliolisk",
     "id": 695,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric",
       "normal"
@@ -2991,6 +3277,8 @@ export const SPECIES: Species[] = [
     "name": "tyrantrum",
     "label": "Tyrantrum",
     "id": 697,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "dragon"
@@ -3012,6 +3300,8 @@ export const SPECIES: Species[] = [
     "name": "aurorus",
     "label": "Aurorus",
     "id": 699,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "ice"
@@ -3033,6 +3323,8 @@ export const SPECIES: Species[] = [
     "name": "sylveon",
     "label": "Sylveon",
     "id": 700,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -3053,6 +3345,8 @@ export const SPECIES: Species[] = [
     "name": "hawlucha",
     "label": "Hawlucha",
     "id": 701,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "flying"
@@ -3075,6 +3369,8 @@ export const SPECIES: Species[] = [
     "name": "dedenne",
     "label": "Dedenne",
     "id": 702,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric",
       "fairy"
@@ -3097,6 +3393,8 @@ export const SPECIES: Species[] = [
     "name": "goodra",
     "label": "Goodra",
     "id": 706,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon"
     ],
@@ -3118,6 +3416,8 @@ export const SPECIES: Species[] = [
     "name": "klefki",
     "label": "Klefki",
     "id": 707,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "fairy"
@@ -3139,6 +3439,8 @@ export const SPECIES: Species[] = [
     "name": "trevenant",
     "label": "Trevenant",
     "id": 709,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "grass"
@@ -3161,6 +3463,8 @@ export const SPECIES: Species[] = [
     "name": "gourgeist",
     "label": "Gourgeist",
     "id": 711,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "grass"
@@ -3183,6 +3487,8 @@ export const SPECIES: Species[] = [
     "name": "avalugg",
     "label": "Avalugg",
     "id": 713,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice"
     ],
@@ -3204,6 +3510,8 @@ export const SPECIES: Species[] = [
     "name": "noivern",
     "label": "Noivern",
     "id": 715,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "flying",
       "dragon"
@@ -3226,6 +3534,8 @@ export const SPECIES: Species[] = [
     "name": "decidueye",
     "label": "Decidueye",
     "id": 724,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "ghost"
@@ -3247,6 +3557,8 @@ export const SPECIES: Species[] = [
     "name": "incineroar",
     "label": "Incineroar",
     "id": 727,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "dark"
@@ -3268,6 +3580,8 @@ export const SPECIES: Species[] = [
     "name": "primarina",
     "label": "Primarina",
     "id": 730,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "fairy"
@@ -3289,6 +3603,8 @@ export const SPECIES: Species[] = [
     "name": "toucannon",
     "label": "Toucannon",
     "id": 733,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "flying"
@@ -3311,6 +3627,8 @@ export const SPECIES: Species[] = [
     "name": "crabominable",
     "label": "Crabominable",
     "id": 740,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "ice"
@@ -3333,6 +3651,8 @@ export const SPECIES: Species[] = [
     "name": "lycanroc",
     "label": "Lycanroc",
     "id": 745,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "rock"
     ],
@@ -3354,6 +3674,8 @@ export const SPECIES: Species[] = [
     "name": "toxapex",
     "label": "Toxapex",
     "id": 748,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "poison",
       "water"
@@ -3376,6 +3698,8 @@ export const SPECIES: Species[] = [
     "name": "mudsdale",
     "label": "Mudsdale",
     "id": 750,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground"
     ],
@@ -3397,6 +3721,8 @@ export const SPECIES: Species[] = [
     "name": "araquanid",
     "label": "Araquanid",
     "id": 752,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water",
       "bug"
@@ -3418,6 +3744,8 @@ export const SPECIES: Species[] = [
     "name": "salazzle",
     "label": "Salazzle",
     "id": 758,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "poison",
       "fire"
@@ -3439,6 +3767,8 @@ export const SPECIES: Species[] = [
     "name": "tsareena",
     "label": "Tsareena",
     "id": 763,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "grass"
     ],
@@ -3460,6 +3790,8 @@ export const SPECIES: Species[] = [
     "name": "oranguru",
     "label": "Oranguru",
     "id": 765,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "psychic"
@@ -3482,6 +3814,8 @@ export const SPECIES: Species[] = [
     "name": "passimian",
     "label": "Passimian",
     "id": 766,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting"
     ],
@@ -3502,6 +3836,8 @@ export const SPECIES: Species[] = [
     "name": "mimikyu",
     "label": "Mimikyu",
     "id": 778,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost",
       "fairy"
@@ -3523,6 +3859,8 @@ export const SPECIES: Species[] = [
     "name": "drampa",
     "label": "Drampa",
     "id": 780,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "dragon"
@@ -3545,6 +3883,8 @@ export const SPECIES: Species[] = [
     "name": "kommo-o",
     "label": "Kommo-o",
     "id": 784,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon",
       "fighting"
@@ -3567,6 +3907,8 @@ export const SPECIES: Species[] = [
     "name": "corviknight",
     "label": "Corviknight",
     "id": 823,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "flying",
       "steel"
@@ -3589,6 +3931,8 @@ export const SPECIES: Species[] = [
     "name": "flapple",
     "label": "Flapple",
     "id": 841,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "dragon"
@@ -3611,6 +3955,8 @@ export const SPECIES: Species[] = [
     "name": "appletun",
     "label": "Appletun",
     "id": 842,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "dragon"
@@ -3633,6 +3979,8 @@ export const SPECIES: Species[] = [
     "name": "sandaconda",
     "label": "Sandaconda",
     "id": 844,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground"
     ],
@@ -3654,6 +4002,8 @@ export const SPECIES: Species[] = [
     "name": "polteageist",
     "label": "Polteageist",
     "id": 855,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "ghost"
     ],
@@ -3674,6 +4024,8 @@ export const SPECIES: Species[] = [
     "name": "hatterene",
     "label": "Hatterene",
     "id": 858,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "psychic",
       "fairy"
@@ -3696,6 +4048,8 @@ export const SPECIES: Species[] = [
     "name": "grimmsnarl",
     "label": "Grimmsnarl",
     "id": 861,
+    "genderRate": 0,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "fairy"
@@ -3718,6 +4072,8 @@ export const SPECIES: Species[] = [
     "name": "mr-rime",
     "label": "Mr. Rime",
     "id": 866,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ice",
       "psychic"
@@ -3740,6 +4096,8 @@ export const SPECIES: Species[] = [
     "name": "runerigus",
     "label": "Runerigus",
     "id": 867,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ground",
       "ghost"
@@ -3761,6 +4119,8 @@ export const SPECIES: Species[] = [
     "name": "alcremie",
     "label": "Alcremie",
     "id": 869,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "fairy"
     ],
@@ -3781,6 +4141,8 @@ export const SPECIES: Species[] = [
     "name": "falinks",
     "label": "Falinks",
     "id": 870,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "fighting"
     ],
@@ -3801,6 +4163,8 @@ export const SPECIES: Species[] = [
     "name": "morpeko",
     "label": "Morpeko",
     "id": 877,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric",
       "dark"
@@ -3822,6 +4186,8 @@ export const SPECIES: Species[] = [
     "name": "dragapult",
     "label": "Dragapult",
     "id": 887,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dragon",
       "ghost"
@@ -3844,6 +4210,8 @@ export const SPECIES: Species[] = [
     "name": "wyrdeer",
     "label": "Wyrdeer",
     "id": 899,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "psychic"
@@ -3866,6 +4234,8 @@ export const SPECIES: Species[] = [
     "name": "kleavor",
     "label": "Kleavor",
     "id": 900,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "bug",
       "rock"
@@ -3888,6 +4258,8 @@ export const SPECIES: Species[] = [
     "name": "basculegion",
     "label": "Basculegion",
     "id": 902,
+    "genderRate": 4,
+    "hasGenderForms": true,
     "types": [
       "water",
       "ghost"
@@ -3910,6 +4282,8 @@ export const SPECIES: Species[] = [
     "name": "sneasler",
     "label": "Sneasler",
     "id": 903,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "poison"
@@ -3932,6 +4306,8 @@ export const SPECIES: Species[] = [
     "name": "overqwil",
     "label": "Overqwil",
     "id": 904,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "poison"
@@ -3954,6 +4330,8 @@ export const SPECIES: Species[] = [
     "name": "meowscarada",
     "label": "Meowscarada",
     "id": 908,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "dark"
@@ -3975,6 +4353,8 @@ export const SPECIES: Species[] = [
     "name": "skeledirge",
     "label": "Skeledirge",
     "id": 911,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "ghost"
@@ -3996,6 +4376,8 @@ export const SPECIES: Species[] = [
     "name": "quaquaval",
     "label": "Quaquaval",
     "id": 914,
+    "genderRate": 1,
+    "hasGenderForms": false,
     "types": [
       "water",
       "fighting"
@@ -4017,6 +4399,8 @@ export const SPECIES: Species[] = [
     "name": "maushold",
     "label": "Maushold",
     "id": 925,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "normal"
     ],
@@ -4038,6 +4422,8 @@ export const SPECIES: Species[] = [
     "name": "garganacl",
     "label": "Garganacl",
     "id": 934,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "rock"
     ],
@@ -4059,6 +4445,8 @@ export const SPECIES: Species[] = [
     "name": "armarouge",
     "label": "Armarouge",
     "id": 936,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "psychic"
@@ -4080,6 +4468,8 @@ export const SPECIES: Species[] = [
     "name": "ceruledge",
     "label": "Ceruledge",
     "id": 937,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fire",
       "ghost"
@@ -4101,6 +4491,8 @@ export const SPECIES: Species[] = [
     "name": "bellibolt",
     "label": "Bellibolt",
     "id": 939,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "electric"
     ],
@@ -4122,6 +4514,8 @@ export const SPECIES: Species[] = [
     "name": "scovillain",
     "label": "Scovillain",
     "id": 952,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "fire"
@@ -4144,6 +4538,8 @@ export const SPECIES: Species[] = [
     "name": "espathra",
     "label": "Espathra",
     "id": 956,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "psychic"
     ],
@@ -4165,6 +4561,8 @@ export const SPECIES: Species[] = [
     "name": "tinkaton",
     "label": "Tinkaton",
     "id": 959,
+    "genderRate": 8,
+    "hasGenderForms": false,
     "types": [
       "fairy",
       "steel"
@@ -4187,6 +4585,8 @@ export const SPECIES: Species[] = [
     "name": "palafin",
     "label": "Palafin",
     "id": 964,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "water"
     ],
@@ -4207,6 +4607,8 @@ export const SPECIES: Species[] = [
     "name": "orthworm",
     "label": "Orthworm",
     "id": 968,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel"
     ],
@@ -4227,6 +4629,8 @@ export const SPECIES: Species[] = [
     "name": "glimmora",
     "label": "Glimmora",
     "id": 970,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "rock",
       "poison"
@@ -4248,6 +4652,8 @@ export const SPECIES: Species[] = [
     "name": "houndstone",
     "label": "Houndstone",
     "id": 972,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "ghost"
     ],
@@ -4268,6 +4674,8 @@ export const SPECIES: Species[] = [
     "name": "annihilape",
     "label": "Annihilape",
     "id": 979,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "fighting",
       "ghost"
@@ -4290,6 +4698,8 @@ export const SPECIES: Species[] = [
     "name": "farigiraf",
     "label": "Farigiraf",
     "id": 981,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "normal",
       "psychic"
@@ -4312,6 +4722,8 @@ export const SPECIES: Species[] = [
     "name": "kingambit",
     "label": "Kingambit",
     "id": 983,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "dark",
       "steel"
@@ -4334,6 +4746,8 @@ export const SPECIES: Species[] = [
     "name": "gholdengo",
     "label": "Gholdengo",
     "id": 1000,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "ghost"
@@ -4355,6 +4769,8 @@ export const SPECIES: Species[] = [
     "name": "sinistcha",
     "label": "Sinistcha",
     "id": 1013,
+    "genderRate": -1,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "ghost"
@@ -4376,6 +4792,8 @@ export const SPECIES: Species[] = [
     "name": "archaludon",
     "label": "Archaludon",
     "id": 1018,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "steel",
       "dragon"
@@ -4398,6 +4816,8 @@ export const SPECIES: Species[] = [
     "name": "hydrapple",
     "label": "Hydrapple",
     "id": 1019,
+    "genderRate": 4,
+    "hasGenderForms": false,
     "types": [
       "grass",
       "dragon"

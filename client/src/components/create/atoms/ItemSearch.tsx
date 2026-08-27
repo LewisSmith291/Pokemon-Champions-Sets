@@ -59,5 +59,4 @@ export default function ItemSearch({ value, onSelect, name, form, isMegaForm, it
       ))}
     </select>
   )
-
 }

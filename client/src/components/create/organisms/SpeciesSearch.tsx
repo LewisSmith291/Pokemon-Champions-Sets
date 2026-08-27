@@ -5,10 +5,9 @@ import SpeciesSearchBar from "../molecules/SearchAndFilter.jsx";
 
 interface Props {
   onSelect: (species: string) => void;
-  setItemType:(item: string) => void;
 }
 
-export default function SpeciesList({ onSelect, setItemType }: Props) {
+export default function SpeciesList({ onSelect }: Props) {
   const [query, setQuery] = useState<string>("");
 
   const visible: Species[] = useMemo(() => {
@@ -21,7 +20,6 @@ export default function SpeciesList({ onSelect, setItemType }: Props) {
 
   function handleSelect(chosen:string){
     onSelect(chosen);
-    setItemType("held");
   }
 
   function handleQuery(q:string){
