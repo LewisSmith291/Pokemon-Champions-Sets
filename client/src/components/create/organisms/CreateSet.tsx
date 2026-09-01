@@ -448,7 +448,7 @@ export default function CreateSet() {
               id="item-sprite"
               src={itemSprite}
               alt=""
-              onError={(e) => { e.currentTarget.src = "";}}
+              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE;}}
             />
           ) : (
             <div id="item-sprite" className="hidden"></div>
@@ -539,7 +539,7 @@ export default function CreateSet() {
         isOpen={isAbilityOpen}
         onClose={() => setIsAbilityOpen(false)}
         title = "Choose Ability"
-        className="modal-md"
+        className="modal-half"
       >
         <AbilitySelect abilityList={abilityList} currentAbility={ability} onConfirm={selectAbility}/>
       </Modal>

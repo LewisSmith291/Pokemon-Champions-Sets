@@ -20,10 +20,8 @@
 .modal-lg   { --modal-width: min(95vw, 64rem); }
 .modal-full { --modal-width: 90vw; --modal-height: 90svh; }
 
-/* Height modifier, orthogonal to the width scale above. For modals whose content
-   is a scrolling list that should fill the screen rather than size to itself -
-   without it the height stays `auto` and the list gets whatever the rest leaves. */
 .modal-tall { --modal-height: 90svh; }
+.modal-half{ --modal-height: 50svh; }
 
 @media screen and (max-width: 676px){
   .modal-sm,
