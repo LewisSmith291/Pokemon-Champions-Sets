@@ -2,7 +2,7 @@ import NatureBoost from '../atoms/NatureBoost.tsx';
 import StatDisplay from '../atoms/StatDisplay.tsx';
 import TypeDisplay from '@/components/shared/TypeDisplay.tsx';
 import GetNatureChanges from '@/data/stats.ts'
-import '../atoms/TypeStyle.css'
+import '@/components/shared/TypeStyle.css'
 import './pokemonDisplay.css'
 import { useState, useEffect } from 'react';
 

@@ -4,16 +4,20 @@ import { type Species } from "@/data/species"
 
 interface Props{
   species:Species;
+  /** The species already on the set - highlighted, and scrolled to when the modal opens */
+  isCurrent: boolean;
   onSelect: (speciesName:string) => void;
 }
 
-export default function SpeciesRow({species, onSelect}: Props) {
+export default function SpeciesRow({species, isCurrent, onSelect}: Props) {
   return (
-    <button 
+    <button
       type="button"
       onClick={() => onSelect(species.name)}
-      className=" species-row hoverable-link col-span-5 grid grid-cols-subgrid 
-                  items-center gap-2 place-items-center hover:bg-accent "
+      data-scroll-into-view={isCurrent ? "" : undefined}
+      className={` species-row hoverable-link col-span-5 grid grid-cols-subgrid
+                  items-center gap-2 place-items-center hover:bg-accent
+                  ${isCurrent ? "bg-accent" : ""}`}
     >
       <div>{species.label}</div>
       <img alt={species.label} src={`/sprites/${species.id}.png`} height={20} loading="lazy"/>

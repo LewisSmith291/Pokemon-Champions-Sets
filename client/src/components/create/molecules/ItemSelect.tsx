@@ -95,7 +95,7 @@ export default function ItemSelect({ megaStones, currentItem, onConfirm, onClear
         </div>
 
         <div className="flex flex-col gap-2 p-4 item-info">
-          <h3 className="bg-[var(--p-void)] rounded-[var(--rounded)] px-2 py-1">
+          <h3 className="bg-[var(--p-void)] text-[var(--link-color)] rounded-[var(--rounded)] px-2 py-1">
             {detail?.label ?? "Select an item"}
           </h3>
           {detail && <p>{detail.description}</p>}

@@ -32,6 +32,20 @@
   flex-shrink:0;
 }
 
+/* Lives here rather than in pokemonDisplay.css - it's the container a pair of
+   type notches sit in, and SpeciesRow uses it too. Importing it from there was
+   dragging that whole stylesheet onto every page with a type chip. */
+.species-types{
+  justify-content: center;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 767px) {
+  .species-types{
+    flex-direction: column;
+  }
+}
+
 .grass{
   background-color: #439837;
   color: black;

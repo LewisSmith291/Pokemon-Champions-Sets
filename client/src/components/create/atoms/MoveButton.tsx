@@ -13,7 +13,7 @@ export default function MoveButton({label, type, pp, onClick}: Props) {
     return (
       <button 
         type="button"
-        className="move-button flex items-center justify-center bg-grey-400 hover:bg-grey-300 hoverable-link w-full"
+        className="move-button flex items-center justify-center hoverable-link w-full"
         onClick={onClick}
       >
         Choose Move

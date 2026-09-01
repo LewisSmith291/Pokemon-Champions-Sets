@@ -56,7 +56,6 @@ header{
   }
 }
 
-
 #logo{
   --logo-size: calc(var(--header-height) * 0.7);
 
@@ -83,7 +82,7 @@ header{
   background-color: var(--color-header);
   padding:calc(var(--header-height) * 0.2);
   color: white;
-  border: solid 1px black;
+  border: solid 1px var(--border);
   font-size: calc(var(--header-height) * 0.2);
   display:flex;
   justify-content: center;

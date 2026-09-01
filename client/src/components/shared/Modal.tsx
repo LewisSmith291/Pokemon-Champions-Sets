@@ -21,13 +21,25 @@ export default function Modal ({isOpen, onClose, title, className="", children}:
     if (isOpen && !dialog.open) {
       dialog.showModal(); // Move element to browser's top layer
 
-      // showModal() runs its own focusing steps, so any focus a child claimed on
-      // mount has already been overridden by this point - claim it back here.
-      // Touch devices are skipped: focusing a search box there throws up the
-      // on-screen keyboard over the list the user is trying to read.
+      /*
+        showModal() runs its own focusing steps, so any focus a child claimed on
+        mount has already been overridden by this point - claim it back here.
+        Touch devices are skipped: focusing a search box there throws up the
+        on-screen keyboard over the list the user is trying to read.
+      */
       if (window.matchMedia("(pointer: fine)").matches) {
         dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
       }
+      /* 
+        A list marks its already-chosen row with data-scroll-into-view so the
+        modal opens on that row instead of the top of the alphabet. Has to run
+        here for the same reason focus does: a child's own effect fires before
+        this one, while the dialog is still display:none and nothing has a
+        measurable position. scrollIntoView flushes layout, so by this line the
+        just-opened dialog measures correctly.
+      */
+      dialog.querySelector<HTMLElement>("[data-scroll-into-view]")
+        ?.scrollIntoView({ block: "center" });
     }
     if (!isOpen && dialog.open) dialog.close();
 

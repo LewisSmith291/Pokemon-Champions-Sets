@@ -13,9 +13,11 @@
   color: black;
 }
 
-/* The stack is the positioned element - the notifications themselves are static
-   flex children, which is what lets them sit below each other. Positioning each
-   .dismissable individually is what limited this to one at a time. */
+/* 
+  The stack is the positioned element - the notifications themselves are static
+  flex children, which is what lets them sit below each other. Positioning each
+  .dismissable individually is what limited this to one at a time
+*/
 #notification-list{
   position: fixed;
   top: calc(var(--header-height) + 1rem);
@@ -36,7 +38,7 @@
   gap: 2rem;
   padding: 1rem;
 
-  border: white solid 2px;
+  border: var(--border) solid 2px;
   border-radius: var(--rounded);
   cursor: pointer;
 

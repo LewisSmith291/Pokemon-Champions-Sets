@@ -62,7 +62,7 @@ export default function AuthForm({authMode, toggleMode}:Props) {
         />
 
         { // Output the error message 
-        error && <p style={{ color: "#fd5d00" }}>{error}</p>}
+        error && <p className="text-(--color-error)">{error}</p>}
 
         <button type="submit" className="hoverable-link" disabled={loading}>
           {loading ? "…" : authMode === "signup" ? "Sign up" : "Log in"}

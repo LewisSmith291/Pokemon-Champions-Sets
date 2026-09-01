@@ -41,7 +41,7 @@ export default function NatureSelect({currentNature, onConfirm}: Props) {
                 aria-pressed={selectedNature === nature}
                 className={
                   "nature-cell "+(!nature ? "" : "hoverable-link") + " " + 
-                  (selectedNature === nature ? "bg-[var(--accent)] text-[var(--p-yellow)]" : "bg-[var(--bg)]")
+                  (selectedNature === nature ? "bg-[var(--accent)] text-[var(--link-color)]" : "bg-[var(--bg)]")
                 } 
                 onClick={() => setSelectedNature(nature)}
                 disabled={!nature}

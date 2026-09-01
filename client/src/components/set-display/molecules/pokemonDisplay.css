@@ -1,7 +1,13 @@
+/* Everything here is scoped under .set-display on purpose. These class names are
+   about as generic as they get - .name, .item, .ability, .nature - and this file
+   used to be pulled in globally by TypeDisplay.tsx, so they landed on every page
+   that drew a type chip. That is what put a grey bar over the create page's
+   ability and nature cells and forced those to be renamed cell-*. */
+
 .set-display{
   display:flex;
   flex-direction: column;
-  background-color: rgb(85, 85, 85);
+  background-color: var(--surface);
   gap: 0.5rem;
   padding:0.25rem;
   border-radius: 1rem;
@@ -11,7 +17,7 @@
 }
 
 /* Info stles*/
-.info-column{
+.set-display .info-column{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,88 +25,77 @@
   width:60%;
 }
 
-.typing-header{
+.set-display .typing-header{
   display:flex;
   flex-direction: row;
   gap:0.25rem;
   justify-content: space-evenly;
 }
 
-
-.species-types{
-  justify-content: center;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 767px) {
-  .species-types{
-    flex-direction: column;
-  }
-}
-
-.about-and-stats{
+.set-display .about-and-stats{
   display: flex;
   flex-direction: row;
 }
 
-.name{
+.set-display .name{
   font-size: xx-large;
   text-transform: capitalize;
   margin:0.2rem;
 }
 
-.sprite{
+.set-display .sprite{
   width: 90%;
   aspect-ratio: 1 / 1;
   padding:0.5rem;
 }
 
-.ability{
+.set-display .ability,
+.set-display .item{
   font-size: large;
-  color:white;
-}
-
-.item{
-  font-size: large;
-  color:white;
+  color: var(--text);
 }
 
 /* Stat styles */
-.stat-column{
+.set-display .stat-column{
   display: grid;
   grid-template-columns: 5fr 2fr;
   gap:0.1rem;
   width:40%;
 }
 
-.stat-display{
-  background-color: grey;
-  font-size: large;
+/* 
+  Chips on the card. --header is the same purple in both themes, so the label
+  has to be the fixed chrome yellow rather than --text. 
+*/
+.set-display .stat-display,
+.set-display .nature{
+  background-color: var(--header);
+  color: var(--link-color);
   border-radius: 0.7rem;
   padding:0.25rem;
-  color: white;
+}
+
+.set-display .stat-display{
+  font-size: large;
   grid-column-end: span 1;
   grid-column-start: 1;
 }
 
-.nature{
-  background-color: grey;
-  border-radius: 0.7rem;
-  padding:0.25rem;
-  color: white;
+.set-display .nature{
   grid-column-start: span 2;
   grid-column-end: -1;
   text-transform: capitalize;
 }
 
-.nature-up{
+/* On --surface, which is what --stat-up/--stat-down are measured against */
+.set-display .nature-up{
   font-size: x-large;
   padding:0.25rem;
-  color:rgb(221, 0, 0);
+  color: var(--stat-up);
 }
 
-.nature-down{
+.set-display .nature-down{
   font-size: x-large;
   padding:0.25rem;
-  color:rgb(0, 145, 230)
+  color: var(--stat-down);
 }

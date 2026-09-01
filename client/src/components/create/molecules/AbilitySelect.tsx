@@ -17,8 +17,6 @@ export default function AbilitySelect({ abilityList, currentAbility, onConfirm }
   return (
     <div className="flex h-full min-h-0 flex-col p-2 gap-2">
       <div className="flex min-h-0 flex-1 ability-select-info gap-2">
-        {/* Hidden abilities sit in this list on the same footing as the rest -
-            the slot they came from makes no difference once a set is built */}
         <div id="ability-button-list">
           {abilityList.map((name: string) => (
             <button
@@ -34,7 +32,7 @@ export default function AbilitySelect({ abilityList, currentAbility, onConfirm }
         </div>
 
         <div className="flex flex-col gap-2 p-4 ability-info">
-          <h3 className="bg-[var(--p-void)] rounded-[var(--rounded)] px-2 py-1">
+          <h3 className="bg-[var(--p-void)] text-[var(--link-color)] rounded-[var(--rounded)] px-2 py-1">
             {detail?.label ?? "Select an ability"}
           </h3>
           {detail && <p>{detail.description}</p>}

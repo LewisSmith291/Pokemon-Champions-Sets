@@ -4,10 +4,12 @@ import SpeciesRow from "../atoms/SpeciesRow";
 import SpeciesSearchBar from "../molecules/SearchAndFilter.jsx";
 
 interface Props {
+  /** "" before anything is picked, in which case no row is marked */
+  currentSpecies: string;
   onSelect: (species: string) => void;
 }
 
-export default function SpeciesList({ onSelect }: Props) {
+export default function SpeciesList({ currentSpecies, onSelect }: Props) {
   const [query, setQuery] = useState<string>("");
 
   const visible: Species[] = useMemo(() => {
@@ -47,7 +49,7 @@ export default function SpeciesList({ onSelect }: Props) {
         {visible.length === 0 && <p className="p-4">No species match "{query}".</p>}
         <div id="species-list" className="grid grid-cols-5 gap-2 place-items-center">
           {visible.map((s:Species) => (
-            <SpeciesRow key={s.name} onSelect={handleSelect} species={s}/>
+            <SpeciesRow key={s.name} onSelect={handleSelect} species={s} isCurrent={s.name === currentSpecies}/>
           ))}
         </div>
       </div>

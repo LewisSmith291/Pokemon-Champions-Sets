@@ -70,12 +70,11 @@
   border-radius: var(--rounded);
 }
 
-#gender-button img{
+#gender-button svg{
   position: absolute;
   inset: 18%;
   width: 64%;
   height: 64%;
-  object-fit: contain;
 }
 
 #gender-button:disabled{
@@ -83,9 +82,13 @@
   cursor: default;
 }
 
-.gender-male{ color: var(--stat-down); }
-.gender-female{ color: var(--stat-up); }
-.gender-genderless{ color: var(--text-muted); }
+/* 
+  The button's background is chrome, the same deep purple in both themes, so these have to be fixed light colours 
+  The stat tokens flip and go dark in the light theme. The inlined svg picks them up through currentColor
+*/
+.gender-male{ color: var(--gender-male); }
+.gender-female{ color: var(--gender-female); }
+.gender-genderless{ color: var(--link-color); }
 
 .cell-sprite{
   grid-area: sprite;
@@ -319,6 +322,58 @@ input[type=range]{
   flex-direction: row;
 }
 
+/* Search box, then damage class, then type - each row its own line so the
+   filters read as a stack rather than one crowded strip. */
+.move-filters{
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  flex-shrink: 0;
+}
+
+#move-class-filters,
+#move-type-filters{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* The type icon is the whole control - the button is only a hit target, so it
+   keeps its own padding out of the way and fades when the type is off. */
+#move-type-filters button{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  opacity: 0.45;
+  transition: opacity 0.1s;
+}
+
+#move-type-filters button:hover,
+#move-type-filters button[aria-pressed="true"]{
+  opacity: 1;
+}
+
+/* 
+  These are text, not artwork, so they can't use the opacity fade above - half
+  opacity on the base layer's purple button leaves unreadable text on both themes
+*/
+.move-class-filter{
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+  padding: 0.35em 0.9em;
+  text-transform: capitalize;
+}
+
+.move-class-filter[aria-pressed="true"]{
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
 /* Mobile formatting */
 @media screen and (max-width: 676px) {
   #move-button-list{
@@ -334,6 +389,10 @@ input[type=range]{
   }
   .move-info{
     width: 100%;
+    flex-shrink: 1;
+    min-height: 0;
+    max-height: 40%;
+    overflow-y: auto;
   }
 }
 
@@ -409,10 +468,6 @@ input[type=range]{
 
   .item-info{
     width: 100%;
-    /* flex-shrink:0 above protects this panel's *width* while it sits beside the
-       list. Once it stacks below, that same rule protects its height instead -
-       so the description refused to yield and squeezed the list to a row or two.
-       Capped and scrollable so a long description can't take the screen. */
     flex-shrink: 1;
     min-height: 0;
     max-height: 40%;

@@ -491,7 +491,7 @@ export default function CreateSet() {
         title = "Choose a Pokémon"
         className="modal-full"
       >
-        <SpeciesSearch onSelect={choosePokemon} />
+        <SpeciesSearch onSelect={choosePokemon} currentSpecies={selectedPokemon} />
       </Modal>
       {/* Form select modal */}
       <Modal

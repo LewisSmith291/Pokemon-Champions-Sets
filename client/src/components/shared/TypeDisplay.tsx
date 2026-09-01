@@ -1,5 +1,4 @@
 import './TypeStyle.css'
-import '../set-display/molecules/pokemonDisplay.css'
 
 interface TypeProp {
   type: string

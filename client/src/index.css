@@ -15,6 +15,7 @@
   --color-link-text: var(--link-color);
   --color-stat-up: var(--stat-up);
   --color-stat-down: var(--stat-down);
+  --color-error: var(--error);
 }
 
 /* 
@@ -77,6 +78,16 @@
   --orange-notif: #ffac23;
   --green-notif: #89e459;
 
+  /* Error text on the page body. The notification red is too pale to sit on the
+     light body, so light borrows the crimson eyes. 5.34 on --bg, AA. */
+  --error: var(--p-crimson);
+
+  /* Gender icons sit on the deep-purple chrome, so both stay light in both
+     themes - the dark stat colours are the only pair light enough for that.
+     4.88 and 6.17 on --p-deep. */
+  --gender-male:   #4dc4ff;
+  --gender-female: #f76285;
+
   /* Text sitting on the deep-purple chrome. Yellow in BOTH themes, because the
      chrome does not change colour between them. 9.07 on --p-deep, AAA. */
   --link-color:  var(--p-yellow);
@@ -120,6 +131,8 @@
     
     --stat-up-fill:   #a8153a;
     --stat-down-fill: #10598a;
+
+    --error:       #ff9d9d;        /*  8.06 on --bg      AAA */
   }
 }
 
@@ -142,6 +155,10 @@ body {
 }
 
 /* Apply this css to hoverable links whenever they are hovered. Overrides background colours and text-colours already applied to elements */
+/* Yellow on --accent is 5.28 in light but only 3.11 in dark, where --accent is
+   the pink. Kept deliberately: hover is transient and the label is readable
+   either side of it, and --on-accent would cost the yellow hover the whole site
+   is built around. Don't "fix" this without changing the look on purpose. */
 .hoverable-link:hover {
   background-color: var(--accent) !important;
   color:var(--p-yellow) !important;
@@ -175,6 +192,10 @@ p {
   input, select, textarea, button {
     font: inherit;
     background: var(--header);
+    /* The background here is chrome, which is the same deep purple in both
+       themes - so the foreground has to be fixed too. Inheriting --text worked
+       in dark and left near-black on purple (1.7) in light. 9.07 on --p-deep. */
+    color: var(--link-color);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 12px;
