@@ -15,21 +15,43 @@ interface Props {
 export default function ItemSelect({ megaStones, currentItem, onConfirm, onClear }: Props) {
   const [category, setCategory] = useState<ItemCategory>("all");
   const [highlighted, setHighlighted] = useState<string>(currentItem);
+  const [query, setQuery] = useState<string>("");
 
   const visible: string[] = useMemo(() => {
+    const needle: string = query.trim().toLowerCase().replace(/-/g, " ");
     return Object.keys(ITEM_DETAILS)
       .filter((slug) => {
         // A mega stone is only selectable if it belongs to the current species
         if (ITEM_DETAILS[slug].category === "mega-stone" && !megaStones.includes(slug)) return false;
-        return category === "all" || itemCategories(slug).includes(category);
+        if (category !== "all" && !itemCategories(slug).includes(category)) return false;
+        if (needle === "") return true;
+        return ITEM_DETAILS[slug].label.toLowerCase().replace(/-/g, " ").includes(needle);
       })
       .sort((a, b) => ITEM_DETAILS[a].label.localeCompare(ITEM_DETAILS[b].label));
-  }, [category, megaStones]);
+  }, [category, megaStones, query]);
 
   const detail: ItemDetail | undefined = ITEM_DETAILS[highlighted];
 
+  function handleEnter(){
+    if (visible.length !== 1) return;
+    onConfirm(visible[0]);
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col p-2 gap-2">
+      <input
+        className="text-input"
+        data-autofocus
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          e.preventDefault();
+          handleEnter();
+        }}
+        placeholder="Search Items"
+      />
       <div id="item-category-tabs">
         {ITEM_CATEGORIES.map(({ id, label }) => (
           <button
