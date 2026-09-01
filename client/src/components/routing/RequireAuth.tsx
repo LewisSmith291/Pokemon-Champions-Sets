@@ -13,7 +13,9 @@ export default function RequireAuth() {
   }
 
   if (!session){
-    return <Navigate to="/signin" state={{from:location.pathname}} replace />
+    // pathname + search, not pathname alone: a create-set draft lives entirely in
+    // the query string, and dropping it would lose the set on the way to sign-in
+    return <Navigate to="/signin" state={{from:location.pathname + location.search}} replace />
   }
 
   return (

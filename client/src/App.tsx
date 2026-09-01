@@ -17,8 +17,10 @@ function App() {
         <Route index element={<Home/>} />
         <Route path="signin" element={<AuthPage signType='signin'/>}/>
         <Route path="signup" element={<AuthPage signType='signup'/>}/>
+        {/* Building a set is open to anyone - the whole draft lives in the URL.
+            Publishing it is gated inside CreateSet, and by requireAuth on the API. */}
+        <Route path="create" element={<CreateSetPage/>}/>
         <Route element={<RequireAuth />}>
-          <Route path="create" element={<CreateSetPage/>}/>
           <Route path="profile" element={<ProfilePage/>}/>
         </Route>
 

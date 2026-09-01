@@ -1,5 +1,8 @@
-import { useEffect, useState, type SyntheticEvent, useRef} from 'react'
+import { useEffect, useState, useMemo, type SyntheticEvent, useRef} from 'react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import "./CreateSet.css"
+import { draftToParams, paramsToDraft } from '@/data/setUrl.ts';
+import { useSession } from '@/services/authClient';
 import SpeciesSearch from '../organisms/SpeciesSearch.tsx';
 import FormSelect from '../molecules/FormSelect.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
@@ -17,6 +20,7 @@ import Modal from '@/components/shared/Modal.tsx';
 import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
 import AbilitySelect from '../molecules/AbilitySelect.tsx';
+import ItemSelect from '../molecules/ItemSelect.tsx';
 import { ABILITY_BY_NAME } from '@/data/abilityLookup.ts';
 import NotificationList from '@/components/shared/NotificationList.tsx';
 import useNotifications from '@/components/shared/useNotifications.ts';
@@ -48,19 +52,31 @@ const PLACEHOLDER_SPRITE = "/wireSquare.svg";
 const QUESTION_MARK = "/question-mark.svg"
 
 export default function CreateSet() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { data: session } = useSession();
+
+  // Read the URL once, on mount. A lazy initialiser rather than a value read every
+  // render: the effect below writes the URL from state, so re-reading it here
+  // would have the two fighting each other mid-edit.
+  const [initial] = useState(() => paramsToDraft(searchParams));
+
   // form logic
-  const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(true);
+  // Don't throw the species picker over a set that was just restored from a link
+  const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(!initial.species);
   const [editingSlot, setEditingSlot] = useState<number | null>(null);
   const [isNatureOpen, setIsNatureOpen] = useState<boolean>(false);
   const [isAbilityOpen, setIsAbilityOpen] = useState<boolean>(false);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [isItemOpen, setIsItemOpen] = useState<boolean>(false);
   // pokemon / form selection
-  const [selectedPokemon, setSelectedPokemon] = useState<string>("");
+  const [selectedPokemon, setSelectedPokemon] = useState<string>(initial.species ?? "");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
-  const [selectedForm, setSelectedForm] = useState<string>("");
+  const [selectedForm, setSelectedForm] = useState<string>(initial.form ?? "");
   const [isMegaForm, setIsMegaForm] = useState<boolean>(false);
   const [formTypes, setFormTypes] = useState<string[]>([]);
-  const [gender, setGender] = useState<Gender>("genderless");
+  const [gender, setGender] = useState<Gender>(initial.gender ?? "genderless");
   // sprite
   // The form's dex id rather than a finished path: gender can change the sprite
   // without a form fetch, so the src has to be derived at render.
@@ -68,18 +84,18 @@ export default function CreateSet() {
   // items
   // The held/berry/mega filter and whether the species has a mega at all are
   // concerns of the item picker, so they'll live inside that modal rather than here.
-  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [selectedItem, setSelectedItem] = useState<string>(initial.item ?? "");
   // ability
   const [abilityList, setAbilityList] = useState<string[]>(["overgrow"]);
-  const [ability, setAbility] = useState<string>("");
+  const [ability, setAbility] = useState<string>(initial.ability ?? "");
   // moves
   const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
-  const [moveList, setMoveList] = useState<(string | null)[]>([null, null, null, null]);
+  const [moveList, setMoveList] = useState<(string | null)[]>(initial.moves ?? [null, null, null, null]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
   const [baseStats, setBaseStats] = useState<Record<string, number>>({});
-  const [statBoosts, setStatBoosts] = useState<Boosts>(EMPTY_BOOSTS);
-  const [nature, setNature] = useState<string>("Bold");
+  const [statBoosts, setStatBoosts] = useState<Boosts>(initial.boosts ?? EMPTY_BOOSTS);
+  const [nature, setNature] = useState<string>(initial.nature ?? "Bold");
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // notifications
@@ -105,20 +121,10 @@ export default function CreateSet() {
 
         // Set forms
         setPokemonForms(filteredVarieties);
-        setSelectedForm(filteredVarieties[0]);
-
-        // Reset item
-        setSelectedItem("");
-
-        // Gender is fixed for 22 of the 208 species, so start from what this one
-        // permits rather than carrying the previous pick over
-        setGender(allowedGenders(selectedPokemon)[0]);
-
-        // Reset nature
-        setNature("Serious");
-
-        // Reset moves list
-        setMoveList([null, null, null, null]);
+        // Keep a form that came in from the URL, otherwise take the default variety.
+        // The resets that used to live here moved to choosePokemon: this effect also
+        // runs when a set is hydrated from a link, and would wipe what it restored.
+        setSelectedForm((prev) => filteredVarieties.includes(prev) ? prev : filteredVarieties[0]);
       })
       .catch((error) => {
         console.log('There was an ERROR: ', error);
@@ -183,6 +189,28 @@ export default function CreateSet() {
     const stones: string[] = GetMegaStones(selectedPokemon as "string");
     setSelectedItem(preferredMegaStone(selectedForm, stones) ?? stones[0] ?? "");
   }, [isMegaForm, selectedForm, selectedPokemon]);
+
+  // Mirror the set into the address bar so a refresh - or a trip through sign-in -
+  // doesn't lose it. replace:true because otherwise every slider nudge would be a
+  // history entry and the back button would take dozens of presses to leave.
+  useEffect(() => {
+    setSearchParams(
+      draftToParams({
+        species: selectedPokemon,
+        form: selectedForm,
+        item: selectedItem,
+        gender,
+        ability,
+        nature,
+        moves: moveList,
+        boosts: statBoosts,
+      }),
+      { replace: true }
+    );
+    // setSearchParams is intentionally absent: react-router rebuilds it whenever
+    // the location changes, so listing it would make this effect retrigger itself.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPokemon, selectedForm, selectedItem, gender, ability, nature, moveList, statBoosts]);
 
   // update moveListRef
   const moveListRef = useRef(moveList);
@@ -255,6 +283,16 @@ export default function CreateSet() {
   // Function run by submit button to create a new set 
   async function handleSubmit(e: SyntheticEvent){
     e.preventDefault();
+
+    // Anyone can build a set; saving it to an account needs an account. The set
+    // itself is in the URL, so handing that back as `from` means the round trip
+    // through sign-in loses nothing. The server enforces this too - requireAuth
+    // on POST /api/sets - this check is only here to avoid a pointless 401.
+    if (!session) {
+      navigate("/signin", { state: { from: location.pathname + location.search } });
+      return;
+    }
+
     setIsSubmitting(true);
 
     const payload = {
@@ -299,6 +337,16 @@ export default function CreateSet() {
   function choosePokemon(pokemon:string){
     setSelectedPokemon(pokemon);
     setIsSpeciesOpen(false);
+
+    // A different species invalidates everything chosen for the last one. These
+    // belong to the user action rather than the fetch effect - the effect also
+    // fires when a set is hydrated from its URL, where wiping would be wrong.
+    setSelectedForm("");
+    setSelectedItem("");
+    // Gender is fixed for 22 of the 208 species, so take what this one permits
+    setGender(allowedGenders(pokemon)[0]);
+    setNature("Serious");
+    setMoveList([null, null, null, null]);
   }
 
   function chooseNewPokemon(){
@@ -418,7 +466,9 @@ export default function CreateSet() {
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
 
-        <button type="submit" className="hoverable-link rounded-[var(--rounded)] cell-submit grid-cell" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>Create Set</button>
+        <button type="submit" className="hoverable-link rounded-[var(--rounded)] cell-submit grid-cell" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>
+          {session ? "Publish Set" : "Sign in to publish"}
+        </button>
       </form>
       {/* Species select modal */}
       <Modal 
