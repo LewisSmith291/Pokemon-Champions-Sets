@@ -448,10 +448,10 @@ export default function CreateSet() {
               id="item-sprite"
               src={itemSprite}
               alt=""
-              onError={(e) => { e.currentTarget.src = PLACEHOLDER_SPRITE; }}
+              onError={(e) => { e.currentTarget.src = "";}}
             />
           ) : (
-            <div id="item-sprite"></div>
+            <div id="item-sprite" className="hidden"></div>
           )}
           {selectedItem === "" ? "Select Item" : ITEM_DETAILS[selectedItem]?.label ?? selectedItem}
         </button>
