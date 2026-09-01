@@ -258,6 +258,16 @@ export default function CreateSet() {
   
   const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
 
+  // Guarded on the species actually having a mega: GetMegaStones trims letters off
+  // the name until something matches, so asking about a species with no stone
+  // eventually matches on a single letter and returns most of the list.
+  const megaStones: string[] = useMemo(
+    () => pokemonForms.some((form) => form.includes("-mega"))
+      ? GetMegaStones(selectedPokemon as "string")
+      : [],
+    [pokemonForms, selectedPokemon]
+  );
+
   // Pikachu's tail and Venusaur's flower differ by gender without being separate
   // varieties, so those species get a second file under sprites/female/. Meowstic
   // and Basculegion are excluded - their genders are already distinct forms with
@@ -427,8 +437,12 @@ export default function CreateSet() {
         >
           {ABILITY_BY_NAME.get(ability)?.label ?? ability}
         </button>
-        {/* TODO: open an item select modal - inert until that exists */}
-        <button type="button" className="hoverable-link rounded-[var(--rounded)] cell-items grid-cell flex flex-row items-center justify-center gap-2">
+        <button
+          type="button"
+          className="hoverable-link rounded-[var(--rounded)] cell-items grid-cell flex flex-row items-center justify-center gap-2"
+          onClick={() => setIsItemOpen(true)}
+          disabled={selectedPokemon === ""}
+        >
           {itemSprite !== "" ? (
             <img
               id="item-sprite"
@@ -490,6 +504,21 @@ export default function CreateSet() {
           pokemonForms={pokemonForms}
           currentForm={selectedForm}
           onConfirm={(form) => { setSelectedForm(form); setIsFormOpen(false); }}
+        />
+      </Modal>
+
+      {/* Item select modal */}
+      <Modal
+        isOpen={isItemOpen}
+        onClose={() => setIsItemOpen(false)}
+        title = "Choose Item"
+        className="modal-lg"
+      >
+        <ItemSelect
+          megaStones={megaStones}
+          currentItem={selectedItem}
+          onConfirm={(item) => { setSelectedItem(item); setIsItemOpen(false); }}
+          onClear={() => { setSelectedItem(""); setIsItemOpen(false); }}
         />
       </Modal>
 
