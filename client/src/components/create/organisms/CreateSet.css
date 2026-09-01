@@ -406,9 +406,19 @@ input[type=range]{
   .item-select-info{
     flex-direction: column;
   }
+
   .item-info{
     width: 100%;
+    /* flex-shrink:0 above protects this panel's *width* while it sits beside the
+       list. Once it stacks below, that same rule protects its height instead -
+       so the description refused to yield and squeezed the list to a row or two.
+       Capped and scrollable so a long description can't take the screen. */
+    flex-shrink: 1;
+    min-height: 0;
+    max-height: 40%;
+    overflow-y: auto;
   }
+
   #item-button-list{
     grid-template-columns: 1fr;
   }

@@ -512,7 +512,7 @@ export default function CreateSet() {
         isOpen={isItemOpen}
         onClose={() => setIsItemOpen(false)}
         title = "Choose Item"
-        className="modal-lg"
+        className="modal-lg modal-tall"
       >
         <ItemSelect
           megaStones={megaStones}
