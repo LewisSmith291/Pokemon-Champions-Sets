@@ -355,6 +355,83 @@ input[type=range]{
   }
 }
 
+/* Item selection */
+#item-category-tabs{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.item-category-tab{
+  border-radius: var(--rounded);
+  padding: 0.35em 0.7em;
+  font-size: clamp(0.75rem, 2.2vw, 0.95rem);
+}
+
+.item-select-info{
+  display: flex;
+  flex-direction: row;
+}
+
+#item-button-list{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: min-content;
+  align-content: start;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+  /* The list scrolls, not the modal - .modal itself is overflow-y:hidden */
+  overflow-y: auto;
+}
+
+.item-button{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5em;
+  text-align: left;
+  border-radius: var(--rounded);
+  min-height: 2.75em;
+  padding: 0.35em 0.5em;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Long labels ellipsis rather than pushing the sprite out of the button */
+.item-button span{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-icon{
+  width: 1.75em;
+  height: 1.75em;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+
+.item-info{
+  width: 33%;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 676px){
+  .item-select-info{
+    flex-direction: column;
+  }
+  .item-info{
+    width: 100%;
+  }
+  #item-button-list{
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Ability selection */
 .ability-select-info{
   display: flex;
