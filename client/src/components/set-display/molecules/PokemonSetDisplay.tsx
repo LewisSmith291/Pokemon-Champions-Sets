@@ -102,6 +102,7 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
               {/* Both lengths, swapped by media query - "Sp. Defense" wraps on a
                   phone and makes that one row taller than the other five */}
               <span className="stat-label">
+                <span className="stat-name-full">{stat.label}</span>
                 <span className="stat-name-short">{stat.short}</span>
               </span>
               <span className="stat-value">{value}</span>

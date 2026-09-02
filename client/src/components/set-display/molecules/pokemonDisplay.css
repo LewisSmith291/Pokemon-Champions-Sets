@@ -162,9 +162,12 @@
   gap: 0.3rem;
 }
 
+/* Fixed track widths, and nowrap on both text columns, so every row is exactly
+   the same height - a wrapped "Sp. Defense" or "+32 max" used to make its row
+   taller than the other five. */
 .set-display .stat-row{
   display: grid;
-  grid-template-columns: 5.5rem 2.5rem 1fr 3.5rem;
+  grid-template-columns: 5.5rem 2.5rem 1fr 2.5rem;
   align-items: center;
   gap: 0.5rem;
 }
@@ -172,7 +175,15 @@
 .set-display .stat-label{
   color: var(--text-muted);
   font-size: 0.9rem;
+  white-space: nowrap;
 }
+
+/* Long name on desktop, three letters on a phone - swapped in the media query */
+.set-display .stat-name-short{ display: none; }
+
+/* Full name on desktop, the three-letter form on a phone where the label column
+   has to be narrow. Swapped in the media query at the bottom. */
+.set-display .stat-name-short{ display: none; }
 
 .set-display .stat-value{
   font-variant-numeric: tabular-nums;
@@ -182,13 +193,18 @@
 .set-display .stat-boost{
   color: var(--text-muted);
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .set-display .stat-bar{
   display: block;
   height: 0.6rem;
   border-radius: 0.3rem;
-  background: var(--bg);
+  /* Not --bg: that is the same #e4ccdd as --surface in light, so the empty part
+     of the track vanished into the card. A tint of the text colour has contrast
+     against whatever is behind it in either theme, box or no box. */
+  background: var(--border);
+  background: color-mix(in srgb, var(--text) 18%, transparent);
   overflow: hidden;
 }
 
@@ -200,8 +216,11 @@
 }
 
 /* The two stats the nature moved. Same tokens the create page uses, measured
-   against --surface, which is this card's background. */
+   against --surface, which is this card's background. The name is coloured as
+   well as the number, so the nature's effect is legible without reading the bar. */
+.set-display .stat-up .stat-label,
 .set-display .stat-up .stat-value{ color: var(--stat-up); }
+.set-display .stat-down .stat-label,
 .set-display .stat-down .stat-value{ color: var(--stat-down); }
 .set-display .stat-up .stat-fill{ background: var(--stat-up-fill); }
 .set-display .stat-down .stat-fill{ background: var(--stat-down-fill); }
