@@ -7,14 +7,21 @@
 .set-display{
   --move-chip-size: 0.95rem;
 
+  /* What the item/ability/nature slabs sit on. It has to differ from whatever is
+     behind them, and that changes at the breakpoint: on desktop this card is
+     --surface, which is the same --p-deep as --header in dark mode, so the slabs
+     use --p-void. On mobile the card is gone and the page is --bg, which is
+     --p-void in dark - so the media query flips this to --header. */
+  --slab-bg: var(--p-void);
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-areas:
     "name    types"
     "sprite  moves"
     "item    ability"
-    "nature  nature"
     "stats   stats"
+    "nature  nature"
     "tags    tags"
     "actions actions"
     "author  votes";
@@ -135,9 +142,7 @@
   min-width: 0;
   padding: 0.4rem 0.75rem;
 
-  /* --p-void rather than --header: --header is the same --p-deep as --surface in
-     dark mode, which left these slabs invisible against the card. */
-  background-color: var(--p-void);
+  background-color: var(--slab-bg);
   color: var(--link-color);
   border-radius: var(--rounded);
   overflow: hidden;
@@ -282,29 +287,40 @@
 }
 
 /* Single column, in the order the page reads best on a phone: typing, name,
-   sprite, then the text fields, moves, stats and finally tags. */
+   sprite, then the text fields, moves, stats and finally tags. Two tracks only
+   so author and votes can share the last row. */
 @media screen and (max-width: 676px){
   .set-display{
     --move-chip-size: 0.8rem;
 
-    grid-template-columns: minmax(0, 1fr);
+    /* The box is gone below, so these slabs now sit on the page's --bg - which
+       is the --p-void they used on desktop. --header is the one that reads
+       against it in both themes. */
+    --slab-bg: var(--header);
+
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
-      "types"
-      "name"
-      "sprite"
-      "item"
-      "ability"
-      "nature"
-      "moves"
-      "stats"
-      "tags"
-      "author"
-      "votes"
-      "actions";
+      "types   types"
+      "name    name"
+      "sprite  sprite"
+      "item    item"
+      "ability ability"
+      "moves   moves"
+      "stats   stats"
+      "nature  nature"
+      "tags    tags"
+      "actions actions"
+      "author  votes";
     justify-items: center;
     gap: 0.6rem;
-    padding: 0.85rem;
+
+    /* No card on a phone - the border, radius and padding cost vertical space
+       the page didn't have, and the create page drops its box here too. */
     width: 100%;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
   }
 
   .set-display .set-name{
@@ -313,6 +329,7 @@
     max-width: 100%;
   }
 
+  /* Half the row each, with the same gap as everything else */
   .set-display .set-types{
     justify-content: center;
   }
@@ -324,12 +341,16 @@
     width: 100%;
   }
 
-  .set-display .set-author,
-  .set-display .set-votes{
-    justify-self: center;
-  }
+  /* Three letters, so the label column can be narrow enough to leave the bar
+     room without any row wrapping to two lines */
+  .set-display .stat-name-full{ display: none; }
+  .set-display .stat-name-short{ display: inline; }
 
   .set-display .stat-row{
-    grid-template-columns: 4.5rem 2.5rem 1fr 3rem;
+    grid-template-columns: 2.75rem 2.5rem 1fr 2.5rem;
+    gap: 0.4rem;
   }
+
+  .set-display .set-author{ justify-self: start; }
+  .set-display .set-votes{ justify-self: end; }
 }

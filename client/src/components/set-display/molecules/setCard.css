@@ -176,8 +176,11 @@
 }
 
 /* The two stats the nature moved, using the same tokens the create page's
-   sliders use - measured against --bg, which is this card's background */
+   sliders use - measured against --bg, which is this card's background. Name as
+   well as number, matching the set page. */
+.set-card-stats .stat-up dt,
 .set-card-stats .stat-up dd{ color: var(--stat-up); }
+.set-card-stats .stat-down dt,
 .set-card-stats .stat-down dd{ color: var(--stat-down); }
 
 .set-card-tags{
