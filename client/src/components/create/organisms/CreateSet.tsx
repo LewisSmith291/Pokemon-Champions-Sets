@@ -21,6 +21,8 @@ import MoveSelect from '../molecules/MoveSelect.tsx';
 import MoveButtonList from '../molecules/MoveButtonList.tsx';
 import AbilitySelect from '../molecules/AbilitySelect.tsx';
 import ItemSelect from '../molecules/ItemSelect.tsx';
+import TagSelect from '../molecules/TagSelect.tsx';
+import { tagLabel } from '@/data/tags.ts';
 import { ABILITY_BY_NAME } from '@/data/abilityLookup.ts';
 import NotificationList from '@/components/shared/NotificationList.tsx';
 import useNotifications from '@/components/shared/useNotifications.ts';
@@ -70,6 +72,7 @@ export default function CreateSet() {
   const [isAbilityOpen, setIsAbilityOpen] = useState<boolean>(false);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [isItemOpen, setIsItemOpen] = useState<boolean>(false);
+  const [isTagsOpen, setIsTagsOpen] = useState<boolean>(false);
   // pokemon / form selection
   const [selectedPokemon, setSelectedPokemon] = useState<string>(initial.species ?? "");
   const [pokemonForms, setPokemonForms] = useState<string[]>([]);
@@ -101,6 +104,9 @@ export default function CreateSet() {
   // A set is private until its author says otherwise - only public ones are
   // reachable from the showcase, browse or search.
   const [isPublic, setIsPublic] = useState<boolean>(false);
+  // Role labels for browse/search later. Deliberately not in the URL codec -
+  // they describe a finished set rather than being part of the build itself.
+  const [tags, setTags] = useState<string[]>([]);
   // notifications
   const { notifications, notify, dismiss } = useNotifications();
 
@@ -319,6 +325,7 @@ export default function CreateSet() {
     nature: nature.toLowerCase(),
     ...statBoosts,
     moves: moveList.filter((move): move is string => move !== null),
+    tags: tags,
     isPublic: isPublic,
     };
 
@@ -487,6 +494,17 @@ export default function CreateSet() {
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
 
+        <button
+          type="button"
+          className="hoverable-link rounded-[var(--rounded)] cell-tags grid-cell"
+          onClick={() => setIsTagsOpen(true)}
+          disabled={selectedPokemon === ""}
+        >
+          {tags.length === 0
+            ? "Add tags"
+            : tags.map(tagLabel).join(", ")}
+        </button>
+
         <div className="cell-submit grid-cell">
           <label id="publish-toggle">
             <input
@@ -565,6 +583,19 @@ export default function CreateSet() {
       >
         <AbilitySelect abilityList={abilityList} currentAbility={ability} onConfirm={selectAbility}/>
       </Modal>
+      {/* Tag select modal */}
+      <Modal
+        isOpen={isTagsOpen}
+        onClose={() => setIsTagsOpen(false)}
+        title = "Add Tags"
+        className="modal-md"
+      >
+        <TagSelect
+          currentTags={tags}
+          onConfirm={(chosen) => { setTags(chosen); setIsTagsOpen(false); }}
+        />
+      </Modal>
+
       {/* Move select modal */}
       <Modal 
         isOpen={editingSlot !== null} 

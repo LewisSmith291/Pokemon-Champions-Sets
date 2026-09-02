@@ -32,3 +32,17 @@
   color: var(--link-color);
   text-decoration: underline;
 }
+
+/* Three cards side by side stop being readable well before the phone
+   breakpoint, so they stack and the panel scrolls instead. */
+@media screen and (max-width: 900px){
+  #showcase-items{
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  #showcase-items .set-card{
+    flex: 0 0 auto;
+    overflow-y: visible;
+  }
+}

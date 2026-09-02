@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {TAG_SLUGS} from "../data/tags.js"
+import {TAG_SLUGS, MAX_TAGS} from "../data/tags.js"
 
 // Max of each stat boost is 32
 const boost = z.number().int().min(0).max(32);
@@ -29,7 +29,8 @@ export const createSetSchema = z.object({
   boostSpe: boost,
 
   moves: z.array(z.string().min(1)).min(1).max(4),
-  tags: z.array(z.enum(TAG_SLUGS)).default([]),
+  // Capped so tags stay meaningful for the filtering browse and search will want
+  tags: z.array(z.enum(TAG_SLUGS)).max(MAX_TAGS).default([]),
   isPublic: z.boolean().default(false),
 }).refine(
   // Total stat boosts can't exceed 66

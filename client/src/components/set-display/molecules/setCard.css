@@ -1,20 +1,30 @@
+/* One type scale for the whole card, rather than a clamp() per element */
 .set-card{
+  --card-text: clamp(0.72rem, 1vw, 0.85rem);
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
 
   flex: 1 1 0;
   min-width: 0;
-  min-height: 0;
-  padding: 0.6rem;
+  padding: 0.75rem;
 
   background-color: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: var(--rounded);
   text-decoration: none;
-  overflow-y: auto;
+  font-size: var(--card-text);
+  transition: border-color 0.1s, transform 0.1s;
+}
+
+/* Not .hoverable-link - that repaints the whole card accent and takes the
+   sprite and type notches with it. A lift and a border is enough of a cue. */
+.set-card:hover{
+  border-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .set-card-head{
@@ -29,7 +39,7 @@
 
 .set-card-head h3{
   margin: 0;
-  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -51,37 +61,68 @@
   justify-content: center;
 }
 
-.set-card-ability,
-.set-card-item,
-.set-card-author{
-  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
-  text-align: center;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* Six stats across, so the label sits above the value rather than beside it */
+.set-card-stats{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.15rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.set-card-item{
+.set-card-stats .stat-cell{
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
+  min-width: 0;
 }
 
-.set-card-author{
+.set-card-stats dt{
   color: var(--text-muted);
-  margin-top: auto;
+  font-size: 0.85em;
+}
+
+.set-card-stats dd{
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The two stats the nature moved, using the same tokens the create page's
+   sliders use - measured against --surface, which is this card's background */
+.set-card-stats .stat-up dd{ color: var(--stat-up); }
+.set-card-stats .stat-down dd{ color: var(--stat-down); }
+
+.set-card-tags,
+.set-card-moves{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.set-card-tags{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.set-card-tags li{
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--rounded-small);
+  padding: 0.1rem 0.4rem;
+  font-size: 0.85em;
 }
 
 .set-card-moves{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: 100%;
 }
 
 .set-card-moves li{
@@ -89,7 +130,6 @@
   color: var(--link-color);
   border-radius: var(--rounded-small);
   padding: 0.15rem 0.3rem;
-  font-size: clamp(0.68rem, 1vw, 0.85rem);
   text-align: center;
   min-width: 0;
   overflow: hidden;
@@ -97,19 +137,53 @@
   white-space: nowrap;
 }
 
-/* Sits inside the card's <Link>, so its click handler stops propagation */
-.vote-button{
+.set-card-line{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.set-card-author{
+  color: var(--text-muted);
+  font-size: 0.9em;
+  /* Pinned to the bottom so a row of cards lines up regardless of tag count */
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+/* --- vote control, shared with the set page --- */
+
+.vote-button,
+.vote-count{
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.25rem;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 
   padding: 0.2em 0.5em;
   border-radius: var(--rounded);
+  border: 1px solid var(--border);
+}
+
+.vote-button{
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border);
+}
+
+.vote-button:hover:not(:disabled){
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  cursor: pointer;
 }
 
 .vote-button.voted{
@@ -118,9 +192,15 @@
   border-color: var(--accent);
 }
 
-/* Not a failure state - most viewers can't vote on any given set, so this
-   shouldn't read as broken. Just quieter than an actionable button. */
+/* Signed out - the tooltip says to sign in, so this is informative not broken */
 .vote-button:disabled{
   opacity: 0.6;
   cursor: default;
+}
+
+/* Your own set: no button at all, just the score */
+.vote-count{
+  background: transparent;
+  color: var(--text-muted);
+  border-style: dashed;
 }

@@ -139,6 +139,19 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
       movesBySet.set(row.setId, list);
     }
 
+    // Same one-query-for-all shape as the moves above - the card shows tags too
+    const tagRows = await db
+      .select({ setId: setTags.setId, tag: setTags.tag })
+      .from(setTags)
+      .where(inArray(setTags.setId, ids));
+
+    const tagsBySet = new Map<string, string[]>();
+    for (const row of tagRows) {
+      const list = tagsBySet.get(row.setId) ?? [];
+      list.push(row.tag);
+      tagsBySet.set(row.setId, list);
+    }
+
     // Which of these the viewer has voted on - empty for logged-out readers
     const viewerId = req.user?.id;
     const votedIds = new Set<string>();
@@ -154,6 +167,7 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
       sets: rows.map((row) => ({
         ...row,
         moves: movesBySet.get(row.id) ?? [],
+        tags: tagsBySet.get(row.id) ?? [],
         hasVoted: votedIds.has(row.id),
       })),
     });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "@/services/authClient";
 import { setVote } from "@/services/sets";
 
@@ -6,7 +6,7 @@ interface Props {
   setId: string;
   voteCount: number;
   hasVoted: boolean;
-  /** True when the viewer wrote this set - the API rejects voting on your own */
+  /** True when the viewer wrote this set - the API refuses voting on your own */
   isOwn: boolean;
 }
 
@@ -17,13 +17,19 @@ export default function VoteButton({ setId, voteCount, hasVoted, isOwn }: Props)
   const [isBusy, setIsBusy] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const canVote = Boolean(session) && !isOwn;
+  // The card is keyed on the set id, so switching showcase tabs re-renders this
+  // with fresh server numbers but does NOT remount it - without this the state
+  // seeded on mount would go stale and keep showing the old count.
+  useEffect(() => {
+    setCount(voteCount);
+    setVoted(hasVoted);
+  }, [voteCount, hasVoted]);
 
   async function toggle(event: React.MouseEvent) {
     // The card wraps this in a <Link>, so a vote must not also navigate
     event.preventDefault();
     event.stopPropagation();
-    if (!canVote || isBusy) return;
+    if (isBusy) return;
 
     setIsBusy(true);
     setError(null);
@@ -39,19 +45,30 @@ export default function VoteButton({ setId, voteCount, hasVoted, isOwn }: Props)
     }
   }
 
+  // Your own set: a permanently disabled button reads as broken, so show the
+  // score as plain text instead. There is no action to offer here.
+  if (isOwn) {
+    return (
+      <span className="vote-count" title="Your own set">
+        <span aria-hidden="true">▲</span>
+        <span>{count}</span>
+      </span>
+    );
+  }
+
   return (
     <button
       type="button"
       className={`vote-button ${voted ? "voted" : ""}`}
       onClick={toggle}
-      disabled={!canVote || isBusy}
+      // Signed out is the one disabled case worth keeping - "sign in" is something
+      // the viewer can actually go and do
+      disabled={!session || isBusy}
       aria-pressed={voted}
+      aria-label={voted ? "Remove your vote" : "Upvote this set"}
       title={
         error ??
-        (isOwn ? "You can't vote on your own set"
-          : !session ? "Sign in to vote"
-          : voted ? "Remove your vote"
-          : "Upvote this set")
+        (!session ? "Sign in to vote" : voted ? "Remove your vote" : "Upvote this set")
       }
     >
       <span aria-hidden="true">▲</span>

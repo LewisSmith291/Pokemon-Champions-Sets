@@ -15,6 +15,7 @@
     "sprite moves   stats"
     "sprite moves   stats"
     "form   ability nature"
+    "tags   tags    tags"
     "submit submit  submit"
   ;
   gap: 2rem 2rem;
@@ -37,6 +38,7 @@
       "moves"
       "stats"
       "nature"
+      "tags"
       "submit"
     ;
   }
@@ -133,12 +135,58 @@
   grid-area: ability;
 }
 
+/* Tag picker modal */
+#tag-list{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-content: flex-start;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.tag-chip{
+  border-radius: var(--rounded);
+  padding: 0.4em 0.9em;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.tag-chip[aria-pressed="true"]{
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+/* Everything past the cap, not a broken control - the count above says why */
+.tag-chip:disabled{
+  opacity: 0.45;
+  cursor: default;
+}
+
+.tag-count{
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 /* Form picker modal */
 .form-button{
   border-radius: var(--rounded);
   min-height: 3em;
   padding: 0.5em;
   width: 100%;
+}
+
+.cell-tags{
+  grid-area: tags;
+  justify-self: center;
+  width: 60%;
+  /* A full tag list is long - let it wrap rather than ellipsis away the choices */
+  height: auto;
+  min-height: 2.75rem;
+  white-space: normal;
 }
 
 .cell-submit{

@@ -20,6 +20,8 @@ export interface SetSummary extends Boosts {
   item: string | null;
   /** Slugs in slot order, already flattened by the API */
   moves: string[];
+  /** Tag slugs - label them through tagLabel() in data/tags.ts */
+  tags: string[];
   createdAt: string;
   /** Display name of the author - the API never sends their email */
   authorName: string;
@@ -30,7 +32,6 @@ export interface SetSummary extends Boosts {
 
 export interface SetDetail extends SetSummary {
   isPublic: boolean;
-  tags: string[];
   updatedAt: string;
 }
 
