@@ -48,7 +48,7 @@ export default function SetPage() {
   }
 
   return (
-    <div className="flex flex-1 justify-center p-4 w-full">
+    <div className="flex flex-1 justify-center p-2 sm:p-4 w-full">
       <PokemonSetDisplay set={set} viewerId={session?.user.id} />
     </div>
   );

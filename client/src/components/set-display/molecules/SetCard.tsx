@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 import TypeDisplay from "@/components/shared/TypeDisplay";
+import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
+import MoveChip from "../atoms/MoveChip";
 import { FORM_DATA } from "@/data/formData";
 import { formLabel } from "@/data/forms";
 import { spritePath, spriteFallback } from "@/data/sprites";
 import { ITEM_DETAILS, itemSpritePath } from "@/data/itemDetails";
 import { ABILITY_BY_NAME } from "@/data/abilityLookup";
-import { MOVE_BY_NAME } from "@/data/moveLookup";
 import { tagLabel } from "@/data/tags";
 import GetNatureChanges, { STATS, ALIGNMENTS, finalStat } from "@/data/stats";
 import { type SetSummary } from "@/services/sets";
@@ -37,14 +38,13 @@ export default function SetCard({ set, viewerId }: Props) {
 
   return (
     <Link to={`/set/${set.id}`} className="set-card">
-      <div className="set-card-head">
-        <h3>{formLabel(set.form)}</h3>
-        <VoteButton
-          setId={set.id}
-          voteCount={set.voteCount}
-          hasVoted={set.hasVoted}
-          isOwn={viewerId === set.userId}
-        />
+      <h3 className="set-card-name">
+        <GenderIcon gender={set.gender} className={`set-gender gender-${set.gender}`} />
+        <span>{formLabel(set.form)}</span>
+      </h3>
+
+      <div className="set-card-types">
+        {(form?.types ?? []).map((type) => <TypeDisplay key={type} type={type} />)}
       </div>
 
       <img
@@ -55,9 +55,24 @@ export default function SetCard({ set, viewerId }: Props) {
         onError={(e) => spriteFallback(e, set.form)}
       />
 
-      <div className="set-card-types">
-        {(form?.types ?? []).map((type) => <TypeDisplay key={type} type={type} />)}
-      </div>
+      <ul className="set-card-moves">
+        {set.moves.map((move) => (
+          <li key={move}><MoveChip move={move} /></li>
+        ))}
+      </ul>
+
+      <p className="set-card-chip set-card-item">
+        {item === null ? "No item" : (
+          <>
+            <img className="item-icon" src={itemSpritePath(set.item!)} alt="" />
+            {item?.label ?? set.item}
+          </>
+        )}
+      </p>
+
+      <p className="set-card-chip set-card-ability">
+        {ABILITY_BY_NAME.get(set.ability)?.label ?? set.ability}
+      </p>
 
       {/* Same finalStat call the set page makes, so the numbers can't disagree */}
       <dl className="set-card-stats">
@@ -79,32 +94,20 @@ export default function SetCard({ set, viewerId }: Props) {
         })}
       </dl>
 
-      {set.tags.length > 0 && (
-        <ul className="set-card-tags">
-          {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
-        </ul>
-      )}
-
-      <p className="set-card-line">
-        {ABILITY_BY_NAME.get(set.ability)?.label ?? set.ability}
-      </p>
-
-      <p className="set-card-line set-card-item">
-        {item === null ? "No item" : (
-          <>
-            <img className="item-icon" src={itemSpritePath(set.item!)} alt="" />
-            {item?.label ?? set.item}
-          </>
-        )}
-      </p>
-
-      <ul className="set-card-moves">
-        {set.moves.map((move) => (
-          <li key={move}>{MOVE_BY_NAME.get(move)?.label ?? move}</li>
-        ))}
+      <ul className="set-card-tags">
+        {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
       </ul>
 
       <p className="set-card-author">by {set.authorName}</p>
+
+      <div className="set-card-votes">
+        <VoteButton
+          setId={set.id}
+          voteCount={set.voteCount}
+          hasVoted={set.hasVoted}
+          isOwn={viewerId === set.userId}
+        />
+      </div>
     </Link>
   );
 }

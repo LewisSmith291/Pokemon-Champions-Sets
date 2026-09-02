@@ -1,13 +1,14 @@
 import { Link } from "react-router";
 import TypeDisplay from "@/components/shared/TypeDisplay";
+import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
+import MoveChip from "../atoms/MoveChip";
 import GetNatureChanges, { STATS, ALIGNMENTS, finalStat, MAX_PER_STAT } from "@/data/stats";
 import { FORM_DATA } from "@/data/formData";
 import { formLabel } from "@/data/forms";
 import { spritePath, spriteFallback } from "@/data/sprites";
 import { ITEM_DETAILS, itemSpritePath } from "@/data/itemDetails";
 import { ABILITY_BY_NAME } from "@/data/abilityLookup";
-import { MOVE_BY_NAME } from "@/data/moveLookup";
 import { tagLabel } from "@/data/tags";
 import { draftToParams } from "@/data/setUrl";
 import { type SetDetail } from "@/services/sets";
@@ -51,55 +52,40 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
 
   return (
     <article className="set-display">
-      <header className="set-header">
-        <img
-          className="set-sprite"
-          alt={formLabel(set.form)}
-          src={spritePath(set.form, set.gender)}
-          onError={(e) => spriteFallback(e, set.form)}
-        />
+      <h1 className="set-name">
+        <GenderIcon gender={set.gender} className={`set-gender gender-${set.gender}`} />
+        <span>{formLabel(set.form)}</span>
+      </h1>
 
-        <div className="set-identity">
-          <h1>{formLabel(set.form)}</h1>
-          <div className="set-types">
-            {(form?.types ?? []).map((type) => <TypeDisplay key={type} type={type} />)}
-          </div>
-          <p className="set-author">
-            by {set.authorName}
-            {!set.isPublic && <span className="set-private"> · Private</span>}
-          </p>
-          <VoteButton
-            setId={set.id}
-            voteCount={set.voteCount}
-            hasVoted={set.hasVoted}
-            isOwn={viewerId === set.userId}
-          />
-        </div>
-      </header>
+      <div className="set-types">
+        {(form?.types ?? []).map((type) => <TypeDisplay key={type} type={type} />)}
+      </div>
 
-      {set.tags.length > 0 && (
-        <ul className="set-tags">
-          {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
-        </ul>
-      )}
+      <img
+        className="set-sprite"
+        alt={formLabel(set.form)}
+        src={spritePath(set.form, set.gender)}
+        onError={(e) => spriteFallback(e, set.form)}
+      />
 
-      <dl className="set-facts">
-        <dt>Ability</dt>
-        <dd>{ABILITY_BY_NAME.get(set.ability)?.label ?? set.ability}</dd>
+      <ul className="set-moves">
+        {set.moves.map((move) => (
+          <li key={move}><MoveChip move={move} /></li>
+        ))}
+      </ul>
 
-        <dt>Item</dt>
-        <dd className="set-item">
+      <div className="set-facts">
+        <p className="set-fact set-item">
           {item === null ? "No item" : (
             <>
               <img className="item-icon" src={itemSpritePath(set.item!)} alt="" />
               {item?.label ?? set.item}
             </>
           )}
-        </dd>
-
-        <dt>Nature</dt>
-        <dd className="set-nature">{set.nature}</dd>
-      </dl>
+        </p>
+        <p className="set-fact set-ability">{ABILITY_BY_NAME.get(set.ability)?.label ?? set.ability}</p>
+        <p className="set-fact set-nature">{set.nature}</p>
+      </div>
 
       {/* label / value / bar, reading like the create page's StatsConfig rows */}
       <div className="set-stats">
@@ -127,17 +113,29 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
         })}
       </div>
 
-      <ul className="set-moves">
-        {set.moves.map((move) => (
-          <li key={move}>{MOVE_BY_NAME.get(move)?.label ?? move}</li>
-        ))}
+      <ul className="set-tags">
+        {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
       </ul>
 
-      <footer className="set-actions">
+      <p className="set-author">
+        by {set.authorName}
+        {!set.isPublic && <span className="set-private"> · Private</span>}
+      </p>
+
+      <div className="set-votes">
+        <VoteButton
+          setId={set.id}
+          voteCount={set.voteCount}
+          hasVoted={set.hasVoted}
+          isOwn={viewerId === set.userId}
+        />
+      </div>
+
+      <div className="set-actions">
         <Link className="set-edit-link" to={`/create?${editParams}`}>
           Edit a copy
         </Link>
-      </footer>
+      </div>
     </article>
   );
 }

@@ -1,17 +1,33 @@
 /* One type scale for the whole card, rather than a clamp() per element */
 .set-card{
   --card-text: clamp(0.72rem, 1vw, 0.85rem);
+  --move-chip-size: 0.72rem;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "name"
+    "types"
+    "sprite"
+    "moves"
+    "item"
+    "ability"
+    "stats"
+    "tags"
+    "author"
+    "votes";
+  justify-items: center;
+  align-content: start;
   gap: 0.5rem;
 
   flex: 1 1 0;
   min-width: 0;
   padding: 0.75rem;
 
-  background-color: var(--surface);
+  /* --surface is the same --p-deep as --header in dark mode, which made every
+     chip on this card invisible. --bg is p-void there and identical to
+     --surface in light, so the chips read against it in both themes. */
+  background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: var(--rounded);
@@ -27,42 +43,111 @@
   transform: translateY(-2px);
 }
 
-.set-card-head{
+.set-card-name{
+  grid-area: name;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-  min-width: 0;
-}
-
-.set-card-head h3{
+  gap: 0.35rem;
   margin: 0;
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.set-card-name span{
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.set-card-sprite{
-  width: 96px;
-  height: 96px;
-  image-rendering: pixelated;
+.set-gender{
+  width: 1em;
+  height: 1em;
   flex-shrink: 0;
 }
 
 .set-card-types{
+  grid-area: types;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: 0.25rem;
-  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
-/* Six stats across, so the label sits above the value rather than beside it */
+/* .type-notch pads its label out to 8ch so every type is the same width, which
+   is right in a table but too wide for two to sit side by side on a card. */
+.set-card-types .type-notch{
+  font-size: 0.72rem;
+  padding: 0.25em 0.35em;
+  min-width: 0;
+}
+
+.set-card-types .type-notch p{
+  width: auto;
+}
+
+.set-card-sprite{
+  grid-area: sprite;
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.set-card-moves,
+.set-card-tags{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.set-card-moves{
+  grid-area: moves;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+}
+
+.set-card-moves li{
+  display: flex;
+  min-width: 0;
+}
+
+.set-card-moves .move-chip{
+  width: 100%;
+}
+
+/* Item and ability read as fields, so they get a rounded slab like the moves.
+   --header here, unlike the set page's --p-void, because this card's background
+   is --bg: in dark that IS --p-void, so a p-void chip would disappear into it. */
+.set-card-chip{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+
+  width: 100%;
+  min-width: 0;
+  padding: 0.25rem 0.5rem;
+
+  background-color: var(--header);
+  color: var(--link-color);
+  border-radius: var(--rounded);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.set-card-item{ grid-area: item; }
+.set-card-ability{ grid-area: ability; }
+
 .set-card-stats{
+  grid-area: stats;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 0.15rem;
@@ -91,19 +176,12 @@
 }
 
 /* The two stats the nature moved, using the same tokens the create page's
-   sliders use - measured against --surface, which is this card's background */
+   sliders use - measured against --bg, which is this card's background */
 .set-card-stats .stat-up dd{ color: var(--stat-up); }
 .set-card-stats .stat-down dd{ color: var(--stat-down); }
 
-.set-card-tags,
-.set-card-moves{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
 .set-card-tags{
+  grid-area: tags;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -119,88 +197,42 @@
   font-size: 0.85em;
 }
 
-.set-card-moves{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-}
-
-.set-card-moves li{
-  background-color: var(--header);
-  color: var(--link-color);
-  border-radius: var(--rounded-small);
-  padding: 0.15rem 0.3rem;
-  text-align: center;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.set-card-line{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  text-align: center;
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .set-card-author{
+  grid-area: author;
   color: var(--text-muted);
   font-size: 0.9em;
-  /* Pinned to the bottom so a row of cards lines up regardless of tag count */
-  margin-top: auto;
-  padding-top: 0.25rem;
+  align-self: end;
 }
 
-/* --- vote control, shared with the set page --- */
-
-.vote-button,
-.vote-count{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.25rem;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-
-  padding: 0.2em 0.5em;
-  border-radius: var(--rounded);
-  border: 1px solid var(--border);
+.set-card-votes{
+  grid-area: votes;
+  align-self: end;
 }
 
-.vote-button{
-  background: var(--surface);
-  color: var(--text);
-}
+/* Below the showcase's own stacking point each card gets the full width, so it
+   takes the two-column layout from the sketch instead of one tall column. */
+@media screen and (max-width: 900px){
+  .set-card{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      "name    types"
+      "sprite  moves"
+      "item    ability"
+      "stats   stats"
+      "tags    tags"
+      "author  votes";
+    align-items: center;
+    column-gap: 0.75rem;
+  }
 
-.vote-button:hover:not(:disabled){
-  background: var(--accent);
-  color: var(--on-accent);
-  border-color: var(--accent);
-  cursor: pointer;
-}
+  .set-card-name{ justify-self: start; }
+  .set-card-types{ justify-self: end; }
+  .set-card-author{ justify-self: start; }
+  .set-card-votes{ justify-self: end; }
 
-.vote-button.voted{
-  background: var(--accent);
-  color: var(--on-accent);
-  border-color: var(--accent);
-}
-
-/* Signed out - the tooltip says to sign in, so this is informative not broken */
-.vote-button:disabled{
-  opacity: 0.6;
-  cursor: default;
-}
-
-/* Your own set: no button at all, just the score */
-.vote-count{
-  background: transparent;
-  color: var(--text-muted);
-  border-style: dashed;
+  /* Four moves stacked beside the sprite, matching the sketch */
+  .set-card-moves{
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
 }

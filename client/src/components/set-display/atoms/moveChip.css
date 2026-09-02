@@ -1,0 +1,32 @@
+/* Layout only - the background and text colour come from the type class beside
+   this one (.fire, .water, ...) in TypeStyle.css. --move-chip-size lets a card
+   and the set page share the component at different sizes. */
+.move-chip{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+
+  border: solid 1px black;
+  border-radius: var(--rounded);
+  padding: 0.3em 0.5em;
+  font-size: var(--move-chip-size, 0.85rem);
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+.move-chip-icon{
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  filter: brightness(90%);
+}
+
+.move-chip-label{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

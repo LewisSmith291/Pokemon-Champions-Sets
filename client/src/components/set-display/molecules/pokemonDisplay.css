@@ -1,13 +1,25 @@
 /* Everything here is scoped under .set-display on purpose. These class names are
-   about as generic as they get - .set-header, .set-tags - and this file used to
-   be pulled in globally by TypeDisplay.tsx, so they landed on every page that
-   drew a type chip. That is what put a grey bar over the create page's ability
-   and nature cells and forced those to be renamed cell-*. */
+   about as generic as they get - .set-name, .set-tags - and this file used to be
+   pulled in globally by TypeDisplay.tsx, so they landed on every page that drew
+   a type chip. That is what put a grey bar over the create page's ability and
+   nature cells and forced those to be renamed cell-*. */
 
 .set-display{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  --move-chip-size: 0.95rem;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "name    types"
+    "sprite  moves"
+    "item    ability"
+    "nature  nature"
+    "stats   stats"
+    "tags    tags"
+    "author  votes"
+    "actions actions";
+  align-items: center;
+  gap: 0.9rem 1.25rem;
 
   width: min(92vw, 42rem);
   height: fit-content;
@@ -19,111 +31,122 @@
   border-radius: 1rem;
 }
 
-/* --- header: sprite beside the identity, rather than stacked --- */
+/* --- name and typing --- */
 
-.set-display .set-header{
+.set-display .set-name{
+  grid-area: name;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+
+  margin: 0;
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+  letter-spacing: normal;
+  text-align: left;
+  min-width: 0;
 }
 
-.set-display .set-sprite{
-  width: 144px;
-  height: 144px;
-  image-rendering: pixelated;
+.set-display .set-name span{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set-display .set-gender{
+  width: 0.9em;
+  height: 0.9em;
   flex-shrink: 0;
 }
 
-.set-display .set-identity{
+/* Two types sit beside each other, never stacked */
+.set-display .set-types{
+  grid-area: types;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.35rem;
   min-width: 0;
 }
 
-.set-display .set-identity h1{
-  margin: 0;
-  font-size: clamp(1.4rem, 4vw, 2rem);
-  letter-spacing: normal;
-  text-align: left;
+/* .type-notch pads its label to 8ch so a table column lines up; here that just
+   makes two notches too wide to share a row. */
+.set-display .set-types .type-notch p{
+  width: auto;
 }
 
-.set-display .set-types{
-  display: flex;
-  flex-direction: row;
-  gap: 0.35rem;
+.set-display .set-sprite{
+  grid-area: sprite;
+  justify-self: center;
+  width: 160px;
+  height: 160px;
+  image-rendering: pixelated;
 }
 
-.set-display .set-author{
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
+/* --- moves: 2x2, type coloured --- */
 
-.set-display .set-private{
-  color: var(--stat-up);
-}
-
-/* --- tags --- */
-
-.set-display .set-tags,
-.set-display .set-moves{
+.set-display .set-moves,
+.set-display .set-tags{
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.set-display .set-tags{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.set-display .set-tags li{
-  background-color: var(--accent);
-  color: var(--on-accent);
-  border-radius: var(--rounded);
-  padding: 0.2rem 0.6rem;
-  font-size: 0.85rem;
-}
-
-/* --- ability / item / nature --- */
-
-.set-display .set-facts{
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.4rem 1rem;
-  margin: 0;
-  align-items: center;
-}
-
-.set-display .set-facts dt{
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.set-display .set-facts dd{
-  margin: 0;
   min-width: 0;
 }
 
-.set-display .set-item{
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+.set-display .set-moves{
+  grid-area: moves;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
+.set-display .set-moves li{
+  display: flex;
+  min-width: 0;
+}
+
+.set-display .set-moves .move-chip{
+  width: 100%;
+  padding: 0.5em 0.5em;
+}
+
+/* --- item / ability / nature --- */
+
+.set-display .set-facts{
+  display: contents;
+}
+
+.set-display .set-fact{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  min-width: 0;
+  padding: 0.4rem 0.75rem;
+
+  /* --p-void rather than --header: --header is the same --p-deep as --surface in
+     dark mode, which left these slabs invisible against the card. */
+  background-color: var(--p-void);
+  color: var(--link-color);
+  border-radius: var(--rounded);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* .set-facts is display:contents, so these three place themselves directly */
+.set-display .set-item{ grid-area: item; }
+.set-display .set-ability{ grid-area: ability; }
 .set-display .set-nature{
+  grid-area: nature;
   text-transform: capitalize;
 }
 
 /* --- stats: label / value / bar / boost, like the create page's sliders --- */
 
 .set-display .set-stats{
+  grid-area: stats;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -173,34 +196,46 @@
 .set-display .stat-up .stat-fill{ background: var(--stat-up-fill); }
 .set-display .stat-down .stat-fill{ background: var(--stat-down-fill); }
 
-/* --- moves --- */
+/* --- tags, author, votes, actions --- */
 
-.set-display .set-moves{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+.set-display .set-tags{
+  grid-area: tags;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
 }
 
-/* Chips on chrome, so the fixed yellow rather than --text */
-.set-display .set-moves li{
-  background-color: var(--header);
-  color: var(--link-color);
+.set-display .set-tags li{
+  background-color: var(--accent);
+  color: var(--on-accent);
   border-radius: var(--rounded);
-  padding: 0.5rem;
-  text-align: center;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
 }
 
-/* --- actions --- */
+.set-display .set-author{
+  grid-area: author;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  justify-self: start;
+}
+
+.set-display .set-private{
+  color: var(--stat-up);
+}
+
+.set-display .set-votes{
+  grid-area: votes;
+  justify-self: end;
+}
 
 .set-display .set-actions{
+  grid-area: actions;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 0.75rem;
 }
 
 .set-display .set-edit-link{
@@ -217,24 +252,52 @@
   color: var(--on-accent);
 }
 
+/* Single column, in the order the page reads best on a phone: typing, name,
+   sprite, then the text fields, moves, stats and finally tags. */
 @media screen and (max-width: 676px){
   .set-display{
+    --move-chip-size: 0.8rem;
+
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "types"
+      "name"
+      "sprite"
+      "item"
+      "ability"
+      "nature"
+      "moves"
+      "stats"
+      "tags"
+      "author"
+      "votes"
+      "actions";
+    justify-items: center;
+    gap: 0.6rem;
     padding: 0.85rem;
-    gap: 0.75rem;
+    width: 100%;
   }
 
-  /* The sprite plus a long form name is too wide to sit side by side */
-  .set-display .set-header{
-    flex-direction: column;
+  .set-display .set-name{
+    justify-content: center;
     text-align: center;
+    max-width: 100%;
   }
 
-  .set-display .set-identity{
-    align-items: center;
+  .set-display .set-types{
+    justify-content: center;
   }
 
-  .set-display .set-identity h1{
-    text-align: center;
+  .set-display .set-fact,
+  .set-display .set-moves,
+  .set-display .set-stats,
+  .set-display .set-tags{
+    width: 100%;
+  }
+
+  .set-display .set-author,
+  .set-display .set-votes{
+    justify-self: center;
   }
 
   .set-display .stat-row{
