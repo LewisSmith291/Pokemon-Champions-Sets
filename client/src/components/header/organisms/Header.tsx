@@ -9,7 +9,7 @@ interface Props{
 
 export default function Header({isSignedIn}:Props) {
   return (
-    <header className="bg-header sticky top-0">
+    <header id="site-header" className="bg-header sticky top-0">
       <Logo />
       <HeaderLinks />
       <Profile isSignedIn={isSignedIn} url={null}/>
