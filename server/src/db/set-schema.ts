@@ -93,7 +93,26 @@ export const setTags = pgTable(
   ],
 );
 
-// Produces no SQL 
+export const setVotes = pgTable(
+  "set_votes",
+  {
+    // deleted when the set is, same as moves and tags
+    setId: text("set_id").notNull().references(() => pokemonSet.id, {onDelete: "cascade"}),
+    // and when the voter's account is
+    userId: text("user_id").notNull().references(() => user.id, {onDelete: "cascade"}),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    // The row's existence IS the vote, so a set's score is just count(*) of these.
+    // The composite primary key is what enforces one vote per user per set -
+    // the same trick set_tags uses to stop a tag being applied twice.
+    primaryKey({columns: [table.setId, table.userId]}),
+    // "how many votes does this set have?" - the sort the showcase runs on
+    index("set_votes_set_idx").on(table.setId),
+  ],
+);
+
+// Produces no SQL
 // TypeScript metadata for db.query
 
 // With these relations, using {schema} and drizzle(), you can find for example:
@@ -105,8 +124,9 @@ export const setTags = pgTable(
 // { id: "abc123", species: "gengar", moves: [{slot: 1, move: "shadow-ball"}, ...]}
 export const pokemonSetRelations = relations(pokemonSet, ({one, many}) => ({
   user: one(user, {fields: [pokemonSet.userId], references: [user.id] }),
-  moves: many(setMoves), 
+  moves: many(setMoves),
   tags: many(setTags),
+  votes: many(setVotes),
 }));
 
 export const setMovesRelations = relations(setMoves, ({one}) => ({
@@ -115,4 +135,9 @@ export const setMovesRelations = relations(setMoves, ({one}) => ({
 
 export const setTagsRelations = relations(setTags, ({one}) => ({
   set: one(pokemonSet, {fields: [setTags.setId], references: [pokemonSet.id]})
+}));
+
+export const setVotesRelations = relations(setVotes, ({one}) => ({
+  set: one(pokemonSet, {fields: [setVotes.setId], references: [pokemonSet.id]}),
+  user: one(user, {fields: [setVotes.userId], references: [user.id]}),
 }));

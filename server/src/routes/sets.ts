@@ -1,13 +1,22 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { eq } from "drizzle-orm";
-import { pokemonSet, setMoves, setTags } from "../db/schema.js";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { pokemonSet, setMoves, setTags, setVotes, user } from "../db/schema.js";
 import { requireAuth } from "../middleware/requireAuth.js";
-import { createSetSchema } from "../schemas/set.js";
+import { createSetSchema, listSetsSchema } from "../schemas/set.js";
 import { optionalAuth } from "../middleware/optionalAuth.js";
 
 export const setsRouter = Router();
+
+// A set's score is just how many vote rows point at it
+async function countVotes(setId: string): Promise<number> {
+  const [row] = await db
+    .select({ votes: sql<number>`count(*)::int` })
+    .from(setVotes)
+    .where(eq(setVotes.setId, setId));
+  return row?.votes ?? 0;
+}
 // requireAuth middleware
 // Used to add sets to all appropriate db tables
 setsRouter.post("/", requireAuth, async (req, res) => {
@@ -51,6 +60,107 @@ setsRouter.post("/", requireAuth, async (req, res) => {
   }
 });
 
+// Public set list, powering the home page showcase.
+// optionalAuth rather than requireAuth: anyone can read it, but a signed-in
+// viewer also gets told which of these they have already voted on.
+setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
+  const parsed = listSetsSchema.safeParse(req.query);
+  if (!parsed.success) {
+    return res.status(400).json({ errors: parsed.error.issues });
+  }
+  const { sort, limit } = parsed.data;
+
+  // Counted once here and reused for both the sort and the payload
+  const voteCount = sql<number>`count(${setVotes.setId})::int`;
+
+  // Hacker News' gravity formula: a set needs steadily more votes to hold its
+  // place as it ages, so "hot" keeps turning over without a scheduled job.
+  const hotScore = sql`
+    count(${setVotes.setId})::numeric
+    / power(extract(epoch from (now() - ${pokemonSet.createdAt})) / 3600 + 2, 1.5)`;
+
+  const orderBy =
+    sort === "new"  ? [desc(pokemonSet.createdAt)] :
+    sort === "best" ? [desc(voteCount), desc(pokemonSet.createdAt)] :
+                      [desc(hotScore), desc(pokemonSet.createdAt)];
+
+  try {
+    // The relational db.query API can't order by an aggregate over a joined
+    // table, so this one route drops to the core builder and stitches the moves
+    // on afterwards. GET /:id below has no aggregate and keeps using db.query.
+    const rows = await db
+      .select({
+        id: pokemonSet.id,
+        species: pokemonSet.species,
+        form: pokemonSet.form,
+        gender: pokemonSet.gender,
+        ability: pokemonSet.ability,
+        nature: pokemonSet.nature,
+        item: pokemonSet.item,
+        boostHp: pokemonSet.boostHp,
+        boostAtk: pokemonSet.boostAtk,
+        boostDef: pokemonSet.boostDef,
+        boostSpAtk: pokemonSet.boostSpAtk,
+        boostSpDef: pokemonSet.boostSpDef,
+        boostSpe: pokemonSet.boostSpe,
+        createdAt: pokemonSet.createdAt,
+        // user.name only - email lives on the same table and must not ship
+        authorName: user.name,
+        voteCount,
+      })
+      .from(pokemonSet)
+      .innerJoin(user, eq(user.id, pokemonSet.userId))
+      .leftJoin(setVotes, eq(setVotes.setId, pokemonSet.id))
+      .where(eq(pokemonSet.isPublic, true))
+      // pokemonSet.id is the primary key so its own columns come along for free,
+      // but user.name is from another table and has to be grouped explicitly
+      .groupBy(pokemonSet.id, user.name)
+      .orderBy(...orderBy)
+      .limit(limit);
+
+    const ids = rows.map((row) => row.id);
+    if (ids.length === 0) {
+      return res.json({ sets: [] });
+    }
+
+    // One query for every set's moves rather than one per set
+    const moveRows = await db
+      .select({ setId: setMoves.setId, slot: setMoves.slot, move: setMoves.move })
+      .from(setMoves)
+      .where(inArray(setMoves.setId, ids))
+      .orderBy(asc(setMoves.slot));
+
+    const movesBySet = new Map<string, string[]>();
+    for (const row of moveRows) {
+      const list = movesBySet.get(row.setId) ?? [];
+      list.push(row.move);
+      movesBySet.set(row.setId, list);
+    }
+
+    // Which of these the viewer has voted on - empty for logged-out readers
+    const viewerId = req.user?.id;
+    const votedIds = new Set<string>();
+    if (viewerId) {
+      const voted = await db
+        .select({ setId: setVotes.setId })
+        .from(setVotes)
+        .where(and(eq(setVotes.userId, viewerId), inArray(setVotes.setId, ids)));
+      for (const row of voted) votedIds.add(row.setId);
+    }
+
+    res.json({
+      sets: rows.map((row) => ({
+        ...row,
+        moves: movesBySet.get(row.id) ?? [],
+        hasVoted: votedIds.has(row.id),
+      })),
+    });
+  } catch (error) {
+    console.error("Failed to list sets: ", error);
+    res.status(500).json({ error: "Could not load sets" });
+  }
+});
+
 // Non authenticated viewer of sets
 setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Response) => {
   const set = await db.query.pokemonSet.findFirst({ 
@@ -63,8 +173,10 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
         orderBy: (m, {asc}) => [asc(m.slot)],
       },
       tags: {columns: {tag:true}},
+      // name only - email is on the same table and must not reach the client
+      user: {columns: {name: true}},
     },
-    
+
   })
 
   // If no set can be found with pokemonSet.findFirst()
@@ -80,6 +192,63 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
     return res.status(404).json({error:"Set not found"});
   }
 
+  // Same two extras the list route reports, so a card and the set page agree
+  const [voteCount, hasVoted] = await Promise.all([
+    countVotes(set.id),
+    req.user
+      ? db.query.setVotes
+          .findFirst({where: and(eq(setVotes.setId, set.id), eq(setVotes.userId, req.user.id))})
+          .then((row) => row !== undefined)
+      : Promise.resolve(false),
+  ]);
+
   // Returns 200 with set if successful
-  res.json(set);
+  res.json({...set, authorName: set.user.name, voteCount, hasVoted});
+});
+
+// Voting is upvote-only, so the row's existence is the whole vote and there is
+// no body to parse. Both handlers return the fresh count, saving the client a
+// follow-up read.
+setsRouter.post("/:id/vote", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const userId = req.user!.id;
+  const setId = req.params.id;
+
+  const target = await db.query.pokemonSet.findFirst({
+    where: eq(pokemonSet.id, setId),
+    columns: {id: true, isPublic: true, userId: true},
+  });
+
+  // A private set is invisible, so it 404s rather than 403s - same reasoning as
+  // the GET above, don't confirm that an id someone guessed exists
+  if (!target || !target.isPublic) {
+    return res.status(404).json({error: "Set not found"});
+  }
+  if (target.userId === userId) {
+    return res.status(403).json({error: "You cannot vote on your own set"});
+  }
+
+  try {
+    // Idempotent: a double click, or a retry after a dropped response, is a no-op
+    // rather than a primary key violation
+    await db.insert(setVotes).values({setId, userId}).onConflictDoNothing();
+    res.json({voteCount: await countVotes(setId), hasVoted: true});
+  } catch (error) {
+    console.error("Failed to record vote: ", error);
+    res.status(500).json({error: "Could not record vote"});
+  }
+});
+
+setsRouter.delete("/:id/vote", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const userId = req.user!.id;
+  const setId = req.params.id;
+
+  try {
+    // No existence check needed - deleting a vote that isn't there affects no
+    // rows, which is the state the caller asked for anyway
+    await db.delete(setVotes).where(and(eq(setVotes.setId, setId), eq(setVotes.userId, userId)));
+    res.json({voteCount: await countVotes(setId), hasVoted: false});
+  } catch (error) {
+    console.error("Failed to remove vote: ", error);
+    res.status(500).json({error: "Could not remove vote"});
+  }
 });

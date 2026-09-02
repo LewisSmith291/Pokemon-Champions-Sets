@@ -4,6 +4,15 @@ import {TAG_SLUGS} from "../data/tags.js"
 // Max of each stat boost is 32
 const boost = z.number().int().min(0).max(32);
 
+// Query string for GET /api/sets. Everything arrives as a string, so limit is
+// coerced; the cap stops a caller asking for the whole table in one request.
+export const listSetsSchema = z.object({
+  sort: z.enum(["new", "hot", "best"]).default("new"),
+  limit: z.coerce.number().int().min(1).max(50).default(3),
+});
+
+export type SetSort = z.infer<typeof listSetsSchema>["sort"];
+
 export const createSetSchema = z.object({
   species: z.string().min(1),
   form: z.string().min(1),

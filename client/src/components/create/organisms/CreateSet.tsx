@@ -98,6 +98,9 @@ export default function CreateSet() {
   const [nature, setNature] = useState<string>(initial.nature ?? "Bold");
   // submit button
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  // A set is private until its author says otherwise - only public ones are
+  // reachable from the showcase, browse or search.
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   // notifications
   const { notifications, notify, dismiss } = useNotifications();
 
@@ -316,7 +319,7 @@ export default function CreateSet() {
     nature: nature.toLowerCase(),
     ...statBoosts,
     moves: moveList.filter((move): move is string => move !== null),
-    isPublic: false,
+    isPublic: isPublic,
     };
 
     // Wrap in try/finally incase the fetch fails, the setIsSubmitting needs to be turned off regardless
@@ -480,9 +483,24 @@ export default function CreateSet() {
           <StatsConfig baseStats={baseStats} nature={nature} statBoosts={statBoosts} setBoosts={updateBoost}/>
         </div>
 
-        <button type="submit" className="hoverable-link rounded-[var(--rounded)] cell-submit grid-cell" disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}>
-          {session ? "Publish Set" : "Sign in to publish"}
-        </button>
+        <div className="cell-submit grid-cell">
+          <label id="publish-toggle">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            <span>Make set public?</span>
+          </label>
+          <button
+            type="submit"
+            id="submit-set"
+            className="hoverable-link rounded-[var(--rounded)]"
+            disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}
+          >
+            {!session ? "Sign in to save" : isPublic ? "Publish Set" : "Save Set"}
+          </button>
+        </div>
       </form>
       {/* Species select modal */}
       <Modal 
