@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/services/authClient";
 import { setVote } from "@/services/sets";
+import "./voteButton.css";
 
 interface Props {
   setId: string;

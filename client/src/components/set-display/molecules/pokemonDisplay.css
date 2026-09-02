@@ -16,8 +16,8 @@
     "nature  nature"
     "stats   stats"
     "tags    tags"
-    "author  votes"
-    "actions actions";
+    "actions actions"
+    "author  votes";
   align-items: center;
   gap: 0.9rem 1.25rem;
 
@@ -59,14 +59,24 @@
   flex-shrink: 0;
 }
 
-/* Two types sit beside each other, never stacked */
+/* Two types sit beside each other, never stacked. The block fills its column
+   and stretches down its grid row so it reads as a deliberate pair rather than
+   two chips floating in the corner above the move list. */
 .set-display .set-types{
   grid-area: types;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  gap: 0.35rem;
+  align-self: stretch;
+  gap: 0.5rem;
+  width: 100%;
   min-width: 0;
+}
+
+/* Equal halves of the row, however many there are */
+.set-display .set-types .type-notch{
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
 }
 
 /* .type-notch pads its label to 8ch so a table column lines up; here that just

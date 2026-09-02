@@ -6,8 +6,8 @@ export const STATS = [
   { key: "boostHp", api: "hp", label: "HP", short: "HP" },
   { key: "boostAtk", api: "attack", label: "Attack", short: "Atk" },
   { key: "boostDef", api: "defense", label: "Defense", short: "Def" },
-  { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack", short: "SpA" },
-  { key: "boostSpDef", api: "special-defense", label: "Sp. Defense", short: "SpD" },
+  { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack", short: "SpAtk" },
+  { key: "boostSpDef", api: "special-defense", label: "Sp. Defense", short: "SpDef" },
   { key: "boostSpe", api: "speed", label: "Speed", short: "Spe" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
 

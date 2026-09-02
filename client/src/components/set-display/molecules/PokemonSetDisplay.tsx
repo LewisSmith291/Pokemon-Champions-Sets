@@ -3,7 +3,7 @@ import TypeDisplay from "@/components/shared/TypeDisplay";
 import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
 import MoveChip from "../atoms/MoveChip";
-import GetNatureChanges, { STATS, ALIGNMENTS, finalStat, MAX_PER_STAT } from "@/data/stats";
+import GetNatureChanges, { STATS, ALIGNMENTS, finalStat } from "@/data/stats";
 import { FORM_DATA } from "@/data/formData";
 import { formLabel } from "@/data/forms";
 import { spritePath, spriteFallback } from "@/data/sprites";
@@ -98,15 +98,18 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
             ALIGNMENTS[change],
           );
           return (
-            <div key={stat.key} className={`stat-row stat-${change === "" ? "flat" : change}`}>
-              <span className="stat-label">{stat.label}</span>
+            <div key={stat.key} className={`stat-row stat-${change === "" ? "flat" : change}`}> 
+              {/* Both lengths, swapped by media query - "Sp. Defense" wraps on a
+                  phone and makes that one row taller than the other five */}
+              <span className="stat-label">
+                <span className="stat-name-short">{stat.short}</span>
+              </span>
               <span className="stat-value">{value}</span>
               <span className="stat-bar">
                 <span className="stat-fill" style={{ width: `${Math.min(100, (value / BAR_MAX) * 100)}%` }} />
               </span>
               <span className="stat-boost">
                 {boosts[stat.key] > 0 ? `+${boosts[stat.key]}` : ""}
-                {boosts[stat.key] === MAX_PER_STAT ? " max" : ""}
               </span>
             </div>
           );
@@ -116,6 +119,12 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
       <ul className="set-tags">
         {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
       </ul>
+
+      <div className="set-actions">
+        <Link className="set-edit-link" to={`/create?${editParams}`}>
+          Edit a copy
+        </Link>
+      </div>
 
       <p className="set-author">
         by {set.authorName}
@@ -129,12 +138,6 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
           hasVoted={set.hasVoted}
           isOwn={viewerId === set.userId}
         />
-      </div>
-
-      <div className="set-actions">
-        <Link className="set-edit-link" to={`/create?${editParams}`}>
-          Edit a copy
-        </Link>
       </div>
     </article>
   );

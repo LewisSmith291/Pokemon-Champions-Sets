@@ -19,12 +19,6 @@ interface Props {
   viewerId?: string;
 }
 
-// "Sp. Attack" is too wide for a six-across row
-const SHORT_LABEL: Record<string, string> = {
-  "HP": "HP", "Attack": "Atk", "Defense": "Def",
-  "Sp. Attack": "SpA", "Sp. Defense": "SpD", "Speed": "Spe",
-};
-
 export default function SetCard({ set, viewerId }: Props) {
   // Mega and regional forms re-type, so this is the form's typing, not the species'
   const form = FORM_DATA[set.form];
@@ -80,7 +74,7 @@ export default function SetCard({ set, viewerId }: Props) {
           const change = natureChanges[stat.api];
           return (
             <div key={stat.key} className={`stat-cell stat-${change === "" ? "flat" : change}`}>
-              <dt>{SHORT_LABEL[stat.label] ?? stat.label}</dt>
+              <dt>{stat.short}</dt>
               <dd>
                 {finalStat(
                   stat.api,
