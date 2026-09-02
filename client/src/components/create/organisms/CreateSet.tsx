@@ -336,9 +336,13 @@ export default function CreateSet() {
 
       if (!response.ok) {
         console.log("Failed:", response.status, data);
+        notify("Could not save this set. Please try again.", "red");
         return;
       }
-      console.log("Created set:", data.set.id);
+
+      // Straight to the saved set, which is the confirmation that it worked -
+      // and for a published one, what the showcase will link to
+      navigate(`/set/${data.set.id}`);
 
     } finally {
       setIsSubmitting(false);

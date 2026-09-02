@@ -79,6 +79,33 @@ export const NATURE_EFFECTS: Record<string, { up: NatureStat; down: NatureStat }
   serious: { up: "speed", down: "speed" },
 };
 
+// A stat's final value in Champions:
+//   HP     Base + StatPoints + 75, and nature never touches it
+//   others (Base + StatPoints + 20) * Alignment, rounded down
+//
+// Lives here rather than in the slider that used to own it, so the create page
+// and the set page cannot drift apart on the numbers they show for one set.
+export function finalStat(api: StatApi, base: number, boost: number, alignment: Alignment): number {
+  if (api === "hp") return base + boost + 75;
+  return Math.floor((base + boost + 20) * alignment);
+}
+
+// Every stat of a finished set, keyed by PokeAPI stat slug.
+// baseStats comes from FORM_DATA[form].stats, boosts from the set's boost columns.
+export function finalStats(
+  baseStats: Record<string, number>,
+  boosts: Boosts,
+  nature: string,
+): Record<StatApi, number> {
+  const changes = GetNatureChanges(nature);
+  return Object.fromEntries(
+    STATS.map((stat) => [
+      stat.api,
+      finalStat(stat.api, baseStats[stat.api] ?? 0, boosts[stat.key], ALIGNMENTS[changes[stat.api]]),
+    ]),
+  ) as Record<StatApi, number>;
+}
+
 // Returns record of nature changes
 export default function GetNatureChanges(nature: string): NatureChanges{
   const changes: NatureChanges = {hp:"",attack:"", defense:"", "special-attack":"", "special-defense":"", speed:""}

@@ -17,6 +17,7 @@ export default function StatsConfig({baseStats, statBoosts, nature, setBoosts}: 
         <div className="stat-row" key={stat.key}>
           <BoostSlider 
             statName={stat.label}
+            statApi={stat.api}
             baseStat={baseStats[stat.api] ?? 0}
             alignment={ALIGNMENTS[natureChanges[stat.api]]}
             value={statBoosts[stat.key]}

@@ -1,19 +1,18 @@
-import type { Alignment } from "@/data/stats";
+import { finalStat, type Alignment, type StatApi } from "@/data/stats";
 
 interface Props {
   statName: string;
+  /** PokeAPI stat slug - what finalStat keys the HP special case off */
+  statApi: StatApi;
   value: number;
   baseStat: number;
   alignment: Alignment;
   setValue: (value:number) => void;
   max:number
-} 
+}
 
-export default function BoostSlider({statName, baseStat, alignment, value, setValue, max}: Props) {
-  // HP is calculated: Base + StatPoints + 75
-  // All other stats are calculated: (Base + StatPoints + 20) * Alignment
-  // Stat point decimals are always rounded down
-  const basePlusBoost = statName === "HP" ? baseStat + value + 75 : Math.floor((baseStat + value + 20) * alignment);
+export default function BoostSlider({statName, statApi, baseStat, alignment, value, setValue, max}: Props) {
+  const basePlusBoost = finalStat(statApi, baseStat, value, alignment);
 
   // Theme-aware stat colours from index.css. These rows sit on --header, so the
   // tokens are tinted per theme to stay readable against the deep purple.

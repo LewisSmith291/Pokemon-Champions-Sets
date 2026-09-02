@@ -1,85 +1,124 @@
-import NatureBoost from '../atoms/NatureBoost.tsx';
-import StatDisplay from '../atoms/StatDisplay.tsx';
-import TypeDisplay from '@/components/shared/TypeDisplay.tsx';
-import GetNatureChanges from '@/data/stats.ts'
-import '@/components/shared/TypeStyle.css'
-import './pokemonDisplay.css'
-import { useState, useEffect } from 'react';
+import { Fragment } from "react";
+import { Link } from "react-router";
+import TypeDisplay from "@/components/shared/TypeDisplay";
+import NatureBoost from "../atoms/NatureBoost";
+import StatDisplay from "../atoms/StatDisplay";
+import VoteButton from "../atoms/VoteButton";
+import GetNatureChanges, { STATS, ALIGNMENTS, finalStat } from "@/data/stats";
+import { FORM_DATA } from "@/data/formData";
+import { formLabel } from "@/data/forms";
+import { spritePath, spriteFallback } from "@/data/sprites";
+import { ITEM_DETAILS, itemSpritePath } from "@/data/itemDetails";
+import { ABILITY_BY_NAME } from "@/data/abilityLookup";
+import { MOVE_BY_NAME } from "@/data/moveLookup";
+import { draftToParams } from "@/data/setUrl";
+import { type SetDetail } from "@/services/sets";
+import "./pokemonDisplay.css";
 
-// The full-art "home" renders are ~170KB each - too heavy to commit for every form
-// the way public/sprites does with the 4KB battle sprites, so these stay remote.
-// jsDelivr mirrors the same PokeAPI repo and, unlike raw.githubusercontent.com,
-// is a CDN that permits hotlinking instead of 429ing it.
-const HOME_SPRITE_BASE =
-  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/home";
-const QUESTION_MARK = "/question-mark.svg";
-
-interface Stats {
-  hp: number
-  atk: number
-  def: number
-  spAtk: number
-  spDef: number
-  spe: number
-}
-interface PokemonSetDisplayProps extends Stats {
-  name: string
-  nature: string
-  ability: string
-  item: string
+interface Props {
+  set: SetDetail;
+  /** The signed-in viewer, for the vote button and the private-set badge */
+  viewerId?: string;
 }
 
-export default function PokemonSetDisplay({name, ability, nature, item, hp, atk, def, spAtk, spDef, spe}: PokemonSetDisplayProps) {
-  const [typing, setTyping] = useState<string[]>([]);
-  const [sprite, setSprite] = useState<string>();
+export default function PokemonSetDisplay({ set, viewerId }: Props) {
+  // Everything is derived from the bundled form data rather than fetched. The
+  // form's own typing and base stats matter here: Mega Charizard X is
+  // fire/dragon with different bulk to the Charizard it evolved from.
+  const form = FORM_DATA[set.form];
+  const natureChanges = GetNatureChanges(set.nature);
+  const item = set.item === null ? null : ITEM_DETAILS[set.item];
 
-  useEffect(() => {
-    let stale = false;
-    fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (stale) return;
-        // data.id is the form's own dex id, so alternate forms resolve correctly
-        setSprite(`${HOME_SPRITE_BASE}/${data.id}.png`);
-        const typeNames = data.types.map((t: { type: { name: string } }) => t.type.name);
-        setTyping(typeNames);
-      })
-      .catch((error) => {
-        console.log('There was an ERROR: ', error);
-      });
-      return () => { stale = true; };
-  }, [name]);
+  const boosts = {
+    boostHp: set.boostHp, boostAtk: set.boostAtk, boostDef: set.boostDef,
+    boostSpAtk: set.boostSpAtk, boostSpDef: set.boostSpDef, boostSpe: set.boostSpe,
+  };
 
-  const statChanges = GetNatureChanges(nature);
+  // Same URL codec the create page reads on mount, so "edit a copy" is a link
+  // rather than a feature - it opens the builder with this set already loaded
+  const editParams = draftToParams({
+    species: set.species,
+    form: set.form,
+    item: set.item ?? "",
+    gender: set.gender,
+    ability: set.ability,
+    nature: set.nature,
+    moves: set.moves,
+    boosts,
+  });
 
   return (
     <div className="set-display">
       <div className="typing-header">
-        {typing.length > 0 && <TypeDisplay type={typing[0]}/>}
-        {typing.length > 1 && <TypeDisplay type={typing[1]}/>}
+        {(form?.types ?? []).map((type) => <TypeDisplay key={type} type={type} />)}
       </div>
-      <h1 className="name">{name}</h1>
+
+      <h1 className="name">{formLabel(set.form)}</h1>
+      <p className="set-author">
+        by {set.authorName}
+        {!set.isPublic && <span className="set-private"> · Private</span>}
+      </p>
+
       <div className="about-and-stats">
         <div className="info-column">
           <img
             className="sprite"
-            alt="pokemon sprite"
-            src={sprite ?? QUESTION_MARK}
-            onError={(e) => { e.currentTarget.src = QUESTION_MARK; }}
+            alt={formLabel(set.form)}
+            src={spritePath(set.form, set.gender)}
+            onError={(e) => spriteFallback(e, set.form)}
           />
-          <p className="ability">{ability}</p>
-          <p className="item">{item}</p>
+          <p className="ability">{ABILITY_BY_NAME.get(set.ability)?.label ?? set.ability}</p>
+          <p className="item">
+            {item === null ? "No item" : (
+              <>
+                <img className="item-icon" src={itemSpritePath(set.item!)} alt="" />
+                {item?.label ?? set.item}
+              </>
+            )}
+          </p>
         </div>
+
         <div className="stat-column">
-        <StatDisplay label="HP" stat={hp} />
-        <StatDisplay label="Atk" stat={atk} /> {statChanges.attack !== "" && <NatureBoost isBoost = {statChanges.attack === "up"}/>}
-        <StatDisplay label="Def" stat={def} /> {statChanges.defense !== "" && <NatureBoost isBoost = {statChanges.defense === "up"}/>}
-        <StatDisplay label="SpAtk" stat={spAtk} /> {statChanges["special-attack"] !== "" && <NatureBoost isBoost = {statChanges["special-attack"] === "up"}/>}
-        <StatDisplay label="SpDef" stat={spDef} /> {statChanges["special-defense"] !== "" && <NatureBoost isBoost = {statChanges["special-defense"] === "up"}/>}
-        <StatDisplay label="Spe" stat={spe} /> {statChanges.speed !== "" && <NatureBoost isBoost = {statChanges.speed === "up"}/>}
-        <div className="nature">{nature}</div>
+          {STATS.map((stat) => (
+            // The arrow is only rendered for a stat the nature touches. The next
+            // StatDisplay still lands in column 1 either way - .stat-display
+            // pins grid-column-start, which is what lets this stay conditional.
+            <Fragment key={stat.key}>
+              <StatDisplay
+                label={stat.label}
+                stat={finalStat(
+                  stat.api,
+                  form?.stats[stat.api] ?? 0,
+                  boosts[stat.key],
+                  ALIGNMENTS[natureChanges[stat.api]],
+                )}
+              />
+              {natureChanges[stat.api] !== "" && (
+                <NatureBoost isBoost={natureChanges[stat.api] === "up"} />
+              )}
+            </Fragment>
+          ))}
+          <div className="nature">{set.nature}</div>
+        </div>
       </div>
+
+      <ul className="set-moves">
+        {set.moves.map((move) => (
+          <li key={move}>{MOVE_BY_NAME.get(move)?.label ?? move}</li>
+        ))}
+      </ul>
+
+      <div className="set-actions">
+        <VoteButton
+          setId={set.id}
+          voteCount={set.voteCount}
+          hasVoted={set.hasVoted}
+          isOwn={viewerId === set.userId}
+        />
+        <Link className="hoverable-link set-edit-link" to={`/create?${editParams}`}>
+          Edit a copy
+        </Link>
       </div>
     </div>
-  )
+  );
 }

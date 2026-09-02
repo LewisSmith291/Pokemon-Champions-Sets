@@ -7,6 +7,7 @@ import RequireAuth from './components/routing/RequireAuth.tsx';
 import HeaderLayout from './components/header/templates/HeaderLayout.tsx';
 import NotFound from './components/not-found/NotFound.tsx';
 import ProfilePage from './components/profile/ProfilePage.tsx';
+import SetPage from './components/set-display/pages/SetPage.tsx';
 
 
 
@@ -20,6 +21,9 @@ function App() {
         {/* Building a set is open to anyone - the whole draft lives in the URL.
             Publishing it is gated inside CreateSet, and by requireAuth on the API. */}
         <Route path="create" element={<CreateSetPage/>}/>
+        {/* Not behind RequireAuth - the API decides visibility, answering 404
+            for a private set to anyone but its owner */}
+        <Route path="set/:id" element={<SetPage/>}/>
         <Route element={<RequireAuth />}>
           <Route path="profile" element={<ProfilePage/>}/>
         </Route>

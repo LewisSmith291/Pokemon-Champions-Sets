@@ -11,9 +11,10 @@
   gap: 0.5rem;
   padding:0.25rem;
   border-radius: 1rem;
-  width: fit-content;
   height: fit-content;
-  width:30%;
+  /* Was 30%, from when this was a card in a row. It's a whole page now, so it
+     takes a readable column width instead of a fraction of the viewport. */
+  width: min(92vw, 42rem);
 }
 
 /* Info stles*/
@@ -85,6 +86,56 @@
   grid-column-start: span 2;
   grid-column-end: -1;
   text-transform: capitalize;
+}
+
+.set-display .set-author{
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.set-display .set-private{
+  color: var(--stat-up);
+}
+
+.set-display .set-moves{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Chips again, so the same chrome-yellow-on-purple pairing as .stat-display */
+.set-display .set-moves li{
+  background-color: var(--header);
+  color: var(--link-color);
+  border-radius: 0.7rem;
+  padding: 0.35rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.set-display .set-actions{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.set-display .set-edit-link{
+  border-radius: var(--rounded);
+  padding: 0.4em 0.9em;
+  background: var(--header);
+  color: var(--link-color);
+  border: 1px solid var(--border);
+  text-decoration: none;
 }
 
 /* On --surface, which is what --stat-up/--stat-down are measured against */

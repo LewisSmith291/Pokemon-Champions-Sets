@@ -91,6 +91,8 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
     const rows = await db
       .select({
         id: pokemonSet.id,
+        // Lets a client tell "this is mine" - voting on your own set is refused
+        userId: pokemonSet.userId,
         species: pokemonSet.species,
         form: pokemonSet.form,
         gender: pokemonSet.gender,
@@ -202,8 +204,18 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
       : Promise.resolve(false),
   ]);
 
-  // Returns 200 with set if successful
-  res.json({...set, authorName: set.user.name, voteCount, hasVoted});
+  // moves and tags are flattened to plain slug arrays so this matches the shape
+  // the list route returns and one client type covers both. `user` is dropped in
+  // favour of authorName - it only ever held the name anyway.
+  const {user: author, ...rest} = set;
+  res.json({
+    ...rest,
+    moves: set.moves.map((row) => row.move),
+    tags: set.tags.map((row) => row.tag),
+    authorName: author.name,
+    voteCount,
+    hasVoted,
+  });
 });
 
 // Voting is upvote-only, so the row's existence is the whole vote and there is

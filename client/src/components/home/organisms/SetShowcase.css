@@ -14,3 +14,21 @@
   cursor: pointer;
   color: var(--on-accent);
 }
+
+/* Loading, error and "nothing published yet" all sit on the purple showcase
+   panel rather than the page, so they take the chrome yellow like the tabs do */
+.showcase-message{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  padding: 1rem;
+  color: var(--link-color);
+}
+
+.showcase-message a{
+  color: var(--link-color);
+  text-decoration: underline;
+}
