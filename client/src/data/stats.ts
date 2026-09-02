@@ -1,11 +1,14 @@
 // Base stats
+// `short` is for anywhere a stat name shares a row with five others - the set
+// card's six-across strip, and the set page's stat rows on a phone, where
+// "Sp. Defense" wraps to two lines and makes that row taller than the rest.
 export const STATS = [
-  { key: "boostHp", api: "hp", label: "HP" },
-  { key: "boostAtk", api: "attack", label: "Attack" },
-  { key: "boostDef", api: "defense", label: "Defense" },
-  { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack" },
-  { key: "boostSpDef", api: "special-defense", label: "Sp. Defense" },
-  { key: "boostSpe", api: "speed", label: "Speed" },
+  { key: "boostHp", api: "hp", label: "HP", short: "HP" },
+  { key: "boostAtk", api: "attack", label: "Attack", short: "Atk" },
+  { key: "boostDef", api: "defense", label: "Defense", short: "Def" },
+  { key: "boostSpAtk", api: "special-attack", label: "Sp. Attack", short: "SpA" },
+  { key: "boostSpDef", api: "special-defense", label: "Sp. Defense", short: "SpD" },
+  { key: "boostSpe", api: "speed", label: "Speed", short: "Spe" },
 ] as const; // as const allows BoostKey to get each of a property that it wants as a literal type
 
 export const NATURE_STAT_STRINGS = ["Attack", "Defense", "Special Attack", "Special Defense", "Speed"];

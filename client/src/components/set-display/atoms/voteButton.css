@@ -1,0 +1,49 @@
+/* Lived in setCard.css until the set page started using this too. Its own file
+   now, imported by the component, so both pages get it without depending on the
+   card being on screen. */
+
+.vote-button,
+.vote-count{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+
+  padding: 0.25em 0.6em;
+  border-radius: var(--rounded);
+  /* currentColor rather than --border: this control sits on --bg on a card and
+     on --surface on the set page, and --border (--p-mid) all but vanishes
+     against the latter in dark mode. Matching the text is visible on both. */
+  border: 2px solid currentColor;
+}
+
+.vote-button{
+  background: transparent;
+  color: var(--text);
+}
+
+.vote-button:hover:not(:disabled){
+  background: var(--accent);
+  color: var(--on-accent);
+  cursor: pointer;
+}
+
+.vote-button.voted{
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Signed out - the tooltip says to sign in, so this is informative not broken */
+.vote-button:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Your own set: no button at all, just the score. Dashed to say "not a control" */
+.vote-count{
+  background: transparent;
+  color: var(--text-muted);
+  border-style: dashed;
+}
