@@ -18,7 +18,14 @@
 .modal-sm   { --modal-width: min(90vw, 24rem); }
 .modal-md   { --modal-width: min(90vw, 48rem); }
 .modal-lg   { --modal-width: min(95vw, 64rem); }
-.modal-full { --modal-width: 90vw; --modal-height: 90svh; }
+/* Edge to edge on every screen size, not 90% of one. Used by the two big
+   pickers - species and moves - where the list wants every pixel it can get. */
+.modal-full {
+  --modal-width: 100vw;
+  --modal-height: 100svh;
+  --modal-max-h: 100svh;
+  border-radius: 0;
+}
 
 .modal-tall { --modal-height: 90svh; }
 .modal-half{ --modal-height: 50svh; }

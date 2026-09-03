@@ -140,26 +140,34 @@ export default function MoveSelect({learnableMoves, currentMove, takenMoves, onC
           </div>
         </div>
         <div className="flex w-1/3 shrink-0 flex-col gap-2 p-4 move-info">
-          <div className="flex flex-row justify-evenly gap-2 items-center">
-            <h3 
+          <div className="move-info-head flex flex-row justify-evenly gap-2 items-center">
+            <h3
               className="bg-[var(--p-void)] text-[var(--link-color)] rounded-[var(--rounded)] px-2 py-1 flex-1"
             >
-              {detail?.label ?? "Select a move"} 
+              {detail?.label ?? "Select a move"}
             </h3>
             {detail && <TypeDisplay type={detail.type} />}
           </div>
-          {detail && (
-            <>
-              <p>{detail.damageClass} · {detail.power ?? "—"} power · {detail.accuracy ?? "—"} acc · {detail.pp} PP</p>
-              <p>{detail.description}</p>
-            </>
-          )}
-          <button type="button" className="rounded-[var(--rounded)] hoverable-link" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
-            {currentMove === null ? "Add to slot" : "Replace move"}
-          </button>
-          {currentMove !== null && (
-            <button type="button" className="hoverable-link" onClick={onClear}>Clear slot</button>
-          )}
+
+          {/* Only this scrolls. A long effect used to push the confirm button
+              past the bottom of the modal, where it couldn't be reached. */}
+          <div className="move-info-body flex flex-col gap-2">
+            {detail && (
+              <>
+                <p>{detail.damageClass} · {detail.power ?? "—"} power · {detail.accuracy ?? "—"} acc · {detail.pp} PP</p>
+                <p>{detail.description}</p>
+              </>
+            )}
+          </div>
+
+          <div className="move-info-actions flex flex-col gap-2">
+            <button type="button" className="rounded-[var(--rounded)] hoverable-link" disabled={highlighted === null} onClick={() => onConfirm(highlighted!)}>
+              {currentMove === null ? "Add to slot" : "Replace move"}
+            </button>
+            {currentMove !== null && (
+              <button type="button" className="hoverable-link" onClick={onClear}>Clear slot</button>
+            )}
+          </div>
         </div>
       </div>
     </div>

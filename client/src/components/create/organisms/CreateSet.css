@@ -397,6 +397,24 @@ input[type=range]{
   flex-direction: row;
 }
 
+/* Head and actions hold their size; only the description gives way. Without
+   min-height:0 the panel grows to fit a long effect and pushes the confirm
+   button past the bottom of the modal. */
+.move-info{
+  min-height: 0;
+}
+
+.move-info-head,
+.move-info-actions{
+  flex-shrink: 0;
+}
+
+.move-info-body{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
 /* Search box, then damage class, then type - each row its own line so the
    filters read as a stack rather than one crowded strip. */
 .move-filters{
@@ -466,8 +484,30 @@ input[type=range]{
     width: 100%;
     flex-shrink: 1;
     min-height: 0;
-    max-height: 40%;
-    overflow-y: auto;
+    max-height: 45%;
+    /* The panel itself no longer scrolls - .move-info-body does, so the confirm
+       button stays pinned at the bottom instead of scrolling out of reach */
+    overflow-y: visible;
+  }
+
+  /* A pokemon with a dozen learnable types turns this into four rows of notches
+     and eats the list below it. One row that scrolls sideways instead. */
+  #move-type-filters{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    padding-bottom: 0.2rem;
+  }
+
+  #move-type-filters button{
+    flex: 0 0 auto;
+  }
+
+  /* .type-notch pads its label out to 8ch, which is most of why this row gets
+     so long - the filter doesn't need the alignment a table column does */
+  #move-type-filters .type-notch p{
+    width: auto;
   }
 }
 
