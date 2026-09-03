@@ -7,6 +7,12 @@
   width:      var(--modal-width,  min(90vw, 40rem));
   height:     var(--modal-height, auto);
   max-height: var(--modal-max-h,  90svh);
+
+  /* The UA stylesheet caps a modal dialog at calc(100% - 6px - 2em) - room for
+     the default 3px border and 1em padding it also gives every <dialog>. We
+     remove both of those, so the cap just holds every modal ~38px short of the
+     width it asked for. max-height above was already overriding its twin. */
+  max-width:  var(--modal-max-w,  100vw);
 }
 
 .modal[open]{
@@ -18,8 +24,7 @@
 .modal-sm   { --modal-width: min(90vw, 24rem); }
 .modal-md   { --modal-width: min(90vw, 48rem); }
 .modal-lg   { --modal-width: min(95vw, 64rem); }
-/* Edge to edge on every screen size, not 90% of one. Used by the two big
-   pickers - species and moves - where the list wants every pixel it can get. */
+
 .modal-full {
   --modal-width: 100vw;
   --modal-height: 100svh;
@@ -36,8 +41,8 @@
     --modal-width: 100vw;
   }
 
-  .modal-md,
-  .modal-full {
+  /* .modal-full is already 100vw/100svh at every size, so it isn't listed here */
+  .modal-md {
     --modal-width: 100vw;
     --modal-height: 100svh;
   }
