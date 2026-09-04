@@ -28,26 +28,25 @@
 /* For tablet */
 @media (min-width: 768px){
   #home-menu{
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr) 1fr 1fr;
     grid-template-rows: 0.5fr 1fr 1fr 1fr;
     grid-template-areas: 
       "hero       hero      hero      hero    hero"
-      "showcase   showcase  showcase  actions actions"
       "showcase   showcase  showcase  actions actions"
       "showcase   showcase  showcase  actions actions"
     ;
     width:100%;
     padding:var(--gap);
   }
+  
 
   #hero{
     font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   }
 
   #home-actions{
-    justify-content: space-evenly;
     padding:var(--gap);
-    width:80%;
+    width:90%;
     align-items: center;
   }
   
