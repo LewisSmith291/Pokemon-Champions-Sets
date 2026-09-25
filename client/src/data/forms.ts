@@ -10,8 +10,8 @@ export const SPECIES_BY_NAME: Map<string, Species> = new Map(
 // before "-mega", or the wrong tail gets stripped.
 export const FORM_SUFFIXES = [
   "male-mega", "female-mega",
-  "mega-x", "mega-y", "mega",
-  "alola", "galar", "hisui",
+  "mega-x", "mega-y", "mega", "mega-z",
+  "alola", "galar", "hisui", "paldea",
   "male", "female",
 ] as const;
 
