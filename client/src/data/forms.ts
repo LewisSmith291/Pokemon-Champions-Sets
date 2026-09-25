@@ -43,9 +43,17 @@ export function splitForm(form: string): { base: string; suffix: FormSuffix } {
   return { base: form, suffix: "" };
 }
 
-// True only for the default form and the six suffixes above, and only when the
-// species itself is in the Champions dex.
+// Individual forms that match a valid suffix but aren't in Champions. The suffix
+// can't be dropped for these - "-galar" is still needed for Galarian Slowbro and
+// the rest - so they're excluded by name instead.
+export const EXCLUDED_FORMS: ReadonlySet<string> = new Set([
+  "farfetchd-galar",   // Sirfetch'd is in the game, but its pre-evolution isn't
+]);
+
+// True only for the default form and the suffixes above, only when the species
+// itself is in the Champions dex, and not for a form excluded by name.
 export function isValidForm(form: string): boolean {
+  if (EXCLUDED_FORMS.has(form)) return false;
   return SPECIES_BY_NAME.has(splitForm(form).base);
 }
 
