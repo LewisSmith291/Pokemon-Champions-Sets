@@ -11,6 +11,8 @@ export const SPECIES_BY_NAME: Map<string, Species> = new Map(
 export const FORM_SUFFIXES = [
   "male-mega", "female-mega",
   "mega-x", "mega-y", "mega", "mega-z",
+  // Paldean Tauros has no plain "-paldea" variety - each breed is its own slug
+  "paldea-combat-breed", "paldea-blaze-breed", "paldea-aqua-breed",
   "alola", "galar", "hisui", "paldea",
   "male", "female",
 ] as const;
@@ -21,6 +23,7 @@ const REGIONAL_ADJECTIVE: Record<string, string> = {
   alola: "Alolan",
   galar: "Galarian",
   hisui: "Hisuian",
+  paldea: "Paldean",
 };
 
 // Splits a variety slug into its species and its form.
@@ -64,6 +67,10 @@ export function formLabel(form: string): string {
     case "mega":        return `Mega ${label}`;
     case "mega-x":      return `Mega ${label} X`;
     case "mega-y":      return `Mega ${label} Y`;
+    case "mega-z":      return `Mega ${label} Z`;
+    case "paldea-combat-breed": return `Paldean ${label} (Combat)`;
+    case "paldea-blaze-breed":  return `Paldean ${label} (Blaze)`;
+    case "paldea-aqua-breed":   return `Paldean ${label} (Aqua)`;
     case "male":        return gendered ? `${label} ♂` : label;
     case "female":      return gendered ? `${label} ♀` : label;
     case "male-mega":   return gendered ? `Mega ${label} ♂` : `Mega ${label}`;
@@ -110,5 +117,9 @@ export function preferredMegaStone(form: string, stones: string[]): string | und
   const { suffix } = splitForm(form);
   if (suffix === "mega-x") return stones.find((s) => s.endsWith("-x"));
   if (suffix === "mega-y") return stones.find((s) => s.endsWith("-y"));
+  if (suffix === "mega-z") return stones.find((s) => s.endsWith("-z"));
+  // Garchomp, Absol and Lucario now have a plain stone and a Z stone. Pick the
+  // plain one on purpose rather than relying on it happening to sort first.
+  if (suffix === "mega") return stones.find((s) => !/-[xyz]$/.test(s));
   return undefined;
 }
