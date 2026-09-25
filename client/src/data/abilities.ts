@@ -55,6 +55,11 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "Protects allies against moves that affect their mental state."
   },
   {
+    "name": "aura-guard",
+    "label": "Aura Guard",
+    "description": "A Pokémon with Aura Guard takes half damage from moves that make contact."
+  },
+  {
     "name": "battle-armor",
     "label": "Battle Armor",
     "description": "Protects against critical hits."
@@ -210,6 +215,11 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "When hit by an attack, the power of the next Electric-type move it uses is doubled."
   },
   {
+    "name": "emergency-exit",
+    "label": "Emergency Exit",
+    "description": "This Pokémon automatically switches out when its HP drops below half."
+  },
+  {
     "name": "fairy-aura",
     "label": "Fairy Aura",
     "description": "Strengthens Fairy moves to 1.33× their power for all friendly and opposing Pokémon."
@@ -288,6 +298,21 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "gooey",
     "label": "Gooey",
     "description": "Lowers attacking Pokémon's Speed by one stage on contact."
+  },
+  {
+    "name": "grass-pelt",
+    "label": "Grass Pelt",
+    "description": "Boosts Defense while Grassy Terrain is in effect."
+  },
+  {
+    "name": "grassy-surge",
+    "label": "Grassy Surge",
+    "description": "When this Pokémon enters battle, it changes the terrain to Grassy Terrain."
+  },
+  {
+    "name": "guard-dog",
+    "label": "Guard Dog",
+    "description": "Boosts Attack if intimidated, and prevents being forced to switch out."
   },
   {
     "name": "guts",
@@ -425,6 +450,11 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "Evades Ground moves."
   },
   {
+    "name": "libero",
+    "label": "Libero",
+    "description": "Libero changes the Pokémon's type to that of its previously used attack."
+  },
+  {
     "name": "light-metal",
     "label": "Light Metal",
     "description": "Halves the Pokémon's weight."
@@ -438,6 +468,11 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "limber",
     "label": "Limber",
     "description": "Prevents paralysis."
+  },
+  {
+    "name": "liquid-ooze",
+    "label": "Liquid Ooze",
+    "description": "Damages opponents using leeching moves for as much as they would heal."
   },
   {
     "name": "liquid-voice",
@@ -630,6 +665,16 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "Changes the bearer's type to match each move it uses."
   },
   {
+    "name": "psychic-surge",
+    "label": "Psychic Surge",
+    "description": "When this Pokémon enters battle, it changes the terrain to Psychic Terrain."
+  },
+  {
+    "name": "punk-rock",
+    "label": "Punk Rock",
+    "description": "Boosts sound-based moves and halves damage from the same moves."
+  },
+  {
     "name": "pure-power",
     "label": "Pure Power",
     "description": "Doubles Attack in battle."
@@ -658,6 +703,11 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "rain-dish",
     "label": "Rain Dish",
     "description": "Heals for 1/16 max HP after each turn during rain."
+  },
+  {
+    "name": "rattled",
+    "label": "Rattled",
+    "description": "Raises Speed one stage upon being hit by a Dark, Ghost, or Bug move."
   },
   {
     "name": "receiver",
@@ -700,6 +750,11 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "Damages attacking Pokémon for 1/8 their max HP on contact."
   },
   {
+    "name": "run-away",
+    "label": "Run Away",
+    "description": "Ensures success fleeing from wild battles."
+  },
+  {
     "name": "sand-force",
     "label": "Sand Force",
     "description": "Strengthens Rock, Ground, and Steel moves to 1.3× their power during a sandstorm. Protects against sandstorm damage."
@@ -738,6 +793,11 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "screen-cleaner",
     "label": "Screen Cleaner",
     "description": "Nullifies effects of Light Screen, Reflect, and Aurora Veil."
+  },
+  {
+    "name": "seed-sower",
+    "label": "Seed Sower",
+    "description": "Turns the ground into Grassy Terrain when the Pokémon is hit by an attack."
   },
   {
     "name": "shadow-tag",
@@ -820,6 +880,11 @@ export const ABILITIES: AbilitySummary[] = [
     "description": "When the Pokémon takes damage from a move, it burns the attacker."
   },
   {
+    "name": "stakeout",
+    "label": "Stakeout",
+    "description": "This Pokémon's moves have double power against Pokémon that switched in this turn."
+  },
+  {
     "name": "stall",
     "label": "Stall",
     "description": "Makes the Pokémon move last within its move's priority bracket."
@@ -848,6 +913,11 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "steadfast",
     "label": "Steadfast",
     "description": "Raises Speed one stage upon flinching."
+  },
+  {
+    "name": "steely-spirit",
+    "label": "Steely Spirit",
+    "description": "Powers up ally Pokémon's Steel-type moves."
   },
   {
     "name": "stench",
@@ -933,6 +1003,11 @@ export const ABILITIES: AbilitySummary[] = [
     "name": "telepathy",
     "label": "Telepathy",
     "description": "Protects against friendly Pokémon's damaging moves."
+  },
+  {
+    "name": "thermal-exchange",
+    "label": "Thermal Exchange",
+    "description": "Raises Attack when hit by a Fire-type move. Cannot be burned."
   },
   {
     "name": "thick-fat",

@@ -866,6 +866,16 @@ export const MOVES: MoveSummary[] = [
     "description": "The user retaliates to deal double the damage it took from an opponent's physical move during the turn this move is used."
   },
   {
+    "name": "court-change",
+    "label": "Court Change",
+    "type": "normal",
+    "damageClass": "status",
+    "pp": 12,
+    "power": null,
+    "accuracy": 100,
+    "description": "Swaps the statuses affecting the user's side of the field with the statuses affecting the opponent's side of the field."
+  },
+  {
     "name": "covet",
     "label": "Covet",
     "type": "normal",
@@ -1066,6 +1076,16 @@ export const MOVES: MoveSummary[] = [
     "description": "The user attacks twice in a row."
   },
   {
+    "name": "double-shock",
+    "label": "Double Shock",
+    "type": "electric",
+    "damageClass": "physical",
+    "pp": 8,
+    "power": 120,
+    "accuracy": null,
+    "description": "The user loses the Electric type. This move fails unless it is used by an Electric type."
+  },
+  {
     "name": "double-team",
     "label": "Double Team",
     "type": "normal",
@@ -1204,6 +1224,16 @@ export const MOVES: MoveSummary[] = [
     "power": 80,
     "accuracy": 95,
     "description": "This move has a 1-stage Critical-Hit Ratio Boost."
+  },
+  {
+    "name": "drum-beating",
+    "label": "Drum Beating",
+    "type": "grass",
+    "damageClass": "physical",
+    "pp": 12,
+    "power": 80,
+    "accuracy": 100,
+    "description": "Lowers the target's Speed stat by 1 stage."
   },
   {
     "name": "dual-wingbeat",
@@ -1836,6 +1866,16 @@ export const MOVES: MoveSummary[] = [
     "description": "This move can't be used twice in a row."
   },
   {
+    "name": "glaive-rush",
+    "label": "Glaive Rush",
+    "type": "dragon",
+    "damageClass": "physical",
+    "pp": 8,
+    "power": 120,
+    "accuracy": 100,
+    "description": "The user gains the Wide Open status until the next time it takes an action."
+  },
+  {
     "name": "glare",
     "label": "Glare",
     "type": "normal",
@@ -2376,6 +2416,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Has a 30% chance of lowering the target's Defense stat by 1 stage."
   },
   {
+    "name": "jaw-lock",
+    "label": "Jaw Lock",
+    "type": "dark",
+    "damageClass": "physical",
+    "pp": 12,
+    "power": 80,
+    "accuracy": 100,
+    "description": "The user and target gain the Jaw Locked status."
+  },
+  {
     "name": "jet-punch",
     "label": "Jet Punch",
     "type": "water",
@@ -2716,6 +2766,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Lowers the target's Sp. Def stat by 2 stages."
   },
   {
+    "name": "meteor-assault",
+    "label": "Meteor Assault",
+    "type": "fighting",
+    "damageClass": "physical",
+    "pp": 8,
+    "power": 170,
+    "accuracy": 100,
+    "description": "The user gains the Recharging status on the turn after this move is used."
+  },
+  {
     "name": "meteor-beam",
     "label": "Meteor Beam",
     "type": "rock",
@@ -2734,6 +2794,16 @@ export const MOVES: MoveSummary[] = [
     "power": 90,
     "accuracy": 90,
     "description": "Has a 20% chance of boosting the user's Attack stat by 1 stage."
+  },
+  {
+    "name": "milk-drink",
+    "label": "Milk Drink",
+    "type": "normal",
+    "damageClass": "status",
+    "pp": 8,
+    "power": null,
+    "accuracy": null,
+    "description": "Restores 1/2 of the max HP of the user or an ally."
   },
   {
     "name": "minimize",
@@ -2936,6 +3006,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Paralyzes the target."
   },
   {
+    "name": "octolock",
+    "label": "Octolock",
+    "type": "fighting",
+    "damageClass": "status",
+    "pp": 16,
+    "power": null,
+    "accuracy": 100,
+    "description": "Gives the target the Octolocked and Can't Escape statuses."
+  },
+  {
     "name": "outrage",
     "label": "Outrage",
     "type": "dragon",
@@ -2944,6 +3024,16 @@ export const MOVES: MoveSummary[] = [
     "power": 120,
     "accuracy": 100,
     "description": "The user gains the Rampaging status."
+  },
+  {
+    "name": "overdrive",
+    "label": "Overdrive",
+    "type": "electric",
+    "damageClass": "special",
+    "pp": 12,
+    "power": 80,
+    "accuracy": 100,
+    "description": "Inflicts regular damage with no additional effect."
   },
   {
     "name": "overheat",
@@ -3136,6 +3226,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Lowers the target's Speed stat by 1 stage."
   },
   {
+    "name": "pound",
+    "label": "Pound",
+    "type": "normal",
+    "damageClass": "physical",
+    "pp": 20,
+    "power": 40,
+    "accuracy": 100,
+    "description": "Inflicts regular damage with no additional effect."
+  },
+  {
     "name": "power-gem",
     "label": "Power Gem",
     "type": "rock",
@@ -3144,16 +3244,6 @@ export const MOVES: MoveSummary[] = [
     "power": 80,
     "accuracy": 100,
     "description": "Inflicts regular damage with no additional effect."
-  },
-  {
-    "name": "power-shift",
-    "label": "Power Shift",
-    "type": "normal",
-    "damageClass": "status",
-    "pp": 12,
-    "power": null,
-    "accuracy": null,
-    "description": "The user gains the Atk/Def Swapped status."
   },
   {
     "name": "power-split",
@@ -3294,6 +3384,16 @@ export const MOVES: MoveSummary[] = [
     "power": 80,
     "accuracy": 100,
     "description": "This is a special move but the damage it deals is calculated using the target's Defense stat."
+  },
+  {
+    "name": "pyro-ball",
+    "label": "Pyro Ball",
+    "type": "fire",
+    "damageClass": "physical",
+    "pp": 8,
+    "power": 120,
+    "accuracy": 90,
+    "description": "Has a 10% chance of burning the target. Cures the user of being frozen."
   },
   {
     "name": "quash",
@@ -3464,6 +3564,16 @@ export const MOVES: MoveSummary[] = [
     "power": null,
     "accuracy": 100,
     "description": "The less HP the user has left the greater this move's power (ranging between 20 and 200)."
+  },
+  {
+    "name": "revival-blessing",
+    "label": "Revival Blessing",
+    "type": "normal",
+    "damageClass": "status",
+    "pp": 1,
+    "power": null,
+    "accuracy": null,
+    "description": "Revives a Pokémon in the user's party that has fainted and restores 1/2 of that Pokémon's max HP."
   },
   {
     "name": "rising-voltage",
@@ -3786,6 +3896,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Boosts the user's Defense stat by 2 stages."
   },
   {
+    "name": "shift-gear",
+    "label": "Shift Gear",
+    "type": "steel",
+    "damageClass": "status",
+    "pp": 12,
+    "power": null,
+    "accuracy": null,
+    "description": "Boosts the user's Attack stat by 1 stage and Speed stat by 2 stages."
+  },
+  {
     "name": "simple-beam",
     "label": "Simple Beam",
     "type": "normal",
@@ -3844,6 +3964,16 @@ export const MOVES: MoveSummary[] = [
     "power": null,
     "accuracy": null,
     "description": "Restores 1/2 of the user's max HP."
+  },
+  {
+    "name": "slash",
+    "label": "Slash",
+    "type": "normal",
+    "damageClass": "physical",
+    "pp": 20,
+    "power": 80,
+    "accuracy": 100,
+    "description": "This move has a 1-stage Critical-Hit Ratio Boost."
   },
   {
     "name": "sleep-powder",
@@ -3926,6 +4056,16 @@ export const MOVES: MoveSummary[] = [
     "description": "Lowers targets' Sp. Atk stats by 1 stage."
   },
   {
+    "name": "snipe-shot",
+    "label": "Snipe Shot",
+    "type": "water",
+    "damageClass": "special",
+    "pp": 16,
+    "power": 85,
+    "accuracy": 100,
+    "description": "This move ignores the effects of Abilities and moves that draw in moves. It has a 1-stage Critical-Hit Ratio Boost."
+  },
+  {
     "name": "snore",
     "label": "Snore",
     "type": "normal",
@@ -3954,16 +4094,6 @@ export const MOVES: MoveSummary[] = [
     "power": null,
     "accuracy": 100,
     "description": "Changes the target's type to Water."
-  },
-  {
-    "name": "soft-boiled",
-    "label": "Soft-Boiled",
-    "type": "normal",
-    "damageClass": "status",
-    "pp": 8,
-    "power": null,
-    "accuracy": null,
-    "description": "Restores 1/2 of the user's max HP."
   },
   {
     "name": "solar-beam",
@@ -4074,16 +4204,6 @@ export const MOVES: MoveSummary[] = [
     "power": null,
     "accuracy": 100,
     "description": "Removes 4 PP from the move last used by the target."
-  },
-  {
-    "name": "spore",
-    "label": "Spore",
-    "type": "grass",
-    "damageClass": "status",
-    "pp": 16,
-    "power": null,
-    "accuracy": 100,
-    "description": "Puts the target to sleep."
   },
   {
     "name": "stealth-rock",
@@ -4200,7 +4320,7 @@ export const MOVES: MoveSummary[] = [
     "label": "Strength Sap",
     "type": "grass",
     "damageClass": "status",
-    "pp": 12,
+    "pp": 8,
     "power": null,
     "accuracy": 100,
     "description": "Restores the user's HP by an amount equal to the target's Attack stat. Lowers the target's Attack stat by 1 stage."
@@ -4873,7 +4993,7 @@ export const MOVES: MoveSummary[] = [
     "pp": 12,
     "power": 50,
     "accuracy": 100,
-    "description": "When a weather condition is present this move's power is doubled and its type changes. Harsh sunlight: Fire type Rain: Water type Snow: Ice type. Sandstorm: Rock type."
+    "description": "When a weather condition is present this move's power is doubled and its type changes. Harsh sunlight Fire type. Rain Water type. Snow Ice type. Sandstorm Rock type."
   },
   {
     "name": "whirlpool",
@@ -4930,7 +5050,7 @@ export const MOVES: MoveSummary[] = [
     "label": "Wish",
     "type": "normal",
     "damageClass": "status",
-    "pp": 12,
+    "pp": 8,
     "power": null,
     "accuracy": null,
     "description": "Gives the user's spot the Wish status."
@@ -5014,5 +5134,15 @@ export const MOVES: MoveSummary[] = [
     "power": 80,
     "accuracy": 90,
     "description": "Has a 20% chance of making the target flinch."
+  },
+  {
+    "name": "zing-zap",
+    "label": "Zing Zap",
+    "type": "electric",
+    "damageClass": "physical",
+    "pp": 12,
+    "power": 80,
+    "accuracy": 100,
+    "description": "Has a 30% chance of making the target flinch."
   }
 ];

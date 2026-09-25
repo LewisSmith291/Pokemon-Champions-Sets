@@ -353,6 +353,21 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 80
     }
   },
+  "arboliva": {
+    "id": 930,
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "stats": {
+      "hp": 78,
+      "attack": 69,
+      "defense": 90,
+      "special-attack": 125,
+      "special-defense": 109,
+      "speed": 39
+    }
+  },
   "arcanine": {
     "id": 59,
     "types": [
@@ -630,6 +645,36 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 47,
       "special-defense": 138,
       "speed": 30
+    }
+  },
+  "baxcalibur": {
+    "id": 998,
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "stats": {
+      "hp": 115,
+      "attack": 145,
+      "defense": 92,
+      "special-attack": 75,
+      "special-defense": 86,
+      "speed": 87
+    }
+  },
+  "baxcalibur-mega": {
+    "id": 10325,
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "stats": {
+      "hp": 115,
+      "attack": 175,
+      "defense": 117,
+      "special-attack": 105,
+      "special-defense": 101,
+      "speed": 87
     }
   },
   "beartic": {
@@ -981,6 +1026,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 135,
       "special-defense": 120,
       "speed": 65
+    }
+  },
+  "cinderace": {
+    "id": 815,
+    "types": [
+      "fire"
+    ],
+    "stats": {
+      "hp": 80,
+      "attack": 116,
+      "defense": 75,
+      "special-attack": 65,
+      "special-defense": 75,
+      "speed": 119
     }
   },
   "clawitzer": {
@@ -1482,6 +1541,35 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 100
     }
   },
+  "farfetchd": {
+    "id": 83,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "stats": {
+      "hp": 52,
+      "attack": 90,
+      "defense": 55,
+      "special-attack": 58,
+      "special-defense": 62,
+      "speed": 60
+    }
+  },
+  "farfetchd-galar": {
+    "id": 10166,
+    "types": [
+      "fighting"
+    ],
+    "stats": {
+      "hp": 52,
+      "attack": 95,
+      "defense": 55,
+      "special-attack": 58,
+      "special-defense": 62,
+      "speed": 55
+    }
+  },
   "farigiraf": {
     "id": 981,
     "types": [
@@ -1934,6 +2022,50 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 95
     }
   },
+  "gogoat": {
+    "id": 673,
+    "types": [
+      "grass"
+    ],
+    "stats": {
+      "hp": 123,
+      "attack": 100,
+      "defense": 62,
+      "special-attack": 97,
+      "special-defense": 81,
+      "speed": 68
+    }
+  },
+  "golisopod": {
+    "id": 768,
+    "types": [
+      "bug",
+      "water"
+    ],
+    "stats": {
+      "hp": 75,
+      "attack": 125,
+      "defense": 140,
+      "special-attack": 60,
+      "special-defense": 90,
+      "speed": 40
+    }
+  },
+  "golisopod-mega": {
+    "id": 10316,
+    "types": [
+      "bug",
+      "steel"
+    ],
+    "stats": {
+      "hp": 75,
+      "attack": 150,
+      "defense": 175,
+      "special-attack": 70,
+      "special-defense": 120,
+      "speed": 40
+    }
+  },
   "golurk": {
     "id": 623,
     "types": [
@@ -2051,6 +2183,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 58,
       "special-defense": 75,
       "speed": 54
+    }
+  },
+  "grapploct": {
+    "id": 853,
+    "types": [
+      "fighting"
+    ],
+    "stats": {
+      "hp": 80,
+      "attack": 118,
+      "defense": 90,
+      "special-attack": 70,
+      "special-defense": 80,
+      "speed": 42
     }
   },
   "greninja": {
@@ -2351,6 +2497,36 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 60
     }
   },
+  "indeedee-female": {
+    "id": 10186,
+    "types": [
+      "psychic",
+      "normal"
+    ],
+    "stats": {
+      "hp": 70,
+      "attack": 55,
+      "defense": 65,
+      "special-attack": 95,
+      "special-defense": 105,
+      "speed": 85
+    }
+  },
+  "indeedee-male": {
+    "id": 876,
+    "types": [
+      "psychic",
+      "normal"
+    ],
+    "stats": {
+      "hp": 60,
+      "attack": 65,
+      "defense": 55,
+      "special-attack": 105,
+      "special-defense": 95,
+      "speed": 95
+    }
+  },
   "infernape": {
     "id": 392,
     "types": [
@@ -2364,6 +2540,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 104,
       "special-defense": 71,
       "speed": 108
+    }
+  },
+  "inteleon": {
+    "id": 818,
+    "types": [
+      "water"
+    ],
+    "stats": {
+      "hp": 70,
+      "attack": 85,
+      "defense": 65,
+      "special-attack": 125,
+      "special-defense": 65,
+      "speed": 120
     }
   },
   "jolteon": {
@@ -2654,6 +2844,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 55,
       "special-defense": 75,
       "speed": 82
+    }
+  },
+  "mabosstiff": {
+    "id": 943,
+    "types": [
+      "dark"
+    ],
+    "stats": {
+      "hp": 80,
+      "attack": 120,
+      "defense": 90,
+      "special-attack": 60,
+      "special-defense": 70,
+      "speed": 85
     }
   },
   "machamp": {
@@ -3065,6 +3269,36 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 97
     }
   },
+  "mr-mime": {
+    "id": 122,
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "stats": {
+      "hp": 40,
+      "attack": 45,
+      "defense": 65,
+      "special-attack": 100,
+      "special-defense": 120,
+      "speed": 90
+    }
+  },
+  "mr-mime-galar": {
+    "id": 10168,
+    "types": [
+      "ice",
+      "psychic"
+    ],
+    "stats": {
+      "hp": 50,
+      "attack": 65,
+      "defense": 65,
+      "special-attack": 90,
+      "special-defense": 90,
+      "speed": 100
+    }
+  },
   "mr-rime": {
     "id": 866,
     "types": [
@@ -3253,6 +3487,21 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 80
     }
   },
+  "pawmot": {
+    "id": 923,
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "stats": {
+      "hp": 70,
+      "attack": 115,
+      "defense": 70,
+      "special-attack": 70,
+      "special-defense": 60,
+      "speed": 105
+    }
+  },
   "pelipper": {
     "id": 279,
     "types": [
@@ -3266,6 +3515,48 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 95,
       "special-defense": 70,
       "speed": 65
+    }
+  },
+  "perrserker": {
+    "id": 863,
+    "types": [
+      "steel"
+    ],
+    "stats": {
+      "hp": 70,
+      "attack": 110,
+      "defense": 100,
+      "special-attack": 50,
+      "special-defense": 60,
+      "speed": 50
+    }
+  },
+  "persian": {
+    "id": 53,
+    "types": [
+      "normal"
+    ],
+    "stats": {
+      "hp": 65,
+      "attack": 70,
+      "defense": 60,
+      "special-attack": 65,
+      "special-defense": 65,
+      "speed": 115
+    }
+  },
+  "persian-alola": {
+    "id": 10108,
+    "types": [
+      "dark"
+    ],
+    "stats": {
+      "hp": 65,
+      "attack": 60,
+      "defense": 60,
+      "special-attack": 75,
+      "special-defense": 65,
+      "speed": 115
     }
   },
   "pidgeot": {
@@ -3522,6 +3813,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 90
     }
   },
+  "pincurchin": {
+    "id": 871,
+    "types": [
+      "electric"
+    ],
+    "stats": {
+      "hp": 48,
+      "attack": 101,
+      "defense": 95,
+      "special-attack": 91,
+      "special-defense": 85,
+      "speed": 15
+    }
+  },
   "pinsir": {
     "id": 127,
     "types": [
@@ -3769,6 +4074,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 40
     }
   },
+  "rillaboom": {
+    "id": 812,
+    "types": [
+      "grass"
+    ],
+    "stats": {
+      "hp": 100,
+      "attack": 125,
+      "defense": 90,
+      "special-attack": 60,
+      "special-defense": 70,
+      "speed": 85
+    }
+  },
   "roserade": {
     "id": 407,
     "types": [
@@ -3917,6 +4236,36 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 85,
       "special-defense": 115,
       "speed": 20
+    }
+  },
+  "salamence": {
+    "id": 373,
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "stats": {
+      "hp": 95,
+      "attack": 135,
+      "defense": 80,
+      "special-attack": 110,
+      "special-defense": 80,
+      "speed": 100
+    }
+  },
+  "salamence-mega": {
+    "id": 10089,
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "stats": {
+      "hp": 95,
+      "attack": 145,
+      "defense": 130,
+      "special-attack": 120,
+      "special-defense": 90,
+      "speed": 120
     }
   },
   "salazzle": {
@@ -4242,6 +4591,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 70
     }
   },
+  "sirfetchd": {
+    "id": 865,
+    "types": [
+      "fighting"
+    ],
+    "stats": {
+      "hp": 62,
+      "attack": 135,
+      "defense": 95,
+      "special-attack": 68,
+      "special-defense": 82,
+      "speed": 65
+    }
+  },
   "skarmory": {
     "id": 227,
     "types": [
@@ -4420,6 +4783,66 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 35
     }
   },
+  "squawkabilly-blue-plumage": {
+    "id": 10260,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "stats": {
+      "hp": 82,
+      "attack": 96,
+      "defense": 51,
+      "special-attack": 45,
+      "special-defense": 51,
+      "speed": 92
+    }
+  },
+  "squawkabilly-green-plumage": {
+    "id": 931,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "stats": {
+      "hp": 82,
+      "attack": 96,
+      "defense": 51,
+      "special-attack": 45,
+      "special-defense": 51,
+      "speed": 92
+    }
+  },
+  "squawkabilly-white-plumage": {
+    "id": 10262,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "stats": {
+      "hp": 82,
+      "attack": 96,
+      "defense": 51,
+      "special-attack": 45,
+      "special-defense": 51,
+      "speed": 92
+    }
+  },
+  "squawkabilly-yellow-plumage": {
+    "id": 10261,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "stats": {
+      "hp": 82,
+      "attack": 96,
+      "defense": 51,
+      "special-attack": 45,
+      "special-defense": 51,
+      "speed": 92
+    }
+  },
   "staraptor": {
     "id": 398,
     "types": [
@@ -4540,6 +4963,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 32
     }
   },
+  "swalot": {
+    "id": 317,
+    "types": [
+      "poison"
+    ],
+    "stats": {
+      "hp": 100,
+      "attack": 73,
+      "defense": 83,
+      "special-attack": 73,
+      "special-defense": 83,
+      "speed": 55
+    }
+  },
   "swampert": {
     "id": 260,
     "types": [
@@ -4657,6 +5094,20 @@ export const FORM_DATA: Record<string, FormData> = {
       "speed": 100
     }
   },
+  "thievul": {
+    "id": 828,
+    "types": [
+      "dark"
+    ],
+    "stats": {
+      "hp": 70,
+      "attack": 58,
+      "defense": 58,
+      "special-attack": 87,
+      "special-defense": 92,
+      "speed": 90
+    }
+  },
   "tinkaton": {
     "id": 959,
     "types": [
@@ -4744,6 +5195,36 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 86,
       "special-defense": 65,
       "speed": 85
+    }
+  },
+  "toxtricity-amped": {
+    "id": 849,
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "stats": {
+      "hp": 75,
+      "attack": 98,
+      "defense": 70,
+      "special-attack": 114,
+      "special-defense": 70,
+      "speed": 75
+    }
+  },
+  "toxtricity-low-key": {
+    "id": 10184,
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "stats": {
+      "hp": 75,
+      "attack": 98,
+      "defense": 70,
+      "special-attack": 114,
+      "special-defense": 70,
+      "speed": 75
     }
   },
   "trevenant": {
@@ -5038,6 +5519,21 @@ export const FORM_DATA: Record<string, FormData> = {
       "special-attack": 77,
       "special-defense": 75,
       "speed": 116
+    }
+  },
+  "wigglytuff": {
+    "id": 40,
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "stats": {
+      "hp": 140,
+      "attack": 70,
+      "defense": 45,
+      "special-attack": 85,
+      "special-defense": 50,
+      "speed": 45
     }
   },
   "wyrdeer": {

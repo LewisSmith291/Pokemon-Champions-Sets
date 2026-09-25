@@ -263,6 +263,31 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "wigglytuff",
+    "label": "Wigglytuff",
+    "id": 40,
+    "genderRate": 6,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "normal",
+      "fairy"
+    ],
+    "abilities": [
+      "cute-charm",
+      "competitive"
+    ],
+    "hiddenAbility": "frisk",
+    "stats": {
+      "hp": 140,
+      "attack": 70,
+      "defense": 45,
+      "special-attack": 85,
+      "special-defense": 50,
+      "speed": 45
+    }
+  },
+  {
     "name": "vileplume",
     "label": "Vileplume",
     "id": 45,
@@ -284,6 +309,30 @@ export const SPECIES: Species[] = [
       "special-attack": 110,
       "special-defense": 90,
       "speed": 50
+    }
+  },
+  {
+    "name": "persian",
+    "label": "Persian",
+    "id": 53,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "normal"
+    ],
+    "abilities": [
+      "limber",
+      "technician"
+    ],
+    "hiddenAbility": "unnerve",
+    "stats": {
+      "hp": 65,
+      "attack": 70,
+      "defense": 60,
+      "special-attack": 65,
+      "special-defense": 65,
+      "speed": 115
     }
   },
   {
@@ -408,6 +457,31 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "farfetchd",
+    "label": "Farfetch’d",
+    "id": 83,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "abilities": [
+      "keen-eye",
+      "inner-focus"
+    ],
+    "hiddenAbility": "defiant",
+    "stats": {
+      "hp": 52,
+      "attack": 90,
+      "defense": 55,
+      "special-attack": 58,
+      "special-defense": 62,
+      "speed": 60
+    }
+  },
+  {
     "name": "gengar",
     "label": "Gengar",
     "id": 94,
@@ -478,6 +552,31 @@ export const SPECIES: Species[] = [
       "special-attack": 100,
       "special-defense": 85,
       "speed": 115
+    }
+  },
+  {
+    "name": "mr-mime",
+    "label": "Mr. Mime",
+    "id": 122,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "psychic",
+      "fairy"
+    ],
+    "abilities": [
+      "soundproof",
+      "filter"
+    ],
+    "hiddenAbility": "technician",
+    "stats": {
+      "hp": 40,
+      "attack": 45,
+      "defense": 65,
+      "special-attack": 100,
+      "special-defense": 120,
+      "speed": 90
     }
   },
   {
@@ -1397,6 +1496,30 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "swalot",
+    "label": "Swalot",
+    "id": 317,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": true,
+    "types": [
+      "poison"
+    ],
+    "abilities": [
+      "liquid-ooze",
+      "sticky-hold"
+    ],
+    "hiddenAbility": "gluttony",
+    "stats": {
+      "hp": 100,
+      "attack": 73,
+      "defense": 83,
+      "special-attack": 73,
+      "special-defense": 83,
+      "speed": 55
+    }
+  },
+  {
     "name": "sharpedo",
     "label": "Sharpedo",
     "id": 319,
@@ -1633,6 +1756,30 @@ export const SPECIES: Species[] = [
       "special-attack": 80,
       "special-defense": 80,
       "speed": 80
+    }
+  },
+  {
+    "name": "salamence",
+    "label": "Salamence",
+    "id": 373,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "dragon",
+      "flying"
+    ],
+    "abilities": [
+      "intimidate"
+    ],
+    "hiddenAbility": "moxie",
+    "stats": {
+      "hp": 95,
+      "attack": 135,
+      "defense": 80,
+      "special-attack": 110,
+      "special-defense": 80,
+      "speed": 100
     }
   },
   {
@@ -3152,6 +3299,29 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "gogoat",
+    "label": "Gogoat",
+    "id": 673,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "grass"
+    ],
+    "abilities": [
+      "sap-sipper"
+    ],
+    "hiddenAbility": "grass-pelt",
+    "stats": {
+      "hp": 123,
+      "attack": 100,
+      "defense": 62,
+      "special-attack": 97,
+      "special-defense": 81,
+      "speed": 68
+    }
+  },
+  {
     "name": "pangoro",
     "label": "Pangoro",
     "id": 675,
@@ -4000,6 +4170,30 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "golisopod",
+    "label": "Golisopod",
+    "id": 768,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "bug",
+      "water"
+    ],
+    "abilities": [
+      "emergency-exit"
+    ],
+    "hiddenAbility": null,
+    "stats": {
+      "hp": 75,
+      "attack": 125,
+      "defense": 140,
+      "special-attack": 60,
+      "special-defense": 90,
+      "speed": 40
+    }
+  },
+  {
     "name": "mimikyu",
     "label": "Mimikyu",
     "id": 778,
@@ -4074,6 +4268,75 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "rillaboom",
+    "label": "Rillaboom",
+    "id": 812,
+    "genderRate": 1,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "grass"
+    ],
+    "abilities": [
+      "overgrow"
+    ],
+    "hiddenAbility": "grassy-surge",
+    "stats": {
+      "hp": 100,
+      "attack": 125,
+      "defense": 90,
+      "special-attack": 60,
+      "special-defense": 70,
+      "speed": 85
+    }
+  },
+  {
+    "name": "cinderace",
+    "label": "Cinderace",
+    "id": 815,
+    "genderRate": 1,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "fire"
+    ],
+    "abilities": [
+      "blaze"
+    ],
+    "hiddenAbility": "libero",
+    "stats": {
+      "hp": 80,
+      "attack": 116,
+      "defense": 75,
+      "special-attack": 65,
+      "special-defense": 75,
+      "speed": 119
+    }
+  },
+  {
+    "name": "inteleon",
+    "label": "Inteleon",
+    "id": 818,
+    "genderRate": 1,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "water"
+    ],
+    "abilities": [
+      "torrent"
+    ],
+    "hiddenAbility": "sniper",
+    "stats": {
+      "hp": 70,
+      "attack": 85,
+      "defense": 65,
+      "special-attack": 125,
+      "special-defense": 65,
+      "speed": 120
+    }
+  },
+  {
     "name": "corviknight",
     "label": "Corviknight",
     "id": 823,
@@ -4096,6 +4359,30 @@ export const SPECIES: Species[] = [
       "special-attack": 53,
       "special-defense": 85,
       "speed": 67
+    }
+  },
+  {
+    "name": "thievul",
+    "label": "Thievul",
+    "id": 828,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "dark"
+    ],
+    "abilities": [
+      "run-away",
+      "unburden"
+    ],
+    "hiddenAbility": "stakeout",
+    "stats": {
+      "hp": 70,
+      "attack": 58,
+      "defense": 58,
+      "special-attack": 87,
+      "special-defense": 92,
+      "speed": 90
     }
   },
   {
@@ -4173,6 +4460,54 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "toxtricity",
+    "label": "Toxtricity",
+    "id": 849,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "electric",
+      "poison"
+    ],
+    "abilities": [
+      "punk-rock",
+      "plus"
+    ],
+    "hiddenAbility": "technician",
+    "stats": {
+      "hp": 75,
+      "attack": 98,
+      "defense": 70,
+      "special-attack": 114,
+      "special-defense": 70,
+      "speed": 75
+    }
+  },
+  {
+    "name": "grapploct",
+    "label": "Grapploct",
+    "id": 853,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "fighting"
+    ],
+    "abilities": [
+      "limber"
+    ],
+    "hiddenAbility": "technician",
+    "stats": {
+      "hp": 80,
+      "attack": 118,
+      "defense": 90,
+      "special-attack": 70,
+      "special-defense": 80,
+      "speed": 42
+    }
+  },
+  {
     "name": "polteageist",
     "label": "Polteageist",
     "id": 855,
@@ -4243,6 +4578,53 @@ export const SPECIES: Species[] = [
       "special-attack": 95,
       "special-defense": 75,
       "speed": 60
+    }
+  },
+  {
+    "name": "perrserker",
+    "label": "Perrserker",
+    "id": 863,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "steel"
+    ],
+    "abilities": [
+      "battle-armor",
+      "tough-claws"
+    ],
+    "hiddenAbility": "steely-spirit",
+    "stats": {
+      "hp": 70,
+      "attack": 110,
+      "defense": 100,
+      "special-attack": 50,
+      "special-defense": 60,
+      "speed": 50
+    }
+  },
+  {
+    "name": "sirfetchd",
+    "label": "Sirfetch’d",
+    "id": 865,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "fighting"
+    ],
+    "abilities": [
+      "steadfast"
+    ],
+    "hiddenAbility": "scrappy",
+    "stats": {
+      "hp": 62,
+      "attack": 135,
+      "defense": 95,
+      "special-attack": 68,
+      "special-defense": 82,
+      "speed": 65
     }
   },
   {
@@ -4338,6 +4720,54 @@ export const SPECIES: Species[] = [
       "special-attack": 70,
       "special-defense": 60,
       "speed": 75
+    }
+  },
+  {
+    "name": "pincurchin",
+    "label": "Pincurchin",
+    "id": 871,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "electric"
+    ],
+    "abilities": [
+      "lightning-rod"
+    ],
+    "hiddenAbility": "electric-surge",
+    "stats": {
+      "hp": 48,
+      "attack": 101,
+      "defense": 95,
+      "special-attack": 91,
+      "special-defense": 85,
+      "speed": 15
+    }
+  },
+  {
+    "name": "indeedee",
+    "label": "Indeedee",
+    "id": 876,
+    "genderRate": 4,
+    "hasGenderForms": true,
+    "hasGenderDifferences": true,
+    "types": [
+      "psychic",
+      "normal"
+    ],
+    "abilities": [
+      "inner-focus",
+      "synchronize"
+    ],
+    "hiddenAbility": "psychic-surge",
+    "stats": {
+      "hp": 60,
+      "attack": 65,
+      "defense": 55,
+      "special-attack": 105,
+      "special-defense": 95,
+      "speed": 95
     }
   },
   {
@@ -4587,6 +5017,31 @@ export const SPECIES: Species[] = [
     }
   },
   {
+    "name": "pawmot",
+    "label": "Pawmot",
+    "id": 923,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "electric",
+      "fighting"
+    ],
+    "abilities": [
+      "volt-absorb",
+      "natural-cure"
+    ],
+    "hiddenAbility": "iron-fist",
+    "stats": {
+      "hp": 70,
+      "attack": 115,
+      "defense": 70,
+      "special-attack": 70,
+      "special-defense": 60,
+      "speed": 105
+    }
+  },
+  {
     "name": "maushold",
     "label": "Maushold",
     "id": 925,
@@ -4608,6 +5063,55 @@ export const SPECIES: Species[] = [
       "special-attack": 65,
       "special-defense": 75,
       "speed": 111
+    }
+  },
+  {
+    "name": "arboliva",
+    "label": "Arboliva",
+    "id": 930,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "grass",
+      "normal"
+    ],
+    "abilities": [
+      "seed-sower"
+    ],
+    "hiddenAbility": "harvest",
+    "stats": {
+      "hp": 78,
+      "attack": 69,
+      "defense": 90,
+      "special-attack": 125,
+      "special-defense": 109,
+      "speed": 39
+    }
+  },
+  {
+    "name": "squawkabilly",
+    "label": "Squawkabilly",
+    "id": 931,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "normal",
+      "flying"
+    ],
+    "abilities": [
+      "intimidate",
+      "hustle"
+    ],
+    "hiddenAbility": "guts",
+    "stats": {
+      "hp": 82,
+      "attack": 96,
+      "defense": 51,
+      "special-attack": 45,
+      "special-defense": 51,
+      "speed": 92
     }
   },
   {
@@ -4704,6 +5208,30 @@ export const SPECIES: Species[] = [
       "special-attack": 103,
       "special-defense": 83,
       "speed": 45
+    }
+  },
+  {
+    "name": "mabosstiff",
+    "label": "Mabosstiff",
+    "id": 943,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "dark"
+    ],
+    "abilities": [
+      "intimidate",
+      "guard-dog"
+    ],
+    "hiddenAbility": "stakeout",
+    "stats": {
+      "hp": 80,
+      "attack": 120,
+      "defense": 90,
+      "special-attack": 60,
+      "special-defense": 70,
+      "speed": 85
     }
   },
   {
@@ -4946,6 +5474,30 @@ export const SPECIES: Species[] = [
       "special-attack": 60,
       "special-defense": 85,
       "speed": 50
+    }
+  },
+  {
+    "name": "baxcalibur",
+    "label": "Baxcalibur",
+    "id": 998,
+    "genderRate": 4,
+    "hasGenderForms": false,
+    "hasGenderDifferences": false,
+    "types": [
+      "dragon",
+      "ice"
+    ],
+    "abilities": [
+      "thermal-exchange"
+    ],
+    "hiddenAbility": "ice-body",
+    "stats": {
+      "hp": 115,
+      "attack": 145,
+      "defense": 92,
+      "special-attack": 75,
+      "special-defense": 86,
+      "speed": 87
     }
   },
   {
