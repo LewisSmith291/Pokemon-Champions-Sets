@@ -12,6 +12,7 @@
 ![Static Badge](https://img.shields.io/badge/Neon-white?logo=neon&color=%23262626)
 ![Static Badge](https://img.shields.io/badge/drizzle-white?logo=drizzle&color=%23111111)
 ![Static Badge](https://img.shields.io/badge/BetterAuth-white?logo=betterauth&color=black)
+![Static Badge](https://img.shields.io/badge/Zod-white?logo=zod&color=black)
 
 This WebApp serves as a companion for the newly released and popular game Pokemon Champions.
 
