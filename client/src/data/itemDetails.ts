@@ -26,6 +26,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
+  "absolite-z": {
+    "label": "Absolite Z",
+    "description": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
   "aerodactylite": {
     "label": "Aerodactylite",
     "description": "One of a variety of mysterious Mega Stones. An Aerodactyl holding this stone will be able to Mega Evolve during battle.",
@@ -35,6 +40,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "label": "Aggronite",
     "description": "One of a variety of mysterious Mega Stones. An Aggron holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
+  },
+  "air-balloon": {
+    "label": "Air Balloon",
+    "description": "An item to be held by a Pokémon. This balloon makes the holder float in the air. If the holder is hit with an attack, the balloon will burst.",
+    "category": "held"
   },
   "alakazite": {
     "label": "Alakazite",
@@ -76,6 +86,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
+  "baxcalibrite": {
+    "label": "Baxcalibrite",
+    "description": "One of a variety of mysterious Mega Stones. A Baxcalibur holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
   "beedrillite": {
     "label": "Beedrillite",
     "description": "One of a variety of mysterious Mega Stones. A Beedrill holding this stone will be able to Mega Evolve during battle.",
@@ -84,6 +99,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
   "big-root": {
     "label": "Big Root",
     "description": "An item to be held by a Pokémon. This root boosts the amount of HP the holder restores to itself when it uses HP-stealing moves.",
+    "category": "held"
+  },
+  "binding-band": {
+    "label": "Binding Band",
+    "description": "An item to be held by a Pokémon. This band boosts the power of binding moves used by the holder.",
     "category": "held"
   },
   "black-belt": {
@@ -231,6 +251,16 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
+  "eject-button": {
+    "label": "Eject Button",
+    "description": "An item to be held by a Pokémon. If the holder is damaged by an attack, it will be switched out of battle to be replaced by another Pokémon on your team.",
+    "category": "held"
+  },
+  "electric-seed": {
+    "label": "Electric Seed",
+    "description": "An item to be held by a Pokémon. If the terrain becomes Electric Terrain, the holder will use this seed to boost its own Defense stat.",
+    "category": "held"
+  },
   "emboarite": {
     "label": "Emboarite",
     "description": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle.",
@@ -266,6 +296,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "One of a variety of mysterious Mega Stones. A special Floette holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
+  "focus-band": {
+    "label": "Focus Band",
+    "description": "An item to be held by a Pokémon. When the holder is hit with a move that should knock it out, it may be able to endure with 1 HP.",
+    "category": "held"
+  },
   "focus-sash": {
     "label": "Focus Sash",
     "description": "An item to be held by a Pokémon. If the holder has full HP and it is hit with a move that should knock it out, it will endure with 1 HP—but only once.",
@@ -283,6 +318,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
   },
   "garchompite": {
     "label": "Garchompite",
+    "description": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
+  "garchompite-z": {
+    "label": "Garchompite Z",
     "description": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
@@ -306,10 +346,20 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
+  "golisopite": {
+    "label": "Golisopite",
+    "description": "One of a variety of mysterious Mega Stones. A Golisopod holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
   "golurkite": {
     "label": "Golurkite",
     "description": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
+  },
+  "grassy-seed": {
+    "label": "Grassy Seed",
+    "description": "An item to be held by a Pokémon. If the terrain becomes Grassy Terrain, the holder will use this seed to boost its own Defense stat.",
+    "category": "held"
   },
   "greninjite": {
     "label": "Greninjite",
@@ -381,6 +431,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "An item to be held by a Pokémon. It may cause the target to flinch whenever the holder successfully inflicts damage on them with an attack.",
     "category": "held"
   },
+  "leek": {
+    "label": "Leek",
+    "description": "An item to be held by Farfetch'd or Sirfetch'd. This very long and stiff stalk of leek boosts the critical-hit ratio of their moves.",
+    "category": "held"
+  },
   "leftovers": {
     "label": "Leftovers",
     "description": "An item to be held by a Pokémon. It slowly but steadily restores the holder's HP.",
@@ -413,6 +468,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
   },
   "lucarionite": {
     "label": "Lucarionite",
+    "description": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
+  "lucarionite-z": {
+    "label": "Lucarionite Z",
     "description": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
@@ -481,6 +541,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "An item to be held by a Pokémon. It's a seed imbued with life force that boosts the power of the holder's Grass-type moves.",
     "category": "held"
   },
+  "misty-seed": {
+    "label": "Misty Seed",
+    "description": "An item to be held by a Pokémon. If the terrain becomes Misty Terrain, the holder will use this seed to boost its own Sp. Def stat.",
+    "category": "held"
+  },
   "muscle-band": {
     "label": "Muscle Band",
     "description": "An item to be held by a Pokémon. This headband exudes strength, slightly boosting the power of the holder's physical moves.",
@@ -494,6 +559,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
   "never-melt-ice": {
     "label": "Never-Melt Ice",
     "description": "An item to be held by a Pokémon. It's a heat-repelling piece of ice that boosts the power of the holder's Ice- type moves.",
+    "category": "held"
+  },
+  "normal-gem": {
+    "label": "Normal Gem",
+    "description": "An item to be held by a Pokémon. This gem is imbued with the essence of normalcy and will boost the power of a Normal-type move—but only once.",
     "category": "held"
   },
   "occa-berry": {
@@ -541,6 +611,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "An item to be held by a Pokémon. This small poisonous barb boosts the power of the holder's Poison-type moves.",
     "category": "held"
   },
+  "psychic-seed": {
+    "label": "Psychic Seed",
+    "description": "An item to be held by a Pokémon. If the terrain becomes Psychic Terrain, the holder will use this seed to boost its own Sp. Def stat.",
+    "category": "held"
+  },
   "pyroarite": {
     "label": "Pyroarite",
     "description": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle.",
@@ -566,10 +641,20 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "description": "If a Pokémon holds one of these Berries, it will be able to cure itself of a burn.",
     "category": "berry"
   },
+  "red-card": {
+    "label": "Red Card",
+    "description": "An item to be held by a Pokémon. If the holder is damaged by an attack, the mysterious power of this card can remove the attacker from the battle.",
+    "category": "held"
+  },
   "rindo-berry": {
     "label": "Rindo Berry",
     "description": "If a Pokémon holding this Berry is hit with a supereffective Grass-type move, the power of that move will be weakened.",
     "category": "berry"
+  },
+  "rocky-helmet": {
+    "label": "Rocky Helmet",
+    "description": "An item to be held by a Pokémon. This helmet damages any attacker that makes direct contact with the holder.",
+    "category": "held"
   },
   "roseli-berry": {
     "label": "Roseli Berry",
@@ -579,6 +664,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
   "sablenite": {
     "label": "Sablenite",
     "description": "One of a variety of mysterious Mega Stones. A Sableye holding this stone will be able to Mega Evolve during battle.",
+    "category": "mega-stone"
+  },
+  "salamencite": {
+    "label": "Salamencite",
+    "description": "One of a variety of mysterious Mega Stones. A Salamence holding this stone will be able to Mega Evolve during battle.",
     "category": "mega-stone"
   },
   "sceptilite": {
@@ -700,6 +790,11 @@ export const ITEM_DETAILS: Record<string, ItemDetail> = {
     "label": "Tanga Berry",
     "description": "If a Pokémon holding this Berry is hit with a supereffective Bug-type move, the power of that move will be weakened.",
     "category": "berry"
+  },
+  "terrain-extender": {
+    "label": "Terrain Extender",
+    "description": "An item to be held by a Pokémon. It extends the duration of terrain caused by the holder's move or Ability.",
+    "category": "held"
   },
   "twisted-spoon": {
     "label": "Twisted Spoon",

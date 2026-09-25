@@ -47,6 +47,19 @@ export const HELD_ITEMS: string[] = [
   "wide-lens",
   "wise-glasses",
   "zoom-lens",
+  "air-balloon",
+  "binding-band",
+  "eject-button",
+  "electric-seed",
+  "focus-band",
+  "grassy-seed",
+  "leek",
+  "misty-seed",
+  "normal-gem", 
+  "psychic-seed",
+  "red-card",
+  "rocky-helmet",
+  "terrain-extender",
 ];
 
 // Pokemon Champions berry list (source: serebii.net/pokemonchampions/items.shtml).
@@ -88,6 +101,7 @@ export const BERRIES: string[] = [
 export const MEGA_STONES: string[] = [
   "abomasite",
   "absolite",
+  "absolite-z",
   "aerodactylite",
   "aggronite",
   "alakazite",
@@ -96,6 +110,7 @@ export const MEGA_STONES: string[] = [
   "audinite",
   "banettite",
   "barbaracite",       // no sprite in PokeAPI
+  "baxcalibrite",
   "beedrillite",
   "blastoisinite",
   "blazikenite",
@@ -120,11 +135,13 @@ export const MEGA_STONES: string[] = [
   "froslassite",       // no sprite in PokeAPI
   "galladite",
   "garchompite",
+  "garchompite-z",
   "gardevoirite",
   "gengarite",
   "glalitite",
   "glimmoranite",      // no sprite in PokeAPI
   "golurkite",         // no sprite in PokeAPI
+  "golisopite",
   "greninjite",        // no sprite in PokeAPI
   "gyaradosite",
   "hawluchanite",      // no sprite in PokeAPI
@@ -133,6 +150,7 @@ export const MEGA_STONES: string[] = [
   "kangaskhanite",
   "lopunnite",
   "lucarionite",
+  "lucarionite-z",
   "malamarite",        // no sprite in PokeAPI
   "manectite",
   "mawilite",
@@ -146,6 +164,7 @@ export const MEGA_STONES: string[] = [
   "raichunite-x",      // no sprite in PokeAPI
   "raichunite-y",      // no sprite in PokeAPI
   "sablenite",
+  "salamencite",
   "sceptilite",
   "scizorite",
   "scolipite",         // no sprite in PokeAPI
@@ -161,4 +180,5 @@ export const MEGA_STONES: string[] = [
   "tyranitarite",
   "venusaurite",
   "victreebelite",     // no sprite in PokeAPI
+  
 ]
