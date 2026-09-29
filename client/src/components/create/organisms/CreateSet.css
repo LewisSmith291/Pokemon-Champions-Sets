@@ -726,3 +726,11 @@ input[type=range]{
     display: none;
   }
 }
+
+/* Locked while editing a saved set - its Pokemon can't change. Greyed so the
+   lock is visible at a glance rather than only in the hover tooltip. */
+#species-button:disabled{
+  opacity: 0.5;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}

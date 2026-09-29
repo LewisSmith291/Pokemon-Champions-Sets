@@ -464,7 +464,16 @@ export default function CreateSet() {
             options={allowedGenders(selectedPokemon)}
             onChange={chooseGender}
           />
-          <button type="button" className="hoverable-link rounded-[var(--rounded)] flex-1 h-full" onClick={() => chooseNewPokemon()}>
+          <button
+            type="button"
+            id="species-button"
+            className="hoverable-link rounded-[var(--rounded)] flex-1 h-full"
+            onClick={() => chooseNewPokemon()}
+            // An edit keeps its Pokemon - the server refuses a species change -
+            // so the picker is locked rather than letting a save fail later
+            disabled={editId !== null}
+            title={editId !== null ? "A saved set's Pokémon can't be changed" : undefined}
+          >
             {selectedForm === "" ? "Choose a Pokémon" : formLabel(selectedForm)}
           </button>
         </div>

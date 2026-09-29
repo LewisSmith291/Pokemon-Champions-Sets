@@ -306,6 +306,14 @@ setsRouter.put("/:id", requireAuth, async (req: Request<{id: string}>, res: Resp
   const {moves, tags, ...set} = parsed.data;
   const setId = existing.id;
 
+  // A set's Pokemon is fixed once it's saved - forms, moves and everything else
+  // can change, but a different species is a different set and should be made
+  // as one. This is what lets votes carry across edits safely: nobody can build
+  // up a score on one Pokemon and then swap in another to inherit it.
+  if (set.species !== existing.species) {
+    return res.status(400).json({error: "A set's Pokémon can't be changed. Create a new set instead."});
+  }
+
   try {
     const updated = await db.transaction(async (tx) => {
       const [row] = await tx.update(pokemonSet).set(set).where(eq(pokemonSet.id, setId)).returning();
@@ -320,13 +328,6 @@ setsRouter.put("/:id", requireAuth, async (req: Request<{id: string}>, res: Resp
       await tx.delete(setTags).where(eq(setTags.setId, setId));
       if (tags.length > 0) {
         await tx.insert(setTags).values(tags.map((tag) => ({setId, tag})));
-      }
-
-      // A different Pokemon is effectively a new set, so it starts from zero.
-      // Otherwise an author could build up votes on one set and swap in another
-      // to carry the score over. Smaller edits keep their votes.
-      if (set.species !== existing.species) {
-        await tx.delete(setVotes).where(eq(setVotes.setId, setId));
       }
 
       return row;

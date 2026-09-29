@@ -159,7 +159,9 @@ body {
    the pink. Kept deliberately: hover is transient and the label is readable
    either side of it, and --on-accent would cost the yellow hover the whole site
    is built around. Don't "fix" this without changing the look on purpose. */
-.hoverable-link:hover {
+/* :not(:disabled) because the !important below otherwise lit up disabled buttons
+   exactly like live ones - accent fill, pointer cursor - so they looked clickable */
+.hoverable-link:hover:not(:disabled) {
   background-color: var(--accent) !important;
   color:var(--p-yellow) !important;
   transition: background-color 0.1s, color 0.1s !important;
