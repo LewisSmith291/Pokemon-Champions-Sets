@@ -71,7 +71,6 @@ const EXTRA_CATEGORIES: Record<string, ItemCategory[]> = {
   "fairy-feather": ["power"],
   "hard-stone": ["power"],
   "life-orb": ["power"],
-  "light-ball": ["power"],
   "magnet": ["power"],
   "metal-coat": ["power"],
   "metronome": ["power"],
@@ -80,7 +79,7 @@ const EXTRA_CATEGORIES: Record<string, ItemCategory[]> = {
   "mystic-water": ["power"],
   "never-melt-ice": ["power"],
   "poison-barb": ["power"],
-  "scope-lens": ["power"],          // crit rate, so damage rather than accuracy
+  "scope-lens": ["power"],    // crit rate, so damage rather than accuracy
   "sharp-beak": ["power"],
   "silk-scarf": ["power"],
   "silver-powder": ["power"],
@@ -88,10 +87,22 @@ const EXTRA_CATEGORIES: Record<string, ItemCategory[]> = {
   "spell-tag": ["power"],
   "twisted-spoon": ["power"],
   "wise-glasses": ["power"],
+  "binding-band": ["power"],
+  "normal-gem": ["power"],
+
+  // --- held: species specific ---
+  "leek": ["power"],
+  "light-ball": ["power"],
 
   // --- held: survive a hit ---
   "bright-powder": ["defense"],
   "focus-sash": ["defense"],
+
+  // -- held: activate when hit ---
+  "rocky-helmet": ["defense"],
+  "red-card": ["defense"],
+  "eject-button": ["defense"],
+  "air-balloon": ["defense"],
 
   // --- held: restore HP or undo what was done to you ---
   "big-root": ["recovery"],         // boosts draining moves
@@ -106,6 +117,13 @@ const EXTRA_CATEGORIES: Record<string, ItemCategory[]> = {
   "icy-rock": ["extension"],
   "light-clay": ["extension"],
   "smooth-rock": ["extension"],
+  "terrain-extender": ["extension"],
+
+  // --- held: terrain seeds ---
+  "electric-seed": ["defense"],
+  "psychic-seed": ["defense"],
+  "misty-seed": ["defense"],
+  "grassy-seed": ["defense"],
 
   // --- held: everything else ---
   "choice-scarf": ["other"],
