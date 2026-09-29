@@ -354,3 +354,46 @@
   .set-display .set-author{ justify-self: start; }
   .set-display .set-votes{ justify-self: end; }
 }
+
+/* --- author's controls: edit, publish/unpublish, delete --- */
+
+.set-display .owner-actions{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Same slab as the Edit link beside them, so the three read as one group */
+.set-display .owner-button{
+  border-radius: var(--rounded);
+  padding: 0.5em 1.2em;
+  background: var(--header);
+  color: var(--link-color);
+  border: 1px solid var(--border);
+}
+
+.set-display .owner-button:hover:not(:disabled){
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Destructive, so it's marked by its colour rather than looking like the rest */
+.set-display .owner-delete{
+  color: var(--stat-up);
+  border-color: var(--stat-up);
+  background: transparent;
+}
+
+.set-display .owner-button:disabled{
+  opacity: 0.6;
+  cursor: default;
+}
+
+.set-display .owner-error{
+  flex-basis: 100%;
+  text-align: center;
+  color: var(--error);
+}

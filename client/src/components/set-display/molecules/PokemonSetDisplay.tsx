@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import TypeDisplay from "@/components/shared/TypeDisplay";
 import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
+import OwnerActions from "./OwnerActions";
 import MoveChip from "../atoms/MoveChip";
 import GetNatureChanges, { STATS, ALIGNMENTS, finalStat } from "@/data/stats";
 import { FORM_DATA } from "@/data/formData";
@@ -18,13 +19,16 @@ interface Props {
   set: SetDetail;
   /** The signed-in viewer, for the vote control and the private badge */
   viewerId?: string;
+  /** Called after the author publishes or unpublishes, so the page can update */
+  onVisibilityChange?: (isPublic: boolean) => void;
 }
 
 // Widest final stat worth scaling a bar against - a max-boosted, nature-raised
 // HP stat lands near here, so bars stay comparable between sets
 const BAR_MAX = 255;
 
-export default function PokemonSetDisplay({ set, viewerId }: Props) {
+export default function PokemonSetDisplay({ set, viewerId, onVisibilityChange }: Props) {
+  const isOwner: boolean = viewerId !== undefined && viewerId === set.userId;
   // All derived from the bundled form data rather than fetched. The form's own
   // typing and base stats are what matter: Mega Charizard X is fire/dragon with
   // different bulk to the Charizard it evolved from.
@@ -49,6 +53,11 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
     moves: set.moves,
     boosts,
   });
+
+  // The same draft plus the edit marker, which tells the create page to save
+  // over this set instead of making a new one
+  const ownerEditParams = new URLSearchParams(editParams);
+  ownerEditParams.set("edit", set.id);
 
   return (
     <article className="set-display">
@@ -122,9 +131,18 @@ export default function PokemonSetDisplay({ set, viewerId }: Props) {
       </ul>
 
       <div className="set-actions">
-        <Link className="set-edit-link" to={`/create?${editParams}`}>
-          Edit a copy
-        </Link>
+        {isOwner ? (
+          <OwnerActions
+            setId={set.id}
+            isPublic={set.isPublic}
+            editHref={`/create?${ownerEditParams}`}
+            onVisibilityChange={(isPublic) => onVisibilityChange?.(isPublic)}
+          />
+        ) : (
+          <Link className="set-edit-link" to={`/create?${editParams}`}>
+            Edit a copy
+          </Link>
+        )}
       </div>
 
       <p className="set-author">

@@ -49,7 +49,11 @@ export default function SetPage() {
 
   return (
     <div className="flex flex-1 justify-center p-2 sm:p-4 w-full">
-      <PokemonSetDisplay set={set} viewerId={session?.user.id} />
+      <PokemonSetDisplay
+        set={set}
+        viewerId={session?.user.id}
+        onVisibilityChange={(isPublic) => setSet({ ...set, isPublic })}
+      />
     </div>
   );
 }
