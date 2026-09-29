@@ -36,6 +36,13 @@
       "when": 1790686564723,
       "tag": "0004_set_saves_table",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790690425640,
+      "tag": "0005_user_name_unique",
+      "breakpoints": true
     }
   ]
 }
