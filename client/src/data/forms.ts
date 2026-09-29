@@ -48,6 +48,7 @@ export function splitForm(form: string): { base: string; suffix: FormSuffix } {
 // the rest - so they're excluded by name instead.
 export const EXCLUDED_FORMS: ReadonlySet<string> = new Set([
   "farfetchd-galar",   // Sirfetch'd is in the game, but its pre-evolution isn't
+  "mr-mime-galar"
 ]);
 
 // True only for the default form and the suffixes above, only when the species
