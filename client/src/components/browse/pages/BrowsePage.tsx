@@ -73,6 +73,13 @@ export default function BrowsePage() {
       .map(([form]) => form);
   }, [typesKey]);
 
+  // And the other way: when the URL changes without typing - the back button,
+  // Clear all - the box follows it. Typing doesn't retrigger this, because the
+  // URL only catches up with the box once the typing has paused.
+  useEffect(() => {
+    setQueryText(query);
+  }, [query]);
+
   // Push the typed text into the URL once typing pauses. replace:true so each
   // pause doesn't become its own back-button step.
   useEffect(() => {

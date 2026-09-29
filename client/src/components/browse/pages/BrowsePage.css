@@ -78,6 +78,14 @@
   font-size: 0.9rem;
 }
 
+/* The base layer gives buttons no cursor, and these don't use .hoverable-link -
+   its !important accent fill would override the pressed state below */
+.browse-chip:hover:not(:disabled){
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+  cursor: pointer;
+}
+
 .browse-chip[aria-pressed="true"]{
   background: var(--accent);
   color: var(--on-accent);
@@ -107,6 +115,10 @@
 .browse-type:hover:not(:disabled),
 .browse-type[aria-pressed="true"]{
   opacity: 1;
+}
+
+.browse-type:hover:not(:disabled){
+  cursor: pointer;
 }
 
 .browse-type:disabled{
