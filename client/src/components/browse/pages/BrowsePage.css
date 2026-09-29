@@ -58,8 +58,33 @@
 .browse-species{
   display: flex;
   flex-direction: row;
-  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
   min-width: 0;
+}
+
+.browse-mega{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* The base layer styles every input as a padded purple box, which stretches a
+   checkbox into a rectangle. accent-color tints the native control instead -
+   the same treatment as the create page's publish toggle. */
+.browse-mega input[type="checkbox"]{
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 .browse-species .text-input{
@@ -208,5 +233,10 @@
 
   .browse-species .text-input{
     max-width: none;
+  }
+
+  /* A full line of its own, so it sits under the search box on a phone */
+  .browse-mega{
+    flex-basis: 100%;
   }
 }

@@ -211,6 +211,16 @@ export default function BrowsePage() {
               Clear
             </button>
           )}
+          {/* Beside the search on wider screens, wrapped onto its own line on a
+              phone - see .browse-mega in the CSS */}
+          <label className="browse-mega" title="Sets holding a Mega Stone, whichever form they're saved as">
+            <input
+              type="checkbox"
+              checked={megaOnly}
+              onChange={(e) => update({ mega: e.target.checked ? "1" : null })}
+            />
+            <span>Mega only</span>
+          </label>
         </div>
 
         <span className="browse-filter-label">
@@ -234,19 +244,6 @@ export default function BrowsePage() {
               </button>
             );
           })}
-        </div>
-
-        <span className="browse-filter-label">Mega</span>
-        <div className="browse-row">
-          <button
-            type="button"
-            className="browse-chip"
-            aria-pressed={megaOnly}
-            onClick={() => update({ mega: megaOnly ? null : "1" })}
-            title="Sets holding a Mega Stone, whichever form they're saved as"
-          >
-            Holding a Mega Stone
-          </button>
         </div>
 
         <span className="browse-filter-label">
