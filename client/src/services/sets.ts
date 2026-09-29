@@ -66,6 +66,8 @@ export interface BrowseQuery {
   species?: string[];
   /** The type filter, already resolved to form slugs - the server has no types */
   forms?: string[];
+  /** Held items to match - the Mega filter sends every Mega Stone */
+  items?: string[];
   tags?: string[];
 }
 
@@ -81,6 +83,7 @@ export async function browseSets(
   });
   if (query.species && query.species.length > 0) params.set("species", query.species.join(","));
   if (query.forms && query.forms.length > 0) params.set("forms", query.forms.join(","));
+  if (query.items && query.items.length > 0) params.set("items", query.items.join(","));
   if (query.tags && query.tags.length > 0) params.set("tags", query.tags.join(","));
 
   const response = await fetch(`${API_URL}/api/sets?${params}`, {

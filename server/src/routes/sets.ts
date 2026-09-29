@@ -188,7 +188,7 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
   if (!parsed.success) {
     return res.status(400).json({ errors: parsed.error.issues });
   }
-  const { sort, limit, page, species, forms, tags } = parsed.data;
+  const { sort, limit, page, species, forms, items, tags } = parsed.data;
 
   const orderBy =
     sort === "new"  ? [desc(pokemonSet.createdAt)] :
@@ -200,6 +200,7 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
     eq(pokemonSet.isPublic, true),
     species.length > 0 ? inArray(pokemonSet.species, species) : undefined,
     forms.length > 0 ? inArray(pokemonSet.form, forms) : undefined,
+    items.length > 0 ? inArray(pokemonSet.item, items) : undefined,
     // A set must carry EVERY selected tag, so each extra tag narrows the list.
     // Counting distinct matches per set and requiring all of them is what
     // turns "has any of these" into "has all of these".

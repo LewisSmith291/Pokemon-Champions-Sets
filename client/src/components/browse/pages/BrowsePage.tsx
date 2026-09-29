@@ -10,6 +10,7 @@ import { isValidForm } from "@/data/forms";
 import { FORM_DATA } from "@/data/formData";
 import { TYPE_ORDER } from "@/data/types";
 import { TAGS, MAX_TAGS } from "@/data/tags";
+import { MEGA_STONES } from "@/data/itemData";
 import "./BrowsePage.css";
 
 const PAGE_SIZE = 24;
@@ -39,6 +40,9 @@ export default function BrowsePage() {
   const query: string = params.get("pokemon") ?? "";
   const types: string[] = listParam(params.get("types")).slice(0, MAX_TYPES);
   const tags: string[] = listParam(params.get("tags")).slice(0, MAX_TAGS);
+  // Sets built to Mega Evolve. Judged by the item rather than the form: a set
+  // can be stored as base Charizard and still be holding Charizardite X.
+  const megaOnly: boolean = params.get("mega") === "1";
 
   // What's in the box right now. The URL (and so the request) follows it after a
   // short pause, so typing "garchomp" is one request rather than eight.
@@ -120,6 +124,7 @@ export default function BrowsePage() {
         pageSize: PAGE_SIZE,
         species: speciesKey === "" ? undefined : speciesKey.split(","),
         forms: typeForms ?? undefined,
+        items: megaOnly ? MEGA_STONES : undefined,
         tags: tagsKey === "" ? [] : tagsKey.split(","),
       },
       controller.signal,
@@ -136,7 +141,7 @@ export default function BrowsePage() {
       });
 
     return () => controller.abort();
-  }, [sort, page, speciesKey, speciesMatches, typeForms, tagsKey]);
+  }, [sort, page, speciesKey, speciesMatches, typeForms, megaOnly, tagsKey]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -166,10 +171,10 @@ export default function BrowsePage() {
 
   function clearAll() {
     setQueryText("");
-    update({ pokemon: null, types: null, tags: null });
+    update({ pokemon: null, types: null, mega: null, tags: null });
   }
 
-  const hasFilters = query.trim() !== "" || types.length > 0 || tags.length > 0;
+  const hasFilters = query.trim() !== "" || types.length > 0 || megaOnly || tags.length > 0;
 
   return (
     <div id="browse">
@@ -229,6 +234,19 @@ export default function BrowsePage() {
               </button>
             );
           })}
+        </div>
+
+        <span className="browse-filter-label">Mega</span>
+        <div className="browse-row">
+          <button
+            type="button"
+            className="browse-chip"
+            aria-pressed={megaOnly}
+            onClick={() => update({ mega: megaOnly ? null : "1" })}
+            title="Sets holding a Mega Stone, whichever form they're saved as"
+          >
+            Holding a Mega Stone
+          </button>
         </div>
 
         <span className="browse-filter-label">

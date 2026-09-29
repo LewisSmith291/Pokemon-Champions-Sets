@@ -25,6 +25,10 @@ export const listSetsSchema = z.object({
   // charmander, charmeleon, charizard on the client, and all three are sent
   species: commaList.pipe(z.array(z.string().min(1)).max(400)),
   forms: commaList.pipe(z.array(z.string().min(1)).max(400)),
+  // Held-item filter. Browse's Mega filter sends every Mega Stone here, since a
+  // set meant to Mega Evolve always holds its stone even if the stored form is
+  // the base one. The server has no item data, so the client names them.
+  items: commaList.pipe(z.array(z.string().min(1)).max(300)),
   tags: commaList.pipe(z.array(z.enum(TAG_SLUGS)).max(MAX_TAGS)),
 });
 
