@@ -17,20 +17,24 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  // The client sends cookies cross-origin (Netlify -> API host), so the API
-  // must explicitly trust the frontend's origin.
+  // Requests arrive carrying the page's Origin header. In production that's the
+  // Netlify site (proxied through to here), locally it's the Vite dev server.
   trustedOrigins: [
     process.env.CLIENT_URL ?? "http://localhost:5173", 
     process.env.LIVE_URL ?? "https://championsets.netlify.app",
     process.env.BETTER_AUTH_URL ?? "http://localhost:3001"
   ],
   advanced: {
-    defaultCookieAttributes: isProduction ? 
+    // Lax in both, now that production traffic reaches this server through the
+    // Netlify proxy: the browser only ever talks to the site's own domain, so the
+    // cookie is first-party. The old sameSite "none" made it a cross-site cookie,
+    // which Safari refuses outright.
+    defaultCookieAttributes: isProduction ?
     {
-      sameSite: "none", secure: true, // cross-site over https
+      sameSite: "lax", secure: true,  // https in production
     } :
     {
-      sameSite: "lax", secure: false // localhost uses http
+      sameSite: "lax", secure: false  // localhost uses http
     },
   }
 });

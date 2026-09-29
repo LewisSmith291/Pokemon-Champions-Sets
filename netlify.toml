@@ -14,6 +14,17 @@
   NODE_VERSION = "22"
   NPM_FLAGS = "--include=dev"
 
+# API proxy. The site calls /api/... on its own domain and Netlify forwards it to
+# the Express server on Render. To the browser everything is one site, so the
+# login cookie is first-party - a cross-site cookie from onrender.com is blocked
+# by Safari by default, and by Chrome in incognito. It has to come before the SPA
+# fallback below, which would otherwise answer /api/* with index.html.
+[[redirects]]
+  from = "/api/*"
+  to = "https://champion-sets.onrender.com/api/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
 ## SPA fallback: React Router owns routing, 
 ## so any path that is not a real file must return to index.html with a 200 and let client match it
