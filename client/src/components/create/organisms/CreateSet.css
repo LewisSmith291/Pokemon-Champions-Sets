@@ -729,7 +729,10 @@ input[type=range]{
 
 /* Locked while editing a saved set - its Pokemon can't change. Greyed so the
    lock is visible at a glance rather than only in the hover tooltip. */
-#species-button:disabled{
+/* The form button uses the same look when a species has only one form, so both
+   "nothing to choose here" states read the same way. */
+#species-button:disabled,
+.cell-form:disabled{
   opacity: 0.5;
   filter: grayscale(0.6);
   cursor: not-allowed;
