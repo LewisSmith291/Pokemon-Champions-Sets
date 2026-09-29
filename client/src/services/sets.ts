@@ -62,7 +62,8 @@ export interface BrowseQuery {
   sort: SetSort;
   page: number;
   pageSize: number;
-  species?: string;
+  /** The search box, already resolved to the species slugs it matches */
+  species?: string[];
   /** The type filter, already resolved to form slugs - the server has no types */
   forms?: string[];
   tags?: string[];
@@ -78,7 +79,7 @@ export async function browseSets(
     page: String(query.page),
     limit: String(query.pageSize),
   });
-  if (query.species) params.set("species", query.species);
+  if (query.species && query.species.length > 0) params.set("species", query.species.join(","));
   if (query.forms && query.forms.length > 0) params.set("forms", query.forms.join(","));
   if (query.tags && query.tags.length > 0) params.set("tags", query.tags.join(","));
 

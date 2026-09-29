@@ -21,7 +21,9 @@ export const listSetsSchema = z.object({
   // Filters. Species and tags are slugs the server can match directly; the
   // server has no typing data, so the type filter arrives as the list of forms
   // with that typing, worked out on the client from its bundled form data.
-  species: z.string().min(1).optional(),
+  // A list, because Browse's search box matches by substring: "char" becomes
+  // charmander, charmeleon, charizard on the client, and all three are sent
+  species: commaList.pipe(z.array(z.string().min(1)).max(400)),
   forms: commaList.pipe(z.array(z.string().min(1)).max(400)),
   tags: commaList.pipe(z.array(z.enum(TAG_SLUGS)).max(MAX_TAGS)),
 });

@@ -6,7 +6,7 @@ import SetCard from "@/components/set-display/molecules/SetCard";
 import TypeDisplay from "@/components/shared/TypeDisplay";
 import Loading from "@/components/shared/Loading";
 import { SPECIES } from "@/data/species";
-import { SPECIES_BY_NAME, isValidForm } from "@/data/forms";
+import { isValidForm } from "@/data/forms";
 import { FORM_DATA } from "@/data/formData";
 import { TYPE_ORDER } from "@/data/types";
 import { TAGS, MAX_TAGS } from "@/data/tags";
@@ -35,20 +35,30 @@ export default function BrowsePage() {
   const [params, setParams] = useSearchParams();
   const sort: SetSort = (["hot", "best", "new"] as const).find((s) => s === params.get("sort")) ?? "hot";
   const page: number = Math.max(1, Number(params.get("page")) || 1);
-  const species: string = params.get("species") ?? "";
+  // The raw search text, not a slug - it matches by substring as you type
+  const query: string = params.get("pokemon") ?? "";
   const types: string[] = listParam(params.get("types")).slice(0, MAX_TYPES);
   const tags: string[] = listParam(params.get("tags")).slice(0, MAX_TAGS);
 
-  // The species box is typed into freely; the filter only applies once the text
-  // matches a real Pokemon, so half a name doesn't empty the results
-  const [speciesText, setSpeciesText] = useState<string>(
-    SPECIES_BY_NAME.get(species)?.label ?? "",
-  );
+  // What's in the box right now. The URL (and so the request) follows it after a
+  // short pause, so typing "garchomp" is one request rather than eight.
+  const [queryText, setQueryText] = useState<string>(query);
 
   const [sets, setSets] = useState<SetSummary[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Same matching as the create page's species picker: case-insensitive,
+  // hyphens read as spaces, anywhere in the name - "char" finds Charizard
+  const speciesMatches: string[] | null = useMemo(() => {
+    const needle = query.trim().toLowerCase().replace(/-/g, " ");
+    if (needle === "") return null;
+    return SPECIES
+      .filter((s) => s.label.toLowerCase().replace(/-/g, " ").includes(needle))
+      .map((s) => s.name);
+  }, [query]);
+  const speciesKey = speciesMatches === null ? "" : speciesMatches.join(",");
 
   const typesKey = types.join(",");
   const tagsKey = tags.join(",");
@@ -63,9 +73,28 @@ export default function BrowsePage() {
       .map(([form]) => form);
   }, [typesKey]);
 
+  // Push the typed text into the URL once typing pauses. replace:true so each
+  // pause doesn't become its own back-button step.
   useEffect(() => {
-    // Two types no form has (Fire/Fairy, say) can't match anything - skip the request
-    if (typeForms !== null && typeForms.length === 0) {
+    if (queryText === query) return;
+    const timer = window.setTimeout(() => {
+      const next = new URLSearchParams(params);
+      if (queryText.trim() === "") next.delete("pokemon");
+      else next.set("pokemon", queryText);
+      next.delete("page");
+      setParams(next, { replace: true });
+    }, 250);
+    return () => window.clearTimeout(timer);
+    // params/setParams are read fresh each time the timer fires; listing them
+    // would restart the pause on every unrelated URL change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryText]);
+
+  useEffect(() => {
+    // Text that matches no Pokemon, or two types no form has (Fire/Fairy, say),
+    // can't match any set - skip the request
+    if ((speciesMatches !== null && speciesMatches.length === 0) ||
+        (typeForms !== null && typeForms.length === 0)) {
       setSets([]);
       setTotal(0);
       setIsLoading(false);
@@ -82,7 +111,7 @@ export default function BrowsePage() {
         sort,
         page,
         pageSize: PAGE_SIZE,
-        species: species || undefined,
+        species: speciesKey === "" ? undefined : speciesKey.split(","),
         forms: typeForms ?? undefined,
         tags: tagsKey === "" ? [] : tagsKey.split(","),
       },
@@ -100,7 +129,7 @@ export default function BrowsePage() {
       });
 
     return () => controller.abort();
-  }, [sort, page, species, typeForms, tagsKey]);
+  }, [sort, page, speciesKey, speciesMatches, typeForms, tagsKey]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -123,25 +152,17 @@ export default function BrowsePage() {
     return next.join(",");
   }
 
-  function chooseSpecies(text: string) {
-    setSpeciesText(text);
-    const match = SPECIES.find((s) => s.label.toLowerCase() === text.trim().toLowerCase());
-    // Only commit a real match; clearing the box clears the filter
-    if (match) update({ species: match.name });
-    else if (text.trim() === "") update({ species: null });
-  }
-
   function goToPage(target: number) {
     update({ page: target === 1 ? null : String(target) }, true);
     window.scrollTo({ top: 0 });
   }
 
   function clearAll() {
-    setSpeciesText("");
-    update({ species: null, types: null, tags: null });
+    setQueryText("");
+    update({ pokemon: null, types: null, tags: null });
   }
 
-  const hasFilters = species !== "" || types.length > 0 || tags.length > 0;
+  const hasFilters = query.trim() !== "" || types.length > 0 || tags.length > 0;
 
   return (
     <div id="browse">
@@ -168,19 +189,16 @@ export default function BrowsePage() {
           <input
             id="browse-species"
             className="text-input"
-            list="browse-species-options"
+            type="search"
             placeholder="Any Pokémon"
-            value={speciesText}
-            onChange={(e) => chooseSpecies(e.target.value)}
+            value={queryText}
+            onChange={(e) => setQueryText(e.target.value)}
           />
-          {species !== "" && (
-            <button type="button" className="browse-chip" onClick={() => { setSpeciesText(""); update({ species: null }); }}>
+          {queryText !== "" && (
+            <button type="button" className="browse-chip" onClick={() => setQueryText("")}>
               Clear
             </button>
           )}
-          <datalist id="browse-species-options">
-            {SPECIES.map((s) => <option key={s.name} value={s.label} />)}
-          </datalist>
         </div>
 
         <span className="browse-filter-label">

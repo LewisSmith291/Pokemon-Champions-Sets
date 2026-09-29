@@ -198,7 +198,7 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
   // Every filter is optional, and and() skips the undefined ones
   const where = and(
     eq(pokemonSet.isPublic, true),
-    species ? eq(pokemonSet.species, species) : undefined,
+    species.length > 0 ? inArray(pokemonSet.species, species) : undefined,
     forms.length > 0 ? inArray(pokemonSet.form, forms) : undefined,
     // A set must carry EVERY selected tag, so each extra tag narrows the list.
     // Counting distinct matches per set and requiring all of them is what
