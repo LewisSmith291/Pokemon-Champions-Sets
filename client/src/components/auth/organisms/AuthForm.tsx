@@ -1,5 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { signIn, signUp } from "@/services/authClient";
+import { NAME_HINT, NAME_MAX, nameProblem } from "@/data/displayName";
 
 interface Props {
   authMode: "signin" | "signup";
@@ -16,6 +17,17 @@ export default function AuthForm({authMode, toggleMode}:Props) {
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault(); // stop the full-page form reload
     setError(null);
+
+    // Catch the shape rules here; the server still re-checks them, and is the
+    // only one that knows whether the name is taken or disallowed
+    if (authMode === "signup") {
+      const problem = nameProblem(name);
+      if (problem) {
+        setError(problem);
+        return;
+      }
+    }
+
     setLoading(true);
 
     // Better Auth returns { error } rather than throwing.
@@ -34,15 +46,22 @@ export default function AuthForm({authMode, toggleMode}:Props) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full mx-auto max-w-sm p-4">
       <h2>{authMode === "signup" ? "Create account" : "Log in"}</h2>
-        { // Sign up mode includes a first name field that log in mode doesn't
+        { // Sign up mode includes a display name field that log in mode doesn't.
+          // It's public - the byline on every set - so it isn't asked for as a
+          // real name.
         authMode === "signup" && (
-          <input
-            placeholder="First Name"
-            className="text-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <>
+            <input
+              placeholder="Display name"
+              className="text-input"
+              value={name}
+              maxLength={NAME_MAX}
+              autoComplete="username"
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <p className="text-sm text-(--color-text-muted) text-left">{NAME_HINT}</p>
+          </>
         )}
         <input
           type="email"

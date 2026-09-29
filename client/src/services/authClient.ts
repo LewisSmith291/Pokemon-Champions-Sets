@@ -10,4 +10,4 @@ export const authClient = createAuthClient({
 });
 
 // Re-export the pieces we use so components import from one place.
-export const { signIn, signUp, signOut, useSession } = authClient;
+export const { signIn, signUp, signOut, useSession, updateUser, changePassword, deleteUser } = authClient;
