@@ -6,9 +6,24 @@ const boost = z.number().int().min(0).max(32);
 
 // Query string for GET /api/sets. Everything arrives as a string, so limit is
 // coerced; the cap stops a caller asking for the whole table in one request.
+// Comma-separated query values ("a,b,c") arrive as one string - split, drop
+// blanks, and treat an empty list as "no filter"
+const commaList = z
+  .string()
+  .optional()
+  .transform((value) => (value ?? "").split(",").map((part) => part.trim()).filter(Boolean));
+
 export const listSetsSchema = z.object({
   sort: z.enum(["new", "hot", "best"]).default("new"),
   limit: z.coerce.number().int().min(1).max(50).default(3),
+  // 1-based, for Browse's numbered pages. The showcase never sends it.
+  page: z.coerce.number().int().min(1).max(10_000).default(1),
+  // Filters. Species and tags are slugs the server can match directly; the
+  // server has no typing data, so the type filter arrives as the list of forms
+  // with that typing, worked out on the client from its bundled form data.
+  species: z.string().min(1).optional(),
+  forms: commaList.pipe(z.array(z.string().min(1)).max(400)),
+  tags: commaList.pipe(z.array(z.enum(TAG_SLUGS)).max(MAX_TAGS)),
 });
 
 export type SetSort = z.infer<typeof listSetsSchema>["sort"];

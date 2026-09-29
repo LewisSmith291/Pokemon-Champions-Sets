@@ -81,6 +81,8 @@ async function querySets(options: {
   where: SQL | undefined;
   orderBy: SQL[] | PgColumn[] | (SQL | PgColumn)[];
   limit: number;
+  /** Rows to skip first - Browse's page * page size */
+  offset?: number;
   viewerId: string | undefined;
 }) {
   const rows = await db
@@ -116,7 +118,8 @@ async function querySets(options: {
     // but user.name is from another table and has to be grouped explicitly
     .groupBy(pokemonSet.id, user.name)
     .orderBy(...options.orderBy)
-    .limit(options.limit);
+    .limit(options.limit)
+    .offset(options.offset ?? 0);
 
   const ids = rows.map((row) => row.id);
   if (ids.length === 0) return [];
@@ -185,21 +188,40 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
   if (!parsed.success) {
     return res.status(400).json({ errors: parsed.error.issues });
   }
-  const { sort, limit } = parsed.data;
+  const { sort, limit, page, species, forms, tags } = parsed.data;
 
   const orderBy =
     sort === "new"  ? [desc(pokemonSet.createdAt)] :
     sort === "best" ? [desc(voteCount), desc(pokemonSet.createdAt)] :
                       [desc(hotScore), desc(pokemonSet.createdAt)];
 
+  // Every filter is optional, and and() skips the undefined ones
+  const where = and(
+    eq(pokemonSet.isPublic, true),
+    species ? eq(pokemonSet.species, species) : undefined,
+    forms.length > 0 ? inArray(pokemonSet.form, forms) : undefined,
+    // A set must carry EVERY selected tag, so each extra tag narrows the list.
+    // Counting distinct matches per set and requiring all of them is what
+    // turns "has any of these" into "has all of these".
+    tags.length > 0
+      ? inArray(
+          pokemonSet.id,
+          db.select({ id: setTags.setId })
+            .from(setTags)
+            .where(inArray(setTags.tag, tags))
+            .groupBy(setTags.setId)
+            .having(sql`count(distinct ${setTags.tag}) = ${tags.length}`),
+        )
+      : undefined,
+  );
+
   try {
-    const sets = await querySets({
-      where: eq(pokemonSet.isPublic, true),
-      orderBy,
-      limit,
-      viewerId: req.user?.id,
-    });
-    res.json({ sets });
+    const [sets, [{ total }]] = await Promise.all([
+      querySets({ where, orderBy, limit, offset: (page - 1) * limit, viewerId: req.user?.id }),
+      // Same filters, no paging - how many pages there are in total
+      db.select({ total: sql<number>`count(*)::int` }).from(pokemonSet).where(where),
+    ]);
+    res.json({ sets, total, page });
   } catch (error) {
     console.error("Failed to list sets: ", error);
     res.status(500).json({ error: "Could not load sets" });
