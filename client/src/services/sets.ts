@@ -79,3 +79,41 @@ export async function setVote(
   }
   return response.json();
 }
+
+// Pulls the API's error message out of a failed response, where there is one
+async function failure(response: Response, fallback: string): Promise<Error> {
+  const data = await response.json().catch(() => ({}));
+  return new Error(data.error ?? `${fallback} (${response.status})`);
+}
+
+/** Owner-only. The body is the same shape POST /api/sets takes. */
+export async function updateSet(id: string, payload: unknown): Promise<void> {
+  const response = await fetch(`${API_URL}/api/sets/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw await failure(response, "Could not save changes");
+}
+
+/** Owner-only. Publishes or unpublishes without re-sending the set. */
+export async function setPublished(id: string, isPublic: boolean): Promise<boolean> {
+  const response = await fetch(`${API_URL}/api/sets/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ isPublic }),
+  });
+  if (!response.ok) throw await failure(response, "Could not change visibility");
+  return (await response.json()).isPublic;
+}
+
+/** Owner-only. Moves, tags and votes are removed with it. */
+export async function deleteSet(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/api/sets/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!response.ok) throw await failure(response, "Could not delete set");
+}

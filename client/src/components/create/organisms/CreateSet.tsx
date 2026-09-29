@@ -9,6 +9,7 @@ import StatsConfig from '../molecules/StatsConfig.tsx';
 import TypeDisplay from '@/components/shared/TypeDisplay.tsx';
 import GetMegaStones from '@/data/megaStones.ts';
 import { API_URL } from '@/services/api.ts';
+import { getSet, updateSet } from '@/services/sets.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
@@ -107,6 +108,10 @@ export default function CreateSet() {
   // Role labels for browse/search later. Deliberately not in the URL codec -
   // they describe a finished set rather than being part of the build itself.
   const [tags, setTags] = useState<string[]>([]);
+  // Set when this page was opened from a set's Edit link. Saving then replaces
+  // that set (PUT) instead of creating a new one. Read from the URL once, like
+  // the draft is, and cleared if the set turns out not to be editable.
+  const [editId, setEditId] = useState<string | null>(() => searchParams.get("edit"));
   // notifications
   const { notifications, notify, dismiss } = useNotifications();
 
@@ -203,23 +208,47 @@ export default function CreateSet() {
   // doesn't lose it. replace:true because otherwise every slider nudge would be a
   // history entry and the back button would take dozens of presses to leave.
   useEffect(() => {
-    setSearchParams(
-      draftToParams({
-        species: selectedPokemon,
-        form: selectedForm,
-        item: selectedItem,
-        gender,
-        ability,
-        nature,
-        moves: moveList,
-        boosts: statBoosts,
-      }),
-      { replace: true }
-    );
+    const params = draftToParams({
+      species: selectedPokemon,
+      form: selectedForm,
+      item: selectedItem,
+      gender,
+      ability,
+      nature,
+      moves: moveList,
+      boosts: statBoosts,
+    });
+    // draftToParams builds the query from scratch, so the edit marker has to be
+    // put back each time - otherwise the first change drops it and saving would
+    // quietly create a copy instead of updating the set.
+    if (editId !== null) params.set("edit", editId);
+    setSearchParams(params, { replace: true });
     // setSearchParams is intentionally absent: react-router rebuilds it whenever
     // the location changes, so listing it would make this effect retrigger itself.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPokemon, selectedForm, selectedItem, gender, ability, nature, moveList, statBoosts]);
+  }, [selectedPokemon, selectedForm, selectedItem, gender, ability, nature, moveList, statBoosts, editId]);
+
+  // Tags and visibility aren't carried in the URL, so an edit fetches them from
+  // the stored set. The rest of the draft already arrived through the URL.
+  useEffect(() => {
+    if (editId === null) return;
+    const controller = new AbortController();
+
+    getSet(editId, controller.signal)
+      .then((set) => {
+        setTags(set.tags);
+        setIsPublic(set.isPublic);
+      })
+      .catch(() => {
+        if (controller.signal.aborted) return;
+        // Deleted since the link was made, or not yours - either way there is
+        // nothing to update, so fall back to saving it as a new set
+        notify("That set can't be edited, so saving will create a new set instead.", "orange");
+        setEditId(null);
+      });
+
+    return () => controller.abort();
+  }, [editId, notify]);
 
   // update moveListRef
   const moveListRef = useRef(moveList);
@@ -331,6 +360,17 @@ export default function CreateSet() {
 
     // Wrap in try/finally incase the fetch fails, the setIsSubmitting needs to be turned off regardless
     try{
+      // Editing an existing set replaces it in place rather than making a new one
+      if (editId !== null) {
+        try {
+          await updateSet(editId, payload);
+          navigate(`/set/${editId}`);
+        } catch (problem) {
+          notify(problem instanceof Error ? problem.message : "Could not save changes.", "red");
+        }
+        return;
+      }
+
       // POST Promise at /api/sets using setsRouter function
       const response = await fetch(`${API_URL}/api/sets`, {
         method: "POST",
@@ -520,7 +560,9 @@ export default function CreateSet() {
             className="hoverable-link rounded-[var(--rounded)]"
             disabled={isSubmitting || moveList.length === 0 || selectedPokemon === ""}
           >
-            {!session ? "Sign in to save" : isPublic ? "Publish Set" : "Save Set"}
+            {!session ? "Sign in to save"
+              : editId !== null ? "Save Changes"
+              : isPublic ? "Publish Set" : "Save Set"}
           </button>
         </div>
       </form>

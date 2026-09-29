@@ -4,7 +4,7 @@ import { db } from "../db/index.js";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { pokemonSet, setMoves, setTags, setVotes, user } from "../db/schema.js";
 import { requireAuth } from "../middleware/requireAuth.js";
-import { createSetSchema, listSetsSchema } from "../schemas/set.js";
+import { createSetSchema, listSetsSchema, publishSetSchema } from "../schemas/set.js";
 import { optionalAuth } from "../middleware/optionalAuth.js";
 
 export const setsRouter = Router();
@@ -276,5 +276,106 @@ setsRouter.delete("/:id/vote", requireAuth, async (req: Request<{id: string}>, r
   } catch (error) {
     console.error("Failed to remove vote: ", error);
     res.status(500).json({error: "Could not remove vote"});
+  }
+});
+// --- owner-only: edit, publish/unpublish, delete ---------------------------
+
+// The row's owner and species, or null when it doesn't exist OR belongs to
+// someone else. The routes below answer 404 in both cases, the same as the GET
+// above does for a private set - a stranger shouldn't learn that an id exists.
+async function ownedSet(setId: string, userId: string) {
+  const row = await db.query.pokemonSet.findFirst({
+    where: eq(pokemonSet.id, setId),
+    columns: {id: true, userId: true, species: true},
+  });
+  return row && row.userId === userId ? row : null;
+}
+
+// Replaces the whole set. Same body as POST, same all-or-nothing transaction.
+setsRouter.put("/:id", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const parsed = createSetSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({errors: parsed.error.issues});
+  }
+
+  const existing = await ownedSet(req.params.id, req.user!.id);
+  if (!existing) {
+    return res.status(404).json({error: "Set not found"});
+  }
+
+  const {moves, tags, ...set} = parsed.data;
+  const setId = existing.id;
+
+  try {
+    const updated = await db.transaction(async (tx) => {
+      const [row] = await tx.update(pokemonSet).set(set).where(eq(pokemonSet.id, setId)).returning();
+
+      // Moves and tags are replaced wholesale rather than diffed - four moves and
+      // at most seven tags, so rewriting them is simpler than working out changes
+      await tx.delete(setMoves).where(eq(setMoves.setId, setId));
+      await tx.insert(setMoves).values(
+        moves.map((move, index) => ({setId, slot: index + 1, move})),
+      );
+
+      await tx.delete(setTags).where(eq(setTags.setId, setId));
+      if (tags.length > 0) {
+        await tx.insert(setTags).values(tags.map((tag) => ({setId, tag})));
+      }
+
+      // A different Pokemon is effectively a new set, so it starts from zero.
+      // Otherwise an author could build up votes on one set and swap in another
+      // to carry the score over. Smaller edits keep their votes.
+      if (set.species !== existing.species) {
+        await tx.delete(setVotes).where(eq(setVotes.setId, setId));
+      }
+
+      return row;
+    });
+
+    res.json({set: updated});
+  } catch (error) {
+    console.error("Failed to update set: ", error);
+    res.status(500).json({error: "Could not update set"});
+  }
+});
+
+// Publish or unpublish without re-sending the whole set. Votes are kept either
+// way - the set just drops out of public lists while it's private.
+setsRouter.patch("/:id", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const parsed = publishSetSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({errors: parsed.error.issues});
+  }
+
+  const existing = await ownedSet(req.params.id, req.user!.id);
+  if (!existing) {
+    return res.status(404).json({error: "Set not found"});
+  }
+
+  try {
+    await db.update(pokemonSet)
+      .set({isPublic: parsed.data.isPublic})
+      .where(eq(pokemonSet.id, existing.id));
+    res.json({isPublic: parsed.data.isPublic});
+  } catch (error) {
+    console.error("Failed to change visibility: ", error);
+    res.status(500).json({error: "Could not change visibility"});
+  }
+});
+
+// Moves, tags and votes all go with it - every one of those foreign keys is
+// ON DELETE CASCADE, so one delete is the whole job.
+setsRouter.delete("/:id", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const existing = await ownedSet(req.params.id, req.user!.id);
+  if (!existing) {
+    return res.status(404).json({error: "Set not found"});
+  }
+
+  try {
+    await db.delete(pokemonSet).where(eq(pokemonSet.id, existing.id));
+    res.status(204).end();
+  } catch (error) {
+    console.error("Failed to delete set: ", error);
+    res.status(500).json({error: "Could not delete set"});
   }
 });

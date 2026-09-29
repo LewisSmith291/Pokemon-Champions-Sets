@@ -13,6 +13,11 @@ export const listSetsSchema = z.object({
 
 export type SetSort = z.infer<typeof listSetsSchema>["sort"];
 
+// PATCH /api/sets/:id - the one field that can change without re-sending the set
+export const publishSetSchema = z.object({
+  isPublic: z.boolean(),
+});
+
 export const createSetSchema = z.object({
   species: z.string().min(1),
   form: z.string().min(1),
