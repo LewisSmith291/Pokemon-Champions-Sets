@@ -22,7 +22,10 @@ export interface SetSummary extends Boosts {
   moves: string[];
   /** Tag slugs - label them through tagLabel() in data/tags.ts */
   tags: string[];
+  /** Always true on the public list; My Sets mixes both */
+  isPublic: boolean;
   createdAt: string;
+  updatedAt: string;
   /** Display name of the author - the API never sends their email */
   authorName: string;
   voteCount: number;
@@ -30,10 +33,10 @@ export interface SetSummary extends Boosts {
   hasVoted: boolean;
 }
 
-export interface SetDetail extends SetSummary {
-  isPublic: boolean;
-  updatedAt: string;
-}
+// The detail route returns the same fields as a list row, plus nothing extra now
+// that isPublic and updatedAt are on the summary - kept as its own name so the
+// set page's intent stays readable.
+export type SetDetail = SetSummary;
 
 /** Thrown for a 404 so the page can tell "no such set" from "server broke" */
 export class SetNotFound extends Error {}
@@ -49,6 +52,17 @@ export async function listSets(
     signal,
   });
   if (!response.ok) throw new Error(`Could not load sets (${response.status})`);
+  const data = await response.json();
+  return data.sets;
+}
+
+/** The signed-in user's own sets, private ones included, recently edited first */
+export async function listMySets(signal?: AbortSignal): Promise<SetSummary[]> {
+  const response = await fetch(`${API_URL}/api/sets/mine`, {
+    credentials: "include",
+    signal,
+  });
+  if (!response.ok) throw new Error(`Could not load your sets (${response.status})`);
   const data = await response.json();
   return data.sets;
 }

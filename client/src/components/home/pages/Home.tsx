@@ -18,7 +18,7 @@ export default function Home() {
       <div id="home-actions">
         <HomeButton name="create" colour="#C6EFCE" />
         <HomeButton name="browse" colour="#FFE699" />
-        <HomeButton name="search" colour="#C198E0" />
+        <HomeButton name="my-sets" label="My Sets" colour="#C198E0" />
         <HomeButton name="profile" colour="#FF8FC7" />
       </div>
     </div>

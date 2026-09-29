@@ -1,7 +1,8 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, sql, type SQL } from "drizzle-orm";
+import type { PgColumn } from "drizzle-orm/pg-core";
 import { pokemonSet, setMoves, setTags, setVotes, user } from "../db/schema.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { createSetSchema, listSetsSchema, publishSetSchema } from "../schemas/set.js";
@@ -60,6 +61,111 @@ setsRouter.post("/", requireAuth, async (req, res) => {
   }
 });
 
+// Counted once and reused for both sorting and the payload
+const voteCount = sql<number>`count(${setVotes.setId})::int`;
+
+// Hacker News' gravity formula: a set needs steadily more votes to hold its
+// place as it ages, so "hot" keeps turning over without a scheduled job.
+const hotScore = sql`
+  count(${setVotes.setId})::numeric
+  / power(extract(epoch from (now() - ${pokemonSet.createdAt})) / 3600 + 2, 1.5)`;
+
+// Every route that returns a list of sets goes through here, so the showcase
+// and My Sets hand the client exactly the same row shape and one SetCard renders
+// both. The caller decides which sets (where), what order and how many.
+//
+// The relational db.query API can't order by an aggregate over a joined table,
+// so this drops to the core builder and stitches moves and tags on afterwards.
+// GET /:id has no aggregate and keeps using db.query.
+async function querySets(options: {
+  where: SQL | undefined;
+  orderBy: SQL[] | PgColumn[] | (SQL | PgColumn)[];
+  limit: number;
+  viewerId: string | undefined;
+}) {
+  const rows = await db
+    .select({
+      id: pokemonSet.id,
+      // Lets a client tell "this is mine" - voting on your own set is refused
+      userId: pokemonSet.userId,
+      species: pokemonSet.species,
+      form: pokemonSet.form,
+      gender: pokemonSet.gender,
+      ability: pokemonSet.ability,
+      nature: pokemonSet.nature,
+      item: pokemonSet.item,
+      boostHp: pokemonSet.boostHp,
+      boostAtk: pokemonSet.boostAtk,
+      boostDef: pokemonSet.boostDef,
+      boostSpAtk: pokemonSet.boostSpAtk,
+      boostSpDef: pokemonSet.boostSpDef,
+      boostSpe: pokemonSet.boostSpe,
+      // Always true on the public list, but My Sets mixes both
+      isPublic: pokemonSet.isPublic,
+      createdAt: pokemonSet.createdAt,
+      updatedAt: pokemonSet.updatedAt,
+      // user.name only - email lives on the same table and must not ship
+      authorName: user.name,
+      voteCount,
+    })
+    .from(pokemonSet)
+    .innerJoin(user, eq(user.id, pokemonSet.userId))
+    .leftJoin(setVotes, eq(setVotes.setId, pokemonSet.id))
+    .where(options.where)
+    // pokemonSet.id is the primary key so its own columns come along for free,
+    // but user.name is from another table and has to be grouped explicitly
+    .groupBy(pokemonSet.id, user.name)
+    .orderBy(...options.orderBy)
+    .limit(options.limit);
+
+  const ids = rows.map((row) => row.id);
+  if (ids.length === 0) return [];
+
+  // One query for every set's moves rather than one per set
+  const moveRows = await db
+    .select({ setId: setMoves.setId, slot: setMoves.slot, move: setMoves.move })
+    .from(setMoves)
+    .where(inArray(setMoves.setId, ids))
+    .orderBy(asc(setMoves.slot));
+
+  const movesBySet = new Map<string, string[]>();
+  for (const row of moveRows) {
+    const list = movesBySet.get(row.setId) ?? [];
+    list.push(row.move);
+    movesBySet.set(row.setId, list);
+  }
+
+  // Same one-query-for-all shape as the moves above
+  const tagRows = await db
+    .select({ setId: setTags.setId, tag: setTags.tag })
+    .from(setTags)
+    .where(inArray(setTags.setId, ids));
+
+  const tagsBySet = new Map<string, string[]>();
+  for (const row of tagRows) {
+    const list = tagsBySet.get(row.setId) ?? [];
+    list.push(row.tag);
+    tagsBySet.set(row.setId, list);
+  }
+
+  // Which of these the viewer has voted on - empty for logged-out readers
+  const votedIds = new Set<string>();
+  if (options.viewerId) {
+    const voted = await db
+      .select({ setId: setVotes.setId })
+      .from(setVotes)
+      .where(and(eq(setVotes.userId, options.viewerId), inArray(setVotes.setId, ids)));
+    for (const row of voted) votedIds.add(row.setId);
+  }
+
+  return rows.map((row) => ({
+    ...row,
+    moves: movesBySet.get(row.id) ?? [],
+    tags: tagsBySet.get(row.id) ?? [],
+    hasVoted: votedIds.has(row.id),
+  }));
+}
+
 // Public set list, powering the home page showcase.
 // optionalAuth rather than requireAuth: anyone can read it, but a signed-in
 // viewer also gets told which of these they have already voted on.
@@ -70,110 +176,43 @@ setsRouter.get("/", optionalAuth, async (req: Request, res: Response) => {
   }
   const { sort, limit } = parsed.data;
 
-  // Counted once here and reused for both the sort and the payload
-  const voteCount = sql<number>`count(${setVotes.setId})::int`;
-
-  // Hacker News' gravity formula: a set needs steadily more votes to hold its
-  // place as it ages, so "hot" keeps turning over without a scheduled job.
-  const hotScore = sql`
-    count(${setVotes.setId})::numeric
-    / power(extract(epoch from (now() - ${pokemonSet.createdAt})) / 3600 + 2, 1.5)`;
-
   const orderBy =
     sort === "new"  ? [desc(pokemonSet.createdAt)] :
     sort === "best" ? [desc(voteCount), desc(pokemonSet.createdAt)] :
                       [desc(hotScore), desc(pokemonSet.createdAt)];
 
   try {
-    // The relational db.query API can't order by an aggregate over a joined
-    // table, so this one route drops to the core builder and stitches the moves
-    // on afterwards. GET /:id below has no aggregate and keeps using db.query.
-    const rows = await db
-      .select({
-        id: pokemonSet.id,
-        // Lets a client tell "this is mine" - voting on your own set is refused
-        userId: pokemonSet.userId,
-        species: pokemonSet.species,
-        form: pokemonSet.form,
-        gender: pokemonSet.gender,
-        ability: pokemonSet.ability,
-        nature: pokemonSet.nature,
-        item: pokemonSet.item,
-        boostHp: pokemonSet.boostHp,
-        boostAtk: pokemonSet.boostAtk,
-        boostDef: pokemonSet.boostDef,
-        boostSpAtk: pokemonSet.boostSpAtk,
-        boostSpDef: pokemonSet.boostSpDef,
-        boostSpe: pokemonSet.boostSpe,
-        createdAt: pokemonSet.createdAt,
-        // user.name only - email lives on the same table and must not ship
-        authorName: user.name,
-        voteCount,
-      })
-      .from(pokemonSet)
-      .innerJoin(user, eq(user.id, pokemonSet.userId))
-      .leftJoin(setVotes, eq(setVotes.setId, pokemonSet.id))
-      .where(eq(pokemonSet.isPublic, true))
-      // pokemonSet.id is the primary key so its own columns come along for free,
-      // but user.name is from another table and has to be grouped explicitly
-      .groupBy(pokemonSet.id, user.name)
-      .orderBy(...orderBy)
-      .limit(limit);
-
-    const ids = rows.map((row) => row.id);
-    if (ids.length === 0) {
-      return res.json({ sets: [] });
-    }
-
-    // One query for every set's moves rather than one per set
-    const moveRows = await db
-      .select({ setId: setMoves.setId, slot: setMoves.slot, move: setMoves.move })
-      .from(setMoves)
-      .where(inArray(setMoves.setId, ids))
-      .orderBy(asc(setMoves.slot));
-
-    const movesBySet = new Map<string, string[]>();
-    for (const row of moveRows) {
-      const list = movesBySet.get(row.setId) ?? [];
-      list.push(row.move);
-      movesBySet.set(row.setId, list);
-    }
-
-    // Same one-query-for-all shape as the moves above - the card shows tags too
-    const tagRows = await db
-      .select({ setId: setTags.setId, tag: setTags.tag })
-      .from(setTags)
-      .where(inArray(setTags.setId, ids));
-
-    const tagsBySet = new Map<string, string[]>();
-    for (const row of tagRows) {
-      const list = tagsBySet.get(row.setId) ?? [];
-      list.push(row.tag);
-      tagsBySet.set(row.setId, list);
-    }
-
-    // Which of these the viewer has voted on - empty for logged-out readers
-    const viewerId = req.user?.id;
-    const votedIds = new Set<string>();
-    if (viewerId) {
-      const voted = await db
-        .select({ setId: setVotes.setId })
-        .from(setVotes)
-        .where(and(eq(setVotes.userId, viewerId), inArray(setVotes.setId, ids)));
-      for (const row of voted) votedIds.add(row.setId);
-    }
-
-    res.json({
-      sets: rows.map((row) => ({
-        ...row,
-        moves: movesBySet.get(row.id) ?? [],
-        tags: tagsBySet.get(row.id) ?? [],
-        hasVoted: votedIds.has(row.id),
-      })),
+    const sets = await querySets({
+      where: eq(pokemonSet.isPublic, true),
+      orderBy,
+      limit,
+      viewerId: req.user?.id,
     });
+    res.json({ sets });
   } catch (error) {
     console.error("Failed to list sets: ", error);
     res.status(500).json({ error: "Could not load sets" });
+  }
+});
+
+// The signed-in user's own sets, private ones included.
+// Registered before GET /:id on purpose - otherwise Express would match "mine"
+// as a set id and this route would never be reached.
+setsRouter.get("/mine", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const sets = await querySets({
+      where: eq(pokemonSet.userId, req.user!.id),
+      // Most recently edited first, so a set you've just changed is at the top.
+      // createdAt breaks ties between sets saved in the same instant.
+      orderBy: [desc(pokemonSet.updatedAt), desc(pokemonSet.createdAt)],
+      // A ceiling rather than paging for now - well past what anyone has yet
+      limit: 500,
+      viewerId: req.user!.id,
+    });
+    res.json({ sets });
+  } catch (error) {
+    console.error("Failed to list own sets: ", error);
+    res.status(500).json({ error: "Could not load your sets" });
   }
 });
 

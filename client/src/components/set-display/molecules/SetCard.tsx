@@ -92,7 +92,11 @@ export default function SetCard({ set, viewerId }: Props) {
         {set.tags.map((tag) => <li key={tag}>{tagLabel(tag)}</li>)}
       </ul>
 
-      <p className="set-card-author">by {set.authorName}</p>
+      <p className="set-card-author">
+        by {set.authorName}
+        {/* Only My Sets can show a private set - the public list never does */}
+        {!set.isPublic && <span className="set-card-private"> · Private</span>}
+      </p>
 
       <div className="set-card-votes">
         <VoteButton

@@ -29,6 +29,13 @@
       "when": 1788353457402,
       "tag": "0003_create_set_votes_table",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790686564723,
+      "tag": "0004_set_saves_table",
+      "breakpoints": true
     }
   ]
 }

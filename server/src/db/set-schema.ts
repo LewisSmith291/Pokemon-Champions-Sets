@@ -112,6 +112,24 @@ export const setVotes = pgTable(
   ],
 );
 
+// Sets a user has bookmarked from other people, listed under Saved on My Sets.
+// Same shape as set_votes: the row existing is the save, the composite key stops
+// a set being saved twice, and both cascades clean up after a deleted set or
+// account.
+export const setSaves = pgTable(
+  "set_saves",
+  {
+    setId: text("set_id").notNull().references(() => pokemonSet.id, {onDelete: "cascade"}),
+    userId: text("user_id").notNull().references(() => user.id, {onDelete: "cascade"}),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({columns: [table.setId, table.userId]}),
+    // "what has this user saved?" - the Saved tab's query
+    index("set_saves_user_idx").on(table.userId),
+  ],
+);
+
 // Produces no SQL
 // TypeScript metadata for db.query
 
@@ -127,6 +145,7 @@ export const pokemonSetRelations = relations(pokemonSet, ({one, many}) => ({
   moves: many(setMoves),
   tags: many(setTags),
   votes: many(setVotes),
+  saves: many(setSaves),
 }));
 
 export const setMovesRelations = relations(setMoves, ({one}) => ({
@@ -140,4 +159,8 @@ export const setTagsRelations = relations(setTags, ({one}) => ({
 export const setVotesRelations = relations(setVotes, ({one}) => ({
   set: one(pokemonSet, {fields: [setVotes.setId], references: [pokemonSet.id]}),
   user: one(user, {fields: [setVotes.userId], references: [user.id]}),
+}));
+export const setSavesRelations = relations(setSaves, ({one}) => ({
+  set: one(pokemonSet, {fields: [setSaves.setId], references: [pokemonSet.id]}),
+  user: one(user, {fields: [setSaves.userId], references: [user.id]}),
 }));

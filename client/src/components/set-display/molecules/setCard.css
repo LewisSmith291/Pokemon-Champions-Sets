@@ -239,3 +239,8 @@
     gap: 0.25rem;
   }
 }
+
+/* Same colour as the set page's Private badge */
+.set-card-private{
+  color: var(--stat-up);
+}

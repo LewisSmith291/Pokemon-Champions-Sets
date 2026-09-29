@@ -8,6 +8,7 @@ import HeaderLayout from './components/header/templates/HeaderLayout.tsx';
 import NotFound from './components/not-found/NotFound.tsx';
 import ProfilePage from './components/profile/ProfilePage.tsx';
 import SetPage from './components/set-display/pages/SetPage.tsx';
+import MySetsPage from './components/my-sets/pages/MySetsPage.tsx';
 
 
 
@@ -26,6 +27,8 @@ function App() {
         <Route path="set/:id" element={<SetPage/>}/>
         <Route element={<RequireAuth />}>
           <Route path="profile" element={<ProfilePage/>}/>
+          {/* Lists private sets too, so it needs to know who's asking */}
+          <Route path="my-sets" element={<MySetsPage/>}/>
         </Route>
 
         {/* 404 Page */}
