@@ -9,6 +9,7 @@ import NotFound from './components/not-found/NotFound.tsx';
 import ProfilePage from './components/profile/ProfilePage.tsx';
 import SetPage from './components/set-display/pages/SetPage.tsx';
 import MySetsPage from './components/my-sets/pages/MySetsPage.tsx';
+import BrowsePage from './components/browse/pages/BrowsePage.tsx';
 
 
 
@@ -25,6 +26,8 @@ function App() {
         {/* Not behind RequireAuth - the API decides visibility, answering 404
             for a private set to anyone but its owner */}
         <Route path="set/:id" element={<SetPage/>}/>
+        {/* Public sets only, so open to anyone */}
+        <Route path="browse" element={<BrowsePage/>}/>
         <Route element={<RequireAuth />}>
           <Route path="profile" element={<ProfilePage/>}/>
           {/* Lists private sets too, so it needs to know who's asking */}
