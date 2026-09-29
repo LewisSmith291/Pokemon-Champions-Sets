@@ -81,9 +81,14 @@
 /* The base layer gives buttons no cursor, and these don't use .hoverable-link -
    its !important accent fill would override the pressed state below */
 .browse-chip:hover:not(:disabled){
+  cursor: pointer;
+}
+
+/* The tint is for unselected chips only - this selector outranks the pressed
+   rule below, so without the :not() a hovered selected chip would lose its fill */
+.browse-chip:hover:not(:disabled):not([aria-pressed="true"]){
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 15%, var(--surface));
-  cursor: pointer;
 }
 
 .browse-chip[aria-pressed="true"]{
