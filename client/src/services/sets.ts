@@ -58,6 +58,39 @@ export async function listSets(
   return data.sets;
 }
 
+export interface BrowseQuery {
+  sort: SetSort;
+  page: number;
+  pageSize: number;
+  species?: string;
+  /** The type filter, already resolved to form slugs - the server has no types */
+  forms?: string[];
+  tags?: string[];
+}
+
+/** One page of public sets, plus how many match in total, for Browse */
+export async function browseSets(
+  query: BrowseQuery,
+  signal?: AbortSignal,
+): Promise<{ sets: SetSummary[]; total: number }> {
+  const params = new URLSearchParams({
+    sort: query.sort,
+    page: String(query.page),
+    limit: String(query.pageSize),
+  });
+  if (query.species) params.set("species", query.species);
+  if (query.forms && query.forms.length > 0) params.set("forms", query.forms.join(","));
+  if (query.tags && query.tags.length > 0) params.set("tags", query.tags.join(","));
+
+  const response = await fetch(`${API_URL}/api/sets?${params}`, {
+    credentials: "include",
+    signal,
+  });
+  if (!response.ok) throw new Error(`Could not load sets (${response.status})`);
+  const data = await response.json();
+  return { sets: data.sets, total: data.total };
+}
+
 /** The signed-in user's own sets, private ones included, recently edited first */
 export async function listMySets(signal?: AbortSignal): Promise<SetSummary[]> {
   const response = await fetch(`${API_URL}/api/sets/mine`, {

@@ -4,8 +4,6 @@ import {TAG_SLUGS, MAX_TAGS} from "../data/tags.js"
 // Max of each stat boost is 32
 const boost = z.number().int().min(0).max(32);
 
-// Query string for GET /api/sets. Everything arrives as a string, so limit is
-// coerced; the cap stops a caller asking for the whole table in one request.
 // Comma-separated query values ("a,b,c") arrive as one string - split, drop
 // blanks, and treat an empty list as "no filter"
 const commaList = z
@@ -13,6 +11,8 @@ const commaList = z
   .optional()
   .transform((value) => (value ?? "").split(",").map((part) => part.trim()).filter(Boolean));
 
+// Query string for GET /api/sets. Everything arrives as a string, so limit is
+// coerced; the cap stops a caller asking for the whole table in one request.
 export const listSetsSchema = z.object({
   sort: z.enum(["new", "hot", "best"]).default("new"),
   limit: z.coerce.number().int().min(1).max(50).default(3),
