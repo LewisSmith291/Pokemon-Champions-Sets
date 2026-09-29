@@ -50,7 +50,10 @@ export default function BrowsePage() {
 
   const [sets, setSets] = useState<SetSummary[]>([]);
   const [total, setTotal] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // Mobile only - the panel is always shown on wider screens, where it fits.
+  // Closed by default: most visits are just to look, not to filter.
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Same matching as the create page's species picker: case-insensitive,
@@ -175,6 +178,9 @@ export default function BrowsePage() {
   }
 
   const hasFilters = query.trim() !== "" || types.length > 0 || megaOnly || tags.length > 0;
+  // Each active filter counts once, so a collapsed panel still says the list is filtered
+  const activeFilterCount =
+    (query.trim() !== "" ? 1 : 0) + types.length + (megaOnly ? 1 : 0) + tags.length;
 
   return (
     <div id="browse">
@@ -195,7 +201,21 @@ export default function BrowsePage() {
         </div>
       </div>
 
-      <div id="browse-filters">
+      <button
+        type="button"
+        className="browse-chip browse-filter-toggle"
+        aria-expanded={filtersOpen}
+        aria-controls="browse-filters"
+        onClick={() => setFiltersOpen((open) => !open)}
+      >
+        {filtersOpen ? "Hide filters" : "Filters"}
+        {activeFilterCount > 0 && <span className="browse-filter-count">{activeFilterCount}</span>}
+      </button>
+
+      {/* Hidden on mobile until the button above opens it; always shown on wider
+          screens. A class rather than conditional rendering, so the desktop
+          layout never depends on this state. */}
+      <div id="browse-filters" className={filtersOpen ? "is-open" : ""}>
         <label className="browse-filter-label" htmlFor="browse-species">Pokémon</label>
         <div className="browse-species">
           <input

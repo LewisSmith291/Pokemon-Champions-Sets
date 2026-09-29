@@ -161,6 +161,24 @@
   width: auto;
 }
 
+/* Only exists on mobile - see the media query */
+.browse-filter-toggle{
+  display: none;
+}
+
+.browse-filter-count{
+  display: inline-block;
+  min-width: 1.4em;
+  margin-left: 0.4em;
+  padding: 0 0.35em;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.8em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
 .browse-count{
   color: var(--text-muted);
   font-size: 0.9rem;
@@ -202,10 +220,22 @@
 }
 
 @media screen and (max-width: 676px){
-  /* Labels above their controls - there isn't room for two columns */
+  /* Labels above their controls - there isn't room for two columns. Hidden
+     until the toggle opens it: the tags alone fill most of a phone screen. */
   #browse-filters{
+    display: none;
     grid-template-columns: 1fr;
     gap: 0.4rem;
+  }
+
+  #browse-filters.is-open{
+    display: grid;
+  }
+
+  .browse-filter-toggle{
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
   }
 
   .browse-filter-label{
