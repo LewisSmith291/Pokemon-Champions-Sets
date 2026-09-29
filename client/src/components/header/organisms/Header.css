@@ -1,4 +1,8 @@
 #site-header{
+  /* It's sticky, so page content scrolls beneath it. Anything that makes its own
+     stacking layer - the set card's hover transform, the type icons' filter -
+     paints over an un-indexed header because it comes later in the page. */
+  z-index: 50;
   height:var(--header-height);
   width:100%;
   padding:10px;
