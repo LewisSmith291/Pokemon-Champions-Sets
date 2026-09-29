@@ -29,7 +29,13 @@
 }
 
 /* Same off/on pairing as the move-class filters: surface when off, accent on */
+/* A flex row so the Saved tab's star sits beside its count - Tailwind's
+   preflight makes every <svg> display:block, which stacked them */
 .my-sets-tab{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35em;
   border-radius: var(--rounded);
   padding: 0.35em 0.9em;
   background: var(--surface);
@@ -66,4 +72,13 @@
 .my-sets-message a{
   color: var(--accent);
   text-decoration: underline;
+}
+
+/* The Saved tab's icon. Filled, in the tab's own text colour, so it follows the
+   selected/unselected colours the other tabs use. */
+.my-sets-star{
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  fill: currentColor;
 }
