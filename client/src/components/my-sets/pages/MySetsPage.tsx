@@ -1,31 +1,36 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { useSession } from "@/services/authClient";
-import { listMySets, type SetSummary } from "@/services/sets";
+import { listMySets, listSavedSets, type SetSummary } from "@/services/sets";
 import SetCard from "@/components/set-display/molecules/SetCard";
 import Loading from "@/components/shared/Loading";
 import "./MySetsPage.css";
 
-type Filter = "all" | "public" | "private";
+type Filter = "all" | "public" | "private" | "saved";
 
 const TABS: { id: Filter; label: string }[] = [
   { id: "all",     label: "All" },
   { id: "public",  label: "Public" },
   { id: "private", label: "Private" },
+  // Other people's sets, kept apart from your own rather than mixed into All
+  { id: "saved",   label: "Saved" },
 ];
 
 export default function MySetsPage() {
   const { data: session } = useSession();
   const [sets, setSets] = useState<SetSummary[]>([]);
+  const [savedSets, setSavedSets] = useState<SetSummary[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    listMySets(controller.signal)
-      .then((rows) => {
-        setSets(rows);
+    // Both up front, so every tab's count is right before it's opened
+    Promise.all([listMySets(controller.signal), listSavedSets(controller.signal)])
+      .then(([own, saved]) => {
+        setSets(own);
+        setSavedSets(saved);
         setIsLoading(false);
       })
       .catch((problem) => {
@@ -39,15 +44,17 @@ export default function MySetsPage() {
   // Filtered here rather than by the server - every row already says whether
   // it's public, and switching tabs shouldn't mean another request
   const visible: SetSummary[] = useMemo(() => {
+    if (filter === "saved") return savedSets;
     if (filter === "all") return sets;
     const wantPublic = filter === "public";
     return sets.filter((set) => set.isPublic === wantPublic);
-  }, [sets, filter]);
+  }, [sets, savedSets, filter]);
 
   const counts: Record<Filter, number> = {
     all: sets.length,
     public: sets.filter((set) => set.isPublic).length,
     private: sets.filter((set) => !set.isPublic).length,
+    saved: savedSets.length,
   };
 
   return (
@@ -74,9 +81,13 @@ export default function MySetsPage() {
         <Loading />
       ) : error !== null ? (
         <p className="my-sets-message">{error}</p>
-      ) : sets.length === 0 ? (
+      ) : filter === "saved" && savedSets.length === 0 ? (
         <p className="my-sets-message">
-          You haven't saved any sets yet. <Link to="/create">Build your first one</Link>.
+          Nothing saved yet. Tap the star on anyone's set to keep it here.
+        </p>
+      ) : filter !== "saved" && sets.length === 0 ? (
+        <p className="my-sets-message">
+          You haven't made any sets yet. <Link to="/create">Build your first one</Link>.
         </p>
       ) : visible.length === 0 ? (
         <p className="my-sets-message">
@@ -85,7 +96,15 @@ export default function MySetsPage() {
       ) : (
         <div id="my-sets-grid">
           {visible.map((set) => (
-            <SetCard key={set.id} set={set} viewerId={session?.user.id} />
+            <SetCard
+              key={set.id}
+              set={set}
+              viewerId={session?.user.id}
+              // Unsaving from the Saved tab takes the card straight out of it
+              onSavedChange={(saved) => {
+                if (!saved) setSavedSets((prev) => prev.filter((row) => row.id !== set.id));
+              }}
+            />
           ))}
         </div>
       )}

@@ -207,9 +207,14 @@
   align-self: end;
 }
 
+/* Vote and save side by side, as one control group */
 .set-card-votes{
   grid-area: votes;
   align-self: end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 /* Below the showcase's own stacking point each card gets the full width, so it

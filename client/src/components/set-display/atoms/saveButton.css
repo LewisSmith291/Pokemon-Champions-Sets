@@ -1,0 +1,44 @@
+/* Sized and outlined to sit beside the vote control as a matching pair */
+.save-button{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  padding: 0.25em;
+  border-radius: var(--rounded);
+  border: 2px solid currentColor;
+  background: transparent;
+  color: var(--text);
+  line-height: 0;
+}
+
+.save-button svg{
+  width: 1.15em;
+  height: 1.15em;
+  /* Outline only until it's saved */
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+/* Saved: a filled star. --star is yellow in dark and crimson in light, since
+   yellow on the light theme's pale background barely shows. */
+.save-button.saved{
+  color: var(--star);
+}
+
+.save-button.saved svg{
+  fill: currentColor;
+}
+
+.save-button:hover:not(:disabled){
+  color: var(--star);
+  cursor: pointer;
+}
+
+.save-button:disabled{
+  opacity: 0.6;
+  cursor: default;
+}

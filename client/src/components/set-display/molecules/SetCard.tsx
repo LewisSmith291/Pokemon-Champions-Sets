@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import TypeDisplay from "@/components/shared/TypeDisplay";
 import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
+import SaveButton from "../atoms/SaveButton";
 import MoveChip from "../atoms/MoveChip";
 import { FORM_DATA } from "@/data/formData";
 import { formLabel } from "@/data/forms";
@@ -17,9 +18,12 @@ interface Props {
   set: SetSummary;
   /** The signed-in viewer, so the card can show a bare count on their own set */
   viewerId?: string;
+  /** Lets My Sets' Saved tab drop a card the moment it's unsaved */
+  onSavedChange?: (saved: boolean) => void;
 }
 
-export default function SetCard({ set, viewerId }: Props) {
+export default function SetCard({ set, viewerId, onSavedChange }: Props) {
+  const isOwn: boolean = viewerId !== undefined && viewerId === set.userId;
   // Mega and regional forms re-type, so this is the form's typing, not the species'
   const form = FORM_DATA[set.form];
   const item = set.item === null ? null : ITEM_DETAILS[set.item];
@@ -103,8 +107,10 @@ export default function SetCard({ set, viewerId }: Props) {
           setId={set.id}
           voteCount={set.voteCount}
           hasVoted={set.hasVoted}
-          isOwn={viewerId === set.userId}
+          isOwn={isOwn}
         />
+        {/* Your own sets are already in My Sets, so there's nothing to save */}
+        {!isOwn && <SaveButton setId={set.id} hasSaved={set.hasSaved} onChange={onSavedChange} />}
       </div>
     </Link>
   );

@@ -88,6 +88,11 @@
   --gender-male:   #4dc4ff;
   --gender-female: #f76285;
 
+  /* A saved set's star. It sits on the page and card backgrounds, not on the
+     purple chrome, so the chrome yellow is nearly invisible here in light mode -
+     the crimson accent is used instead. 5.34 on --bg. */
+  --star: var(--accent);
+
   /* Text sitting on the deep-purple chrome. Yellow in BOTH themes, because the
      chrome does not change colour between them. 9.07 on --p-deep, AAA. */
   --link-color:  var(--p-yellow);
@@ -133,6 +138,7 @@
     --stat-down-fill: #10598a;
 
     --error:       #ff9d9d;        /*  8.06 on --bg      AAA */
+    --star:        var(--p-yellow); /* the yellow reads on the dark backgrounds */
   }
 }
 

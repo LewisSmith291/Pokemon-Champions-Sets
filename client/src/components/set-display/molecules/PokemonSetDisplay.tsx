@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import TypeDisplay from "@/components/shared/TypeDisplay";
 import GenderIcon from "@/components/shared/GenderIcon";
 import VoteButton from "../atoms/VoteButton";
+import SaveButton from "../atoms/SaveButton";
 import OwnerActions from "./OwnerActions";
 import MoveChip from "../atoms/MoveChip";
 import GetNatureChanges, { STATS, ALIGNMENTS, finalStat } from "@/data/stats";
@@ -157,6 +158,7 @@ export default function PokemonSetDisplay({ set, viewerId, onVisibilityChange }:
           hasVoted={set.hasVoted}
           isOwn={viewerId === set.userId}
         />
+        {!isOwner && <SaveButton setId={set.id} hasSaved={set.hasSaved} />}
       </div>
     </article>
   );

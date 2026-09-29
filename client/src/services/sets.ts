@@ -31,6 +31,8 @@ export interface SetSummary extends Boosts {
   voteCount: number;
   /** Always false for a logged-out viewer */
   hasVoted: boolean;
+  /** Whether the viewer has saved this set - always false logged out */
+  hasSaved: boolean;
 }
 
 // The detail route returns the same fields as a list row, plus nothing extra now
@@ -130,4 +132,25 @@ export async function deleteSet(id: string): Promise<void> {
     credentials: "include",
   });
   if (!response.ok) throw await failure(response, "Could not delete set");
+}
+
+/** Other people's sets the signed-in user has saved, for My Sets' Saved tab */
+export async function listSavedSets(signal?: AbortSignal): Promise<SetSummary[]> {
+  const response = await fetch(`${API_URL}/api/sets/saved`, {
+    credentials: "include",
+    signal,
+  });
+  if (!response.ok) throw new Error(`Could not load saved sets (${response.status})`);
+  const data = await response.json();
+  return data.sets;
+}
+
+/** Saves or unsaves someone else's set. Returns the new state. */
+export async function setSaved(id: string, saved: boolean): Promise<boolean> {
+  const response = await fetch(`${API_URL}/api/sets/${id}/save`, {
+    method: saved ? "POST" : "DELETE",
+    credentials: "include",
+  });
+  if (!response.ok) throw await failure(response, "Could not update save");
+  return (await response.json()).hasSaved;
 }

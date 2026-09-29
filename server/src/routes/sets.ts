@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "../db/index.js";
 import { and, asc, desc, eq, inArray, sql, type SQL } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
-import { pokemonSet, setMoves, setTags, setVotes, user } from "../db/schema.js";
+import { pokemonSet, setMoves, setSaves, setTags, setVotes, user } from "../db/schema.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { createSetSchema, listSetsSchema, publishSetSchema } from "../schemas/set.js";
 import { optionalAuth } from "../middleware/optionalAuth.js";
@@ -158,11 +158,22 @@ async function querySets(options: {
     for (const row of voted) votedIds.add(row.setId);
   }
 
+  // And which the viewer has saved, for the star on each card
+  const savedIds = new Set<string>();
+  if (options.viewerId) {
+    const saved = await db
+      .select({ setId: setSaves.setId })
+      .from(setSaves)
+      .where(and(eq(setSaves.userId, options.viewerId), inArray(setSaves.setId, ids)));
+    for (const row of saved) savedIds.add(row.setId);
+  }
+
   return rows.map((row) => ({
     ...row,
     moves: movesBySet.get(row.id) ?? [],
     tags: tagsBySet.get(row.id) ?? [],
     hasVoted: votedIds.has(row.id),
+    hasSaved: savedIds.has(row.id),
   }));
 }
 
@@ -216,6 +227,32 @@ setsRouter.get("/mine", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
+// Other people's sets the signed-in user has saved, for My Sets' Saved tab.
+// Like /mine, this has to come before GET /:id or "saved" is read as an id.
+setsRouter.get("/saved", requireAuth, async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  try {
+    const sets = await querySets({
+      where: and(
+        inArray(
+          pokemonSet.id,
+          db.select({ id: setSaves.setId }).from(setSaves).where(eq(setSaves.userId, userId)),
+        ),
+        // An author unpublishing a set hides it from savers too. The save row
+        // is kept, so it reappears if the set is published again.
+        eq(pokemonSet.isPublic, true),
+      ),
+      orderBy: [desc(pokemonSet.updatedAt), desc(pokemonSet.createdAt)],
+      limit: 500,
+      viewerId: userId,
+    });
+    res.json({ sets });
+  } catch (error) {
+    console.error("Failed to list saved sets: ", error);
+    res.status(500).json({ error: "Could not load saved sets" });
+  }
+});
+
 // Non authenticated viewer of sets
 setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Response) => {
   const set = await db.query.pokemonSet.findFirst({ 
@@ -248,11 +285,16 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
   }
 
   // Same two extras the list route reports, so a card and the set page agree
-  const [voteCount, hasVoted] = await Promise.all([
+  const [voteCount, hasVoted, hasSaved] = await Promise.all([
     countVotes(set.id),
     req.user
       ? db.query.setVotes
           .findFirst({where: and(eq(setVotes.setId, set.id), eq(setVotes.userId, req.user.id))})
+          .then((row) => row !== undefined)
+      : Promise.resolve(false),
+    req.user
+      ? db.query.setSaves
+          .findFirst({where: and(eq(setSaves.setId, set.id), eq(setSaves.userId, req.user.id))})
           .then((row) => row !== undefined)
       : Promise.resolve(false),
   ]);
@@ -268,6 +310,7 @@ setsRouter.get("/:id", optionalAuth, async(req: Request<{id: string}>,res:Respon
     authorName: author.name,
     voteCount,
     hasVoted,
+    hasSaved,
   });
 });
 
@@ -417,5 +460,48 @@ setsRouter.delete("/:id", requireAuth, async (req: Request<{id: string}>, res: R
   } catch (error) {
     console.error("Failed to delete set: ", error);
     res.status(500).json({error: "Could not delete set"});
+  }
+});
+
+// --- saving other people's sets --------------------------------------------
+
+// Bookmarks a set for the Saved tab. Only someone else's public set can be
+// saved - your own are already listed under My Sets.
+setsRouter.post("/:id/save", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  const userId = req.user!.id;
+  const setId = req.params.id;
+
+  const target = await db.query.pokemonSet.findFirst({
+    where: eq(pokemonSet.id, setId),
+    columns: {id: true, isPublic: true, userId: true},
+  });
+
+  // Private sets 404 for the same reason as everywhere else - don't confirm
+  // that an id someone guessed exists
+  if (!target || !target.isPublic) {
+    return res.status(404).json({error: "Set not found"});
+  }
+  if (target.userId === userId) {
+    return res.status(400).json({error: "Your own sets are already in My Sets"});
+  }
+
+  try {
+    // Idempotent, like voting: a double click is a no-op, not a key violation
+    await db.insert(setSaves).values({setId, userId}).onConflictDoNothing();
+    res.json({hasSaved: true});
+  } catch (error) {
+    console.error("Failed to save set: ", error);
+    res.status(500).json({error: "Could not save set"});
+  }
+});
+
+setsRouter.delete("/:id/save", requireAuth, async (req: Request<{id: string}>, res: Response) => {
+  try {
+    // Removing a save that isn't there affects no rows - the state asked for
+    await db.delete(setSaves).where(and(eq(setSaves.setId, req.params.id), eq(setSaves.userId, req.user!.id)));
+    res.json({hasSaved: false});
+  } catch (error) {
+    console.error("Failed to unsave set: ", error);
+    res.status(500).json({error: "Could not unsave set"});
   }
 });

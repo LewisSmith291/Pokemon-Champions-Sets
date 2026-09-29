@@ -263,6 +263,10 @@
 .set-display .set-votes{
   grid-area: votes;
   justify-self: end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .set-display .set-actions{
