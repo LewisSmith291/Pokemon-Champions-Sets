@@ -43,7 +43,8 @@
   border: 1px solid var(--border);
 }
 
-.my-sets-tab[aria-selected="true"]{
+.my-sets-tab[aria-selected="true"],
+.my-sets-tab[aria-pressed="true"]{
   background: var(--accent);
   color: var(--on-accent);
   border-color: var(--accent);
@@ -81,4 +82,24 @@
   height: 1.1em;
   flex-shrink: 0;
   fill: currentColor;
+}
+
+/* Sort buttons reuse the tab styling, on their own row under the filter tabs */
+#my-sets-sort{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.my-sets-sort-label{
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-right: 0.15rem;
+}
+
+/* Set apart from the sort keys - it modifies whichever one is chosen */
+.my-sets-reverse{
+  margin-left: 0.5rem;
 }

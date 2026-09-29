@@ -4,6 +4,7 @@ import { useSession } from "@/services/authClient";
 import { listMySets, listSavedSets, type SetSummary } from "@/services/sets";
 import SetCard from "@/components/set-display/molecules/SetCard";
 import Loading from "@/components/shared/Loading";
+import { SET_SORTS, sortSets, type SetSortKey } from "@/data/setSort";
 import "./MySetsPage.css";
 
 type Filter = "all" | "public" | "private" | "saved";
@@ -21,6 +22,8 @@ export default function MySetsPage() {
   const [sets, setSets] = useState<SetSummary[]>([]);
   const [savedSets, setSavedSets] = useState<SetSummary[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
+  const [sortKey, setSortKey] = useState<SetSortKey>("recent");
+  const [reversed, setReversed] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,11 +47,13 @@ export default function MySetsPage() {
   // Filtered here rather than by the server - every row already says whether
   // it's public, and switching tabs shouldn't mean another request
   const visible: SetSummary[] = useMemo(() => {
-    if (filter === "saved") return savedSets;
-    if (filter === "all") return sets;
-    const wantPublic = filter === "public";
-    return sets.filter((set) => set.isPublic === wantPublic);
-  }, [sets, savedSets, filter]);
+    const filtered =
+      filter === "saved" ? savedSets :
+      filter === "all"   ? sets :
+      sets.filter((set) => set.isPublic === (filter === "public"));
+    // Sorted after filtering, and the same choice carries across every tab
+    return sortSets(filtered, sortKey, reversed);
+  }, [sets, savedSets, filter, sortKey, reversed]);
 
   const counts: Record<Filter, number> = {
     all: sets.length,
@@ -85,6 +90,33 @@ export default function MySetsPage() {
             </button>
           ))}
         </div>
+      </div>
+
+      <div id="my-sets-sort" role="group" aria-label="Sort sets">
+        <span className="my-sets-sort-label">Sort</span>
+        {SET_SORTS.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            className="my-sets-tab"
+            aria-pressed={sortKey === option.id}
+            onClick={() => setSortKey(option.id)}
+          >
+            {option.label}
+          </button>
+        ))}
+        <button
+          type="button"
+          className="my-sets-tab my-sets-reverse"
+          aria-pressed={reversed}
+          onClick={() => setReversed((prev) => !prev)}
+          aria-label={reversed ? "Reversed order, switch back" : "Reverse order"}
+          title="Reverse order"
+        >
+          {/* Arrow flips with the state, so it shows which way the list runs */}
+          <span aria-hidden="true">{reversed ? "↑" : "↓"}</span>
+          Reverse
+        </button>
       </div>
 
       {isLoading ? (
