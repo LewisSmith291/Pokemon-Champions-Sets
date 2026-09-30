@@ -14,10 +14,17 @@ export const FORM_SUFFIXES = [
   // Paldean Tauros has no plain "-paldea" variety - each breed is its own slug
   "paldea-combat-breed", "paldea-blaze-breed", "paldea-aqua-breed",
   "alola", "galar", "hisui", "paldea",
+  // Rotom's appliance forms - each re-types it and gives it a signature move
+  "heat", "wash", "frost", "fan", "mow",
   "male", "female",
 ] as const;
 
 export type FormSuffix = (typeof FORM_SUFFIXES)[number] | "";
+
+// Rotom's forms are named with the appliance first: "Wash Rotom", not "Rotom Wash"
+const APPLIANCE: Record<string, string> = {
+  heat: "Heat", wash: "Wash", frost: "Frost", fan: "Fan", mow: "Mow",
+};
 
 const REGIONAL_ADJECTIVE: Record<string, string> = {
   alola: "Alolan",
@@ -84,6 +91,11 @@ export function formLabel(form: string): string {
     case "female":      return gendered ? `${label} ♀` : label;
     case "male-mega":   return gendered ? `Mega ${label} ♂` : `Mega ${label}`;
     case "female-mega": return gendered ? `Mega ${label} ♀` : `Mega ${label}`;
+    case "heat":
+    case "wash":
+    case "frost":
+    case "fan":
+    case "mow":         return `${APPLIANCE[suffix]} ${label}`;
     default:            return `${REGIONAL_ADJECTIVE[suffix]} ${label}`;
   }
 }

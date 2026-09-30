@@ -7,7 +7,9 @@ import GetMegaStones from "./megaStones";
 // Megas, regional forms and gendered forms each get their own entry, since each
 // has its own stats, typing or abilities and is a different pick.
 
-export type EntryKind = "base" | "mega" | "regional" | "gender";
+// "form" is any other alternate form - Rotom's appliances - which re-types or
+// re-stats the Pokemon without being a Mega, a regional form or a gender
+export type EntryKind = "base" | "form" | "mega" | "regional" | "gender";
 export type Region = "alola" | "galar" | "hisui" | "paldea";
 
 export interface PokemonEntry {
@@ -43,11 +45,12 @@ function kindOf(suffix: string): { kind: EntryKind; region: Region | null } {
   const region = REGIONS.find((r) => suffix.startsWith(r.id));
   if (region) return { kind: "regional", region: region.id };
   if (suffix === "male" || suffix === "female") return { kind: "gender", region: null };
-  return { kind: "base", region: null };
+  return { kind: suffix === "" ? "base" : "form", region: null };
 }
 
-// Within one species: the base form, then gendered forms, then regional, then Megas
-const KIND_ORDER: Record<EntryKind, number> = { base: 0, gender: 1, regional: 2, mega: 3 };
+// Within one species: the base form, then gendered, alternate and regional
+// forms, then Megas - so plain Rotom leads its five appliance forms
+const KIND_ORDER: Record<EntryKind, number> = { base: 0, gender: 1, form: 2, regional: 3, mega: 4 };
 
 function build(): PokemonEntry[] {
   const dexOf = new Map(SPECIES.map((s) => [s.name, s.id]));
@@ -85,9 +88,14 @@ function build(): PokemonEntry[] {
     });
   }
 
+  // Male before female, as the create page's gender toggle orders them - the
+  // symbols alone would sort ♀ first, since it's the lower character
+  const genderRank = (form: string): number => (form.includes("-female") ? 1 : 0);
+
   return entries.sort((a, b) =>
     a.dex - b.dex ||
     KIND_ORDER[a.kind] - KIND_ORDER[b.kind] ||
+    genderRank(a.form) - genderRank(b.form) ||
     a.label.localeCompare(b.label));
 }
 
