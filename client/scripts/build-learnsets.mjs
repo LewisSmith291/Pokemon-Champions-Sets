@@ -26,9 +26,9 @@ const CONCURRENCY = 4;
 const OUT = resolve(dirname(fileURLToPath(import.meta.url)), "../src/data/learnsets.ts");
 
 // Each move table on a species page is headed with which form it belongs to.
-// The value is the suffix that heading adds to the species slug: "" is the
-// species itself, and null marks a form Champions doesn't let you pick. Every
-// table is a complete learnset, not a list of extras on top of the first one.
+// The value is the suffix that heading adds to the species slug, and "" is the
+// species itself. Every table is a complete learnset, not a list of extras on
+// top of the first one.
 //
 // A heading missing from here stops the script - a new one means Serebii has
 // added a form, and guessing which of ours it belongs to would be worse.
@@ -45,9 +45,9 @@ const HEADINGS = {
   "Standard Moves - Female": "-female",
   // Floette's only table - Mega Floette evolves from the Eternal Flower form
   "Standard Moves - Eternal Floette": "",
-  "Standard Moves - Midnight Form": null,
-  "Standard Moves - Dusk Form": null,
-  "Standard Moves - Low Key Form": null,
+  "Standard Moves - Midnight Form": "-midnight",
+  "Standard Moves - Dusk Form": "-dusk",
+  "Standard Moves - Low Key Form": "-low-key",
 };
 
 // Rotom's appliance moves: one table listing each move with the form that
@@ -142,9 +142,7 @@ await pool(SPECIES, CONCURRENCY, async (species) => {
     if (!(heading in HEADINGS)) {
       throw new Error(`${species.name}: unrecognised move table "${heading}" - add it to HEADINGS`);
     }
-    const suffix = HEADINGS[heading];
-    if (suffix === null) continue;
-    learnsets[`${species.name}${suffix}`] = slugsFrom(table);
+    learnsets[`${species.name}${HEADINGS[heading]}`] = slugsFrom(table);
   }
 });
 

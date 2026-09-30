@@ -17,6 +17,8 @@ export const FORM_SUFFIXES = [
   "alola", "galar", "hisui", "paldea",
   // Rotom's appliance forms - each re-types it and gives it a signature move
   "heat", "wash", "frost", "fan", "mow",
+  // Lycanroc's and Toxtricity's other forms - each has its own stats or abilities
+  "midnight", "dusk", "low-key",
   "male", "female",
 ] as const;
 
@@ -25,6 +27,18 @@ export type FormSuffix = (typeof FORM_SUFFIXES)[number] | "";
 // Rotom's forms are named with the appliance first: "Wash Rotom", not "Rotom Wash"
 const APPLIANCE: Record<string, string> = {
   heat: "Heat", wash: "Wash", frost: "Frost", fan: "Fan", mow: "Mow",
+};
+
+// Named in brackets after the species, as the Paldean Tauros breeds are
+const FORM_NAME: Record<string, string> = {
+  midnight: "Midnight", dusk: "Dusk", "low-key": "Low Key",
+};
+
+// The default forms that sit beside a named sibling. Plain "Lycanroc" next to
+// "Lycanroc (Midnight)" would read as the species rather than one form of it.
+const DEFAULT_FORM_NAME: Record<string, string> = {
+  "lycanroc-midday": "Midday",
+  "toxtricity-amped": "Amped",
 };
 
 const REGIONAL_ADJECTIVE: Record<string, string> = {
@@ -103,7 +117,7 @@ export function formLabel(form: string): string {
   const gendered: boolean = SPECIES_BY_NAME.get(base)?.hasGenderForms ?? false;
 
   switch (suffix) {
-    case "":            return label;
+    case "":            return form in DEFAULT_FORM_NAME ? `${label} (${DEFAULT_FORM_NAME[form]})` : label;
     case "mega":        return `Mega ${label}`;
     case "mega-x":      return `Mega ${label} X`;
     case "mega-y":      return `Mega ${label} Y`;
@@ -120,6 +134,9 @@ export function formLabel(form: string): string {
     case "frost":
     case "fan":
     case "mow":         return `${APPLIANCE[suffix]} ${label}`;
+    case "midnight":
+    case "dusk":
+    case "low-key":     return `${label} (${FORM_NAME[suffix]})`;
     default:            return `${REGIONAL_ADJECTIVE[suffix]} ${label}`;
   }
 }
