@@ -83,6 +83,10 @@ const entries = await pool(formNames, CONCURRENCY, async (name) => {
       types: form.types.map((t) => t.type.name),
       // Same shape as species.stats and as baseStats in CreateSet
       stats: Object.fromEntries(form.stats.map((s) => [s.stat.name, s.base_stat])),
+      // The form's own abilities - Mega Charizard Y has Drought and Alolan
+      // Ninetales Snow Warning, neither of which its species lists
+      abilities: form.abilities.filter((a) => !a.is_hidden).map((a) => a.ability.name),
+      hiddenAbility: form.abilities.find((a) => a.is_hidden)?.ability.name ?? null,
     }];
   } catch (error) {
     failed.push(`${name}: ${error.message}`);
@@ -107,6 +111,9 @@ export interface FormData {
   types: string[];
   /** Keyed by PokeAPI stat slug - same shape as Species.stats and baseStats in CreateSet */
   stats: Record<string, number>;
+  /** Regular abilities, as slugs. A Mega has exactly one. */
+  abilities: string[];
+  hiddenAbility: string | null;
 }
 
 export const FORM_DATA: Record<string, FormData> = ${JSON.stringify(formData, null, 2)};
