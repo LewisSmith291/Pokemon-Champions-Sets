@@ -3,12 +3,12 @@ import { Link, useSearchParams } from "react-router";
 import { useSession } from "@/services/authClient";
 import { browseSets, type SetSort, type SetSummary } from "@/services/sets";
 import SetCard from "@/components/set-display/molecules/SetCard";
-import TypeDisplay from "@/components/shared/TypeDisplay";
 import Loading from "@/components/shared/Loading";
+import FilterPanel from "@/components/shared/filters/FilterPanel";
+import TypeFilter from "@/components/shared/filters/TypeFilter";
 import { SPECIES } from "@/data/species";
 import { isValidForm } from "@/data/forms";
 import { FORM_DATA } from "@/data/formData";
-import { TYPE_ORDER } from "@/data/types";
 import { TAGS, MAX_TAGS } from "@/data/tags";
 import { MEGA_STONES } from "@/data/itemData";
 import "./BrowsePage.css";
@@ -50,10 +50,7 @@ export default function BrowsePage() {
 
   const [sets, setSets] = useState<SetSummary[]>([]);
   const [total, setTotal] = useState<number>(0);
-  // Mobile only - the panel is always shown on wider screens, where it fits.
-  // Closed by default: most visits are just to look, not to filter.
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Same matching as the create page's species picker: case-insensitive,
@@ -186,12 +183,12 @@ export default function BrowsePage() {
     <div id="browse">
       <div id="browse-head">
         <h1>Browse</h1>
-        <div className="browse-row" role="group" aria-label="Sort">
+        <div className="filter-row" role="group" aria-label="Sort">
           {SORTS.map((option) => (
             <button
               key={option.id}
               type="button"
-              className="browse-chip"
+              className="filter-chip"
               aria-pressed={sort === option.id}
               onClick={() => update({ sort: option.id === "hot" ? null : option.id })}
             >
@@ -201,23 +198,9 @@ export default function BrowsePage() {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="browse-chip browse-filter-toggle"
-        aria-expanded={filtersOpen}
-        aria-controls="browse-filters"
-        onClick={() => setFiltersOpen((open) => !open)}
-      >
-        {filtersOpen ? "Hide filters" : "Filters"}
-        {activeFilterCount > 0 && <span className="browse-filter-count">{activeFilterCount}</span>}
-      </button>
-
-      {/* Hidden on mobile until the button above opens it; always shown on wider
-          screens. A class rather than conditional rendering, so the desktop
-          layout never depends on this state. */}
-      <div id="browse-filters" className={filtersOpen ? "is-open" : ""}>
-        <label className="browse-filter-label" htmlFor="browse-species">Pokémon</label>
-        <div className="browse-species">
+      <FilterPanel id="browse-filters" activeCount={activeFilterCount}>
+        <label className="filter-label" htmlFor="browse-species">Pokémon</label>
+        <div className="filter-search">
           <input
             id="browse-species"
             className="text-input"
@@ -227,13 +210,12 @@ export default function BrowsePage() {
             onChange={(e) => setQueryText(e.target.value)}
           />
           {queryText !== "" && (
-            <button type="button" className="browse-chip" onClick={() => setQueryText("")}>
+            <button type="button" className="filter-chip" onClick={() => setQueryText("")}>
               Clear
             </button>
           )}
-          {/* Beside the search on wider screens, wrapped onto its own line on a
-              phone - see .browse-mega in the CSS */}
-          <label className="browse-mega" title="Sets holding a Mega Stone, whichever form they're saved as">
+          {/* Beside the search on wider screens, on its own line on a phone */}
+          <label className="filter-check" title="Sets holding a Mega Stone, whichever form they're saved as">
             <input
               type="checkbox"
               checked={megaOnly}
@@ -243,38 +225,24 @@ export default function BrowsePage() {
           </label>
         </div>
 
-        <span className="browse-filter-label">
-          Type <span className="browse-hint">up to {MAX_TYPES}</span>
+        <span className="filter-label">
+          Type <span className="filter-hint">up to {MAX_TYPES}</span>
         </span>
-        <div className="browse-row browse-types">
-          {TYPE_ORDER.map((type) => {
-            const isOn = types.includes(type);
-            return (
-              <button
-                key={type}
-                type="button"
-                className="browse-type"
-                aria-pressed={isOn}
-                aria-label={type}
-                // Past two, a third type could never match a set
-                disabled={!isOn && types.length >= MAX_TYPES}
-                onClick={() => update({ types: toggle(types, type, MAX_TYPES) })}
-              >
-                <TypeDisplay type={type} />
-              </button>
-            );
-          })}
-        </div>
+        <TypeFilter
+          selected={types}
+          max={MAX_TYPES}
+          onToggle={(type) => update({ types: toggle(types, type, MAX_TYPES) })}
+        />
 
-        <span className="browse-filter-label">
-          Tags <span className="browse-hint">must have all</span>
+        <span className="filter-label">
+          Tags <span className="filter-hint">must have all</span>
         </span>
-        <div className="browse-row">
+        <div className="filter-row">
           {TAGS.map((tag) => (
             <button
               key={tag.slug}
               type="button"
-              className="browse-chip"
+              className="filter-chip"
               aria-pressed={tags.includes(tag.slug)}
               onClick={() => update({ tags: toggle(tags, tag.slug, MAX_TAGS) })}
             >
@@ -284,11 +252,11 @@ export default function BrowsePage() {
         </div>
 
         {hasFilters && (
-          <button type="button" className="browse-chip browse-reset" onClick={clearAll}>
+          <button type="button" className="filter-chip filter-reset" onClick={clearAll}>
             Clear all filters
           </button>
         )}
-      </div>
+      </FilterPanel>
 
       <p className="browse-count" aria-live="polite">
         {isLoading ? "" : `${total} ${total === 1 ? "set" : "sets"}`}
@@ -314,7 +282,7 @@ export default function BrowsePage() {
 
           {totalPages > 1 && (
             <nav id="browse-pages" aria-label="Pages">
-              <button type="button" className="browse-chip" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+              <button type="button" className="filter-chip" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
                 ‹ Prev
               </button>
               {pageNumbers(page, totalPages).map((entry, index) =>
@@ -324,7 +292,7 @@ export default function BrowsePage() {
                   <button
                     key={entry}
                     type="button"
-                    className="browse-chip"
+                    className="filter-chip"
                     aria-current={entry === page ? "page" : undefined}
                     aria-pressed={entry === page}
                     onClick={() => goToPage(entry)}
@@ -333,7 +301,7 @@ export default function BrowsePage() {
                   </button>
                 ),
               )}
-              <button type="button" className="browse-chip" disabled={page >= totalPages} onClick={() => goToPage(page + 1)}>
+              <button type="button" className="filter-chip" disabled={page >= totalPages} onClick={() => goToPage(page + 1)}>
                 Next ›
               </button>
             </nav>

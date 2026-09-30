@@ -3,7 +3,8 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import "./CreateSet.css"
 import { draftToParams, paramsToDraft } from '@/data/setUrl.ts';
 import { useSession } from '@/services/authClient';
-import SpeciesSearch from '../organisms/SpeciesSearch.tsx';
+import SpeciesPicker from './SpeciesPicker.tsx';
+import { type PokemonEntry } from '@/data/pokemonEntries.ts';
 import FormSelect from '../molecules/FormSelect.tsx';
 import StatsConfig from '../molecules/StatsConfig.tsx';
 import TypeDisplay from '@/components/shared/TypeDisplay.tsx';
@@ -67,7 +68,9 @@ export default function CreateSet() {
 
   // form logic
   // Don't throw the species picker over a set that was just restored from a link
-  const [isSpeciesOpen, setIsSpeciesOpen] = useState<boolean>(!initial.species);
+  // Choosing a Pokemon is a step of the page rather than a modal: with none
+  // chosen yet (or after Change Pokemon) the picker replaces the builder.
+  const [isPicking, setIsPicking] = useState<boolean>(!initial.species);
   const [editingSlot, setEditingSlot] = useState<number | null>(null);
   const [isNatureOpen, setIsNatureOpen] = useState<boolean>(false);
   const [isAbilityOpen, setIsAbilityOpen] = useState<boolean>(false);
@@ -398,23 +401,35 @@ export default function CreateSet() {
    
 
   /* Species and pokemon selection functions */
-  function choosePokemon(pokemon:string){
-    setSelectedPokemon(pokemon);
-    setIsSpeciesOpen(false);
+  function choosePokemon(entry: PokemonEntry){
+    setIsPicking(false);
+    // Back to the top of the builder, not wherever the list was scrolled to
+    window.scrollTo({ top: 0 });
 
-    // A different species invalidates everything chosen for the last one. These
+    // Another form of the same Pokemon (Charizard -> Mega Charizard X) works
+    // like the Form button: the set keeps its moves and nature, and the mega
+    // effect above equips the right stone.
+    if (entry.species === selectedPokemon) {
+      setSelectedForm(entry.form);
+      return;
+    }
+
+    // A different Pokemon invalidates everything chosen for the last one. These
     // belong to the user action rather than the fetch effect - the effect also
     // fires when a set is hydrated from its URL, where wiping would be wrong.
-    setSelectedForm("");
+    setSelectedPokemon(entry.species);
+    // The exact form picked - the species effect keeps it, since it's valid
+    setSelectedForm(entry.form);
     setSelectedItem("");
-    // Gender is fixed for 22 of the 208 species, so take what this one permits
-    setGender(allowedGenders(pokemon)[0]);
+    // Gendered forms (Indeedee ♀) imply their gender; otherwise take what the
+    // species permits - it's fixed for about twenty of them
+    setGender(genderFromForm(entry.form) ?? allowedGenders(entry.species)[0]);
     setNature("Serious");
     setMoveList([null, null, null, null]);
   }
 
   function chooseNewPokemon(){
-    setIsSpeciesOpen(true);
+    setIsPicking(true);
   }
 
   /* Nature selection functions */
@@ -457,6 +472,14 @@ export default function CreateSet() {
   return (
     <div id="create-container" className="w-10/10 flex flex-col items-center">
       <NotificationList notifications={notifications} onDismissed={dismiss}/>
+      {isPicking ? (
+        <SpeciesPicker
+          currentForm={selectedForm}
+          onPick={choosePokemon}
+          // Only once there's a set to go back to
+          onCancel={selectedPokemon !== "" ? () => setIsPicking(false) : undefined}
+        />
+      ) : (
       <form id="set-creation" className="p-4 m-4 w-full" onSubmit={handleSubmit}>
         <div className="cell-name grid-cell flex flex-row items-stretch gap-2">
           <GenderButton
@@ -575,15 +598,7 @@ export default function CreateSet() {
           </button>
         </div>
       </form>
-      {/* Species select modal */}
-      <Modal 
-        isOpen={isSpeciesOpen}
-        onClose={() => setIsSpeciesOpen(false)}
-        title = "Choose a Pokémon"
-        className="modal-full"
-      >
-        <SpeciesSearch onSelect={choosePokemon} currentSpecies={selectedPokemon} />
-      </Modal>
+      )}
       {/* Form select modal */}
       <Modal
         isOpen={isFormOpen}

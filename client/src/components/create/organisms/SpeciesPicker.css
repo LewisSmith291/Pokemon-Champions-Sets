@@ -1,0 +1,297 @@
+/* The create page's Pokemon picker. Filters come from the shared filter-* styles;
+   this file is the page layout and the card. */
+
+#species-picker{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1278px;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+#picker-head{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+#picker-head h1{
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.picker-count{
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.picker-message{
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+}
+
+/* 2 to 4 columns by window width, like Browse. One continuous list - every
+   entry is already bundled, so there's nothing to page through. */
+#picker-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+/* ---- the card: stacked on wider screens ---- */
+
+.pick-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.8rem;
+
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+  font-size: 0.85rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.1s, transform 0.1s;
+}
+
+.pick-card:hover{
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.pick-card:focus-visible{
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Megas sit next to their base form, so a faint tint picks them out while scrolling */
+.pick-card.is-mega{
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+.pick-card.is-current{
+  border: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+}
+
+.pick-sprite{
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.pick-head{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.pick-head h3{
+  margin: 0;
+  font-size: 1rem;
+  min-width: 0;
+}
+
+/* The gender symbol, in the nature colours - they're measured against the card */
+.pick-gender.is-male{ color: var(--stat-down); }
+.pick-gender.is-female{ color: var(--stat-up); }
+
+.pick-badge{
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  padding: 0.08rem 0.45rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  white-space: nowrap;
+}
+
+.pick-badge-region{
+  background: var(--header);
+  color: var(--link-color);
+}
+
+.pick-types{
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+/* .type-notch pads labels to 8ch for tables; on a card that only widens it */
+.pick-types .type-notch p{
+  width: auto;
+}
+
+.pick-types .type-notch{
+  font-size: 0.72rem;
+  padding: 0.2em 0.4em;
+}
+
+.pick-abilities{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.pick-abilities li{
+  background: var(--header);
+  color: var(--link-color);
+  border-radius: 0.4rem;
+  padding: 0.12rem 0.45rem;
+  font-size: 0.75rem;
+}
+
+.pick-abilities li.is-hidden{
+  background: transparent;
+  color: var(--text);
+  border: 1px dashed var(--border);
+}
+
+.pick-hidden-tag{
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pick-stone{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.pick-stone img{
+  width: 20px;
+  height: 20px;
+}
+
+.pick-stats{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.1rem;
+  align-self: stretch;
+  margin: 0;
+  padding-top: 0.35rem;
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.pick-stats div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.pick-stats dt{
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.pick-stats dd{
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.pick-bst dd{
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .pick-card{ transition: none; }
+  .pick-card:hover{ transform: none; }
+}
+
+/* ---- phone: one row card per line, sprite beside the details ---- */
+@media screen and (max-width: 676px){
+  #species-picker{
+    padding: 0.5rem;
+  }
+
+  #picker-grid{
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .pick-card{
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "sprite head"
+      "sprite types"
+      "sprite abilities"
+      "stone  stone"
+      "stats  stats";
+    align-items: center;
+    justify-items: start;
+    column-gap: 0.6rem;
+    row-gap: 0.3rem;
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    text-align: left;
+  }
+
+  .pick-sprite{ grid-area: sprite; width: 72px; height: 72px; }
+  .pick-head{ grid-area: head; justify-content: flex-start; }
+  .pick-head h3{ font-size: 0.95rem; }
+  .pick-types{ grid-area: types; justify-content: flex-start; }
+  .pick-stone{ grid-area: stone; justify-content: flex-start; }
+  .pick-stats{ grid-area: stats; justify-self: stretch; margin-top: 0; }
+
+  /* Abilities as one line of muted text rather than chips - chips wrap to three
+     lines beside a sprite on a phone */
+  .pick-abilities{
+    grid-area: abilities;
+    justify-content: flex-start;
+    gap: 0;
+    color: var(--text-muted);
+  }
+
+  .pick-abilities li,
+  .pick-abilities li.is-hidden{
+    background: none;
+    border: 0;
+    color: var(--text-muted);
+    padding: 0;
+  }
+
+  .pick-abilities li + li::before{
+    content: " · ";
+    white-space: pre;
+  }
+
+  .pick-abilities li.is-hidden{
+    font-style: italic;
+  }
+
+  .pick-hidden-tag{
+    display: none;
+  }
+}

@@ -1,0 +1,213 @@
+/* Filter controls shared by Browse and the create page's Pokemon picker, so the
+   two can't drift apart. Moved here from BrowsePage.css; class names are
+   filter-* rather than page-specific. */
+
+/* Label in the first column, controls in the second, so the filters line up
+   as a form rather than unrelated strips */
+.filter-panel{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  padding: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+}
+
+.filter-label{
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.filter-hint{
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.filter-row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+/* A search box with its Clear button and any tickbox that belongs beside it */
+.filter-search{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  min-width: 0;
+}
+
+.filter-search .text-input{
+  flex: 1;
+  min-width: 0;
+  max-width: 20rem;
+}
+
+.filter-check{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* The base layer styles every input as a padded purple box, which stretches a
+   checkbox into a rectangle. accent-color tints the native control instead -
+   the same treatment as the create page's publish toggle. */
+.filter-check input[type="checkbox"]{
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Surface when off, accent when on */
+.filter-chip{
+  border-radius: var(--rounded);
+  padding: 0.3em 0.8em;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* The base layer gives buttons no cursor, and these don't use .hoverable-link -
+   its !important accent fill would override the pressed state below */
+.filter-chip:hover:not(:disabled){
+  cursor: pointer;
+}
+
+/* The tint is for unselected chips only - this selector outranks the pressed
+   rule below, so without the :not() a hovered selected chip would lose its fill */
+.filter-chip:hover:not(:disabled):not([aria-pressed="true"]){
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+}
+
+.filter-chip[aria-pressed="true"]{
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.filter-chip:disabled{
+  opacity: 0.45;
+  cursor: default;
+}
+
+.filter-reset{
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+/* The type icon is the control, like the move picker's type filter: the button
+   is just a hit target, and unselected types fade back */
+.filter-type{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity 0.1s;
+}
+
+.filter-type:hover:not(:disabled),
+.filter-type[aria-pressed="true"]{
+  opacity: 1;
+}
+
+.filter-type:hover:not(:disabled){
+  cursor: pointer;
+}
+
+.filter-type:disabled{
+  opacity: 0.2;
+  cursor: default;
+}
+
+/* Labels padded to 8ch line up in a table; here they only widen the row */
+.filter-type .type-notch p{
+  width: auto;
+}
+
+/* Only exists on mobile - see the media query */
+.filter-toggle{
+  display: none;
+}
+
+.filter-count{
+  display: inline-block;
+  min-width: 1.4em;
+  margin-left: 0.4em;
+  padding: 0 0.35em;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.8em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@media screen and (max-width: 676px){
+  /* Labels above their controls - there isn't room for two columns. Hidden
+     until the toggle opens it: a full filter panel fills most of a phone screen. */
+  .filter-panel{
+    display: none;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .filter-panel.is-open{
+    display: grid;
+  }
+
+  .filter-toggle{
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+  }
+
+  .filter-label{
+    margin-top: 0.3rem;
+  }
+
+  .filter-hint{
+    display: inline;
+    margin-left: 0.35rem;
+  }
+
+  /* 18 type notches wrap into four rows on a phone - one sideways row instead,
+     the same fix the move picker's type filter got */
+  .filter-types{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    padding-bottom: 0.2rem;
+  }
+
+  .filter-type{
+    flex: 0 0 auto;
+  }
+
+  .filter-search .text-input{
+    max-width: none;
+  }
+
+  /* A full line of its own, so it sits under the search box on a phone */
+  .filter-check{
+    flex-basis: 100%;
+  }
+}
