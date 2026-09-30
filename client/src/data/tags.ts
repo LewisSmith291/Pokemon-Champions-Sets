@@ -10,16 +10,18 @@ export const TAG_SLUGS = [
   // --- what the set does with its damage ---
   "physical-attacker",
   "special-attacker",
+  "mixed-attacker",
   "wallbreaker",
   "setup-sweeper",
-  "revenge-killer",
+  "game-ender",
+  "big-crits",
 
   // --- what the set does instead of attacking ---
   "wall",
   "pivot",
-  "cleric",
   "status-spreader",
   "support",
+  "prankster",
 
   // --- what the set does to the field ---
   "hazard-setter",
@@ -27,9 +29,11 @@ export const TAG_SLUGS = [
   "screens",
   "weather-setter",
   "terrain-setter",
+  "trick-room",
 
-  "trick-room-setter",
-  "trick-room-abuser",
+  // --- type of set ---
+  "casual", 
+  "competetive"
 ] as const;
 
 export type TagSlug = (typeof TAG_SLUGS)[number];
@@ -37,13 +41,15 @@ export type TagSlug = (typeof TAG_SLUGS)[number];
 export const TAG_LABELS: Record<TagSlug, string> = {
   "physical-attacker": "Physical Attacker",
   "special-attacker": "Special Attacker",
+  "mixed-attacker": "Mixed Attacker",
   "wallbreaker": "Wallbreaker",
   "setup-sweeper": "Setup Sweeper",
-  "revenge-killer": "Revenge Killer",
+  "game-ender": "Game Ender",
+  "big-crits": "Big Crits",
 
   "wall": "Wall",
   "pivot": "Pivot",
-  "cleric": "Cleric",
+  "prankster": "Prankster",
   "status-spreader": "Status Spreader",
   "support": "Support",
 
@@ -52,9 +58,10 @@ export const TAG_LABELS: Record<TagSlug, string> = {
   "screens": "Screens",
   "weather-setter": "Weather Setter",
   "terrain-setter": "Terrain Setter",
+  "trick-room": "Trick Room",
 
-  "trick-room-setter": "Trick Room Setter",
-  "trick-room-abuser": "Trick Room Abuser",
+  "casual": "Casual",
+  "competetive": "Competetive"
 };
 
 /** Mirrors MAX_TAGS in the server's copy, which is what actually rejects an 8th */

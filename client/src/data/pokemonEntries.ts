@@ -99,7 +99,7 @@ function build(): PokemonEntry[] {
     a.label.localeCompare(b.label));
 }
 
-// Built once at load - 324 entries, all from bundled data
+// Built once at load - 329 entries, all from bundled data
 export const POKEMON_ENTRIES: PokemonEntry[] = build();
 
 /** Base stat total, shown on every card */
