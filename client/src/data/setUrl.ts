@@ -3,6 +3,7 @@ import { MOVE_BY_NAME } from "./moveLookup";
 import { ABILITY_BY_NAME } from "./abilityLookup";
 import { ITEM_DETAILS } from "./itemDetails";
 import { SPECIES_BY_NAME, isValidForm, splitForm, type Gender } from "./forms";
+import { MAX_TAGS, TAG_SLUGS } from "./tags";
 
 // The whole in-progress set, as it lives in the address bar. Readable params
 // rather than one packed blob: a set is only a dozen fields, the URL stays under
@@ -16,6 +17,8 @@ export interface SetDraft {
   nature: string;               // display casing, e.g. "Serious"
   moves: (string | null)[];     // always 4 slots; null is an empty slot
   boosts: Boosts;
+  tags: string[];
+  isPublic: boolean;
 }
 
 const BOOST_PARAM: Record<BoostKey, string> = {
@@ -51,6 +54,10 @@ export function draftToParams(draft: SetDraft): URLSearchParams {
   for (const key of Object.keys(BOOST_PARAM) as BoostKey[]) {
     if (draft.boosts[key] > 0) params.set(BOOST_PARAM[key], String(draft.boosts[key]));
   }
+
+  if (draft.tags.length > 0) params.set("tags", draft.tags.join(","));
+  // Private is the default, so only a publish needs recording
+  if (draft.isPublic) params.set("public", "1");
 
   return params;
 }
@@ -112,6 +119,18 @@ export function paramsToDraft(params: URLSearchParams): Partial<SetDraft> {
     spent += value;
   }
   if (spent > 0) draft.boosts = boosts;
+
+  // Unknown slugs and repeats dropped, and cut to the cap - the picker won't
+  // allow an 8th, so a hand-edited URL shouldn't either
+  const tags = params.get("tags");
+  if (tags) {
+    const valid: string[] = [...new Set(tags.split(","))]
+      .filter((slug) => (TAG_SLUGS as readonly string[]).includes(slug))
+      .slice(0, MAX_TAGS);
+    if (valid.length > 0) draft.tags = valid;
+  }
+
+  if (params.get("public") === "1") draft.isPublic = true;
 
   return draft;
 }

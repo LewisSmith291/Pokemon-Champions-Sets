@@ -107,10 +107,9 @@ export default function CreateSet() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // A set is private until its author says otherwise - only public ones are
   // reachable from the showcase, browse or search.
-  const [isPublic, setIsPublic] = useState<boolean>(false);
-  // Role labels for browse/search later. Deliberately not in the URL codec -
-  // they describe a finished set rather than being part of the build itself.
-  const [tags, setTags] = useState<string[]>([]);
+  const [isPublic, setIsPublic] = useState<boolean>(initial.isPublic ?? false);
+  // Role labels, filtered on by the browse page
+  const [tags, setTags] = useState<string[]>(initial.tags ?? []);
   // Set when this page was opened from a set's Edit link. Saving then replaces
   // that set (PUT) instead of creating a new one. Read from the URL once, like
   // the draft is, and cleared if the set turns out not to be editable.
@@ -220,6 +219,8 @@ export default function CreateSet() {
       nature,
       moves: moveList,
       boosts: statBoosts,
+      tags,
+      isPublic,
     });
     // draftToParams builds the query from scratch, so the edit marker has to be
     // put back each time - otherwise the first change drops it and saving would
@@ -229,19 +230,16 @@ export default function CreateSet() {
     // setSearchParams is intentionally absent: react-router rebuilds it whenever
     // the location changes, so listing it would make this effect retrigger itself.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPokemon, selectedForm, selectedItem, gender, ability, nature, moveList, statBoosts, editId]);
+  }, [selectedPokemon, selectedForm, selectedItem, gender, ability, nature, moveList, statBoosts, tags, isPublic, editId]);
 
-  // Tags and visibility aren't carried in the URL, so an edit fetches them from
-  // the stored set. The rest of the draft already arrived through the URL.
+  // The whole draft - tags and visibility included - arrives through the Edit
+  // link's URL, so this only checks the set is still there and still yours.
+  // Copying its fields back in would undo any change made before a refresh.
   useEffect(() => {
     if (editId === null) return;
     const controller = new AbortController();
 
     getSet(editId, controller.signal)
-      .then((set) => {
-        setTags(set.tags);
-        setIsPublic(set.isPublic);
-      })
       .catch(() => {
         if (controller.signal.aborted) return;
         // Deleted since the link was made, or not yours - either way there is

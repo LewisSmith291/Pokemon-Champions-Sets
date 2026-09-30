@@ -53,11 +53,17 @@ export default function PokemonSetDisplay({ set, viewerId, onVisibilityChange }:
     nature: set.nature,
     moves: set.moves,
     boosts,
+    tags: set.tags,
+    // A copy starts private - copying someone's public set shouldn't publish
+    // yours until you choose to
+    isPublic: false,
   });
 
   // The same draft plus the edit marker, which tells the create page to save
-  // over this set instead of making a new one
+  // over this set instead of making a new one, and the set's current visibility
+  // so the toggle opens as it stands
   const ownerEditParams = new URLSearchParams(editParams);
+  if (set.isPublic) ownerEditParams.set("public", "1");
   ownerEditParams.set("edit", set.id);
 
   return (
