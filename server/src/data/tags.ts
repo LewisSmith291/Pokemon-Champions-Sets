@@ -10,28 +10,30 @@ export const TAG_SLUGS = [
   // --- what the set does with its damage ---
   "physical-attacker",
   "special-attacker",
-  "wallbreaker",        // raw power through bulk, as opposed to boosting first
+  "mixed-attacker",
+  "wallbreaker",
   "setup-sweeper",
-  "revenge-killer",     // priority or high speed, cleaning up a weakened target
+  "game-ender",
+  "big-crits",
 
   // --- what the set does instead of attacking ---
   "wall",
   "pivot",
-  "cleric",             // Heal Bell, Wish, Healing Wish
-  "status-spreader",    // Toxic, Will-O-Wisp, Thunder Wave, Spore, Glare
+  "status-spreader",
   "support",
+  "prankster",
 
   // --- what the set does to the field ---
   "hazard-setter",
-  "hazard-removal",     // Rapid Spin, Defog, Tidy Up, Mortal Spin
-  "screens",            // Light Screen, Reflect, Aurora Veil
+  "hazard-removal",
+  "screens",
   "weather-setter",
   "terrain-setter",
+  "trick-room",
 
-  // Split because they are opposite jobs: one spends a turn setting the room up,
-  // the other is the slow attacker that only works while it is up
-  "trick-room-setter",
-  "trick-room-abuser",
+  // --- type of set ---
+  "casual", 
+  "competitive"
 ] as const; // as const converts from string[] to enum for z.enum() in ../schemas/set.ts
 
 // The union type "physical-attacker" | "special-attacker" | ... derived from the list above
@@ -41,13 +43,15 @@ export type TagSlug = (typeof TAG_SLUGS)[number];
 export const TAG_LABELS: Record<TagSlug, string> = {
   "physical-attacker": "Physical Attacker",
   "special-attacker": "Special Attacker",
+  "mixed-attacker": "Mixed Attacker",
   "wallbreaker": "Wallbreaker",
   "setup-sweeper": "Setup Sweeper",
-  "revenge-killer": "Revenge Killer",
+  "game-ender": "Game Ender",
+  "big-crits": "Big Crits",
 
   "wall": "Wall",
   "pivot": "Pivot",
-  "cleric": "Cleric",
+  "prankster": "Prankster",
   "status-spreader": "Status Spreader",
   "support": "Support",
 
@@ -56,9 +60,10 @@ export const TAG_LABELS: Record<TagSlug, string> = {
   "screens": "Screens",
   "weather-setter": "Weather Setter",
   "terrain-setter": "Terrain Setter",
+  "trick-room": "Trick Room",
 
-  "trick-room-setter": "Trick Room Setter",
-  "trick-room-abuser": "Trick Room Abuser",
+  "casual": "Casual",
+  "competitive": "Competitive"
 };
 
 // Most tags a single set can carry. Without a cap, tagging everything makes them
