@@ -33,7 +33,7 @@ export const TAG_SLUGS = [
 
   // --- type of set ---
   "casual", 
-  "competetive"
+  "competitive"
 ] as const;
 
 export type TagSlug = (typeof TAG_SLUGS)[number];
@@ -61,7 +61,7 @@ export const TAG_LABELS: Record<TagSlug, string> = {
   "trick-room": "Trick Room",
 
   "casual": "Casual",
-  "competetive": "Competetive"
+  "competitive": "Competitive"
 };
 
 /** Mirrors MAX_TAGS in the server's copy, which is what actually rejects an 8th */
