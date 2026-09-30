@@ -1,4 +1,5 @@
 import { SPECIES, type Species } from "./species";
+import { FORM_DATA } from "./formData";
 
 export const SPECIES_BY_NAME: Map<string, Species> = new Map(
   SPECIES.map((s) => [s.name, s])
@@ -42,6 +43,12 @@ const REGIONAL_ADJECTIVE: Record<string, string> = {
 // This searches all known suffixes and when matching, gets length of matched suffix, 
 // and chops that off the species name 
 export function splitForm(form: string): { base: string; suffix: FormSuffix } {
+  const species: string | undefined = SPECIES_BY_DEFAULT_FORM.get(form);
+  if (species) return { base: species, suffix: "" };
+  return splitBySuffix(form);
+}
+
+function splitBySuffix(form: string): { base: string; suffix: FormSuffix } {
   for (const suffix of FORM_SUFFIXES) {
     if (form.endsWith(`-${suffix}`)) {
       return { base: form.slice(0, -(suffix.length + 1)), suffix };
@@ -49,6 +56,23 @@ export function splitForm(form: string): { base: string; suffix: FormSuffix } {
   }
   return { base: form, suffix: "" };
 }
+
+// Species whose default form has a name of its own: PokeAPI has no plain
+// "lycanroc", only lycanroc-midday, and likewise toxtricity-amped,
+// aegislash-shield, mimikyu-disguised and a few more. None of those names end in
+// a suffix above, so without this they split to no species, fail isValidForm,
+// and the species can't be picked at all. They're the unmarked form, so they
+// split to the plain species with no suffix.
+//
+// species.ts records the default form's dex id, which is how it's found. Defaults
+// that already split correctly - pyroar-male, meowstic-male - are left alone, or
+// Meowstic would lose its ♂.
+const SPECIES_BY_DEFAULT_FORM: Map<string, string> = new Map(
+  SPECIES.filter((s) => !(s.name in FORM_DATA)).flatMap((s) => {
+    const form = Object.keys(FORM_DATA).find((key) => FORM_DATA[key].id === s.id);
+    return form && splitBySuffix(form).base !== s.name ? [[form, s.name] as const] : [];
+  })
+);
 
 // Individual forms that match a valid suffix but aren't in Champions. The suffix
 // can't be dropped for these - "-galar" is still needed for Galarian Slowbro and

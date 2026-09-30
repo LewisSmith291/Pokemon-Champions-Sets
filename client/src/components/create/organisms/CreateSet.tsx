@@ -14,7 +14,7 @@ import { getSet, updateSet } from '@/services/sets.ts';
 import { EMPTY_BOOSTS, MAX_PER_STAT, MAX_TOTAL, type Boosts, type BoostKey } from '@/data/stats.ts';
 import NatureSelect from '../molecules/NatureSelect.tsx';
 import { type MoveSummary } from '@/data/moves.ts';
-import { MOVE_BY_NAME } from '@/data/moveLookup.ts';
+import { MOVE_BY_NAME, learnsetFor } from '@/data/moveLookup.ts';
 import { itemSpritePath, ITEM_DETAILS } from '@/data/itemDetails.ts';
 import { formLabel, isValidForm, preferredMegaStone, allowedGenders, genderFromForm, withGender, SPECIES_BY_NAME, type Gender } from '@/data/forms.ts';
 import GenderButton from '../atoms/GenderButton.tsx';
@@ -35,10 +35,6 @@ import useNotifications from '@/components/shared/useNotifications.ts';
 interface ApiStat {
   base_stat: number;
   stat: { name: string };
-}
-
-interface ApiMove{
-  move: {name:string};
 }
 
 // One entry of PokeAPI's /pokemon/{name} abilities array.
@@ -96,7 +92,12 @@ export default function CreateSet() {
   const [abilityList, setAbilityList] = useState<string[]>(["overgrow"]);
   const [ability, setAbility] = useState<string>(initial.ability ?? "");
   // moves
-  const [learnableMoves, setLearnableMoves] = useState<MoveSummary[]>([]);
+  // Bundled, so it's worked out on the spot rather than fetched. Empty until the
+  // form is known - the effect below leans on that to leave URL moves alone.
+  const learnableMoves: MoveSummary[] = useMemo(
+    () => (selectedForm === "" ? [] : learnsetFor(selectedForm)),
+    [selectedForm]
+  );
   const [moveList, setMoveList] = useState<(string | null)[]>(initial.moves ?? [null, null, null, null]);
   // stats 
   // Record<string,number> means that you can use the name hp and get the value back
@@ -257,42 +258,31 @@ export default function CreateSet() {
     moveListRef.current = moveList;
   },[moveList])
 
-  const learnsetForm  = selectedForm.includes("-mega") ? pokemonForms[0] : selectedForm;
+  // A form change can invalidate moves the previous form knew - Alolan Ninetales
+  // can't keep Flamethrower - as can a link carrying a move the form can't learn
   useEffect(() => {
-    if (!learnsetForm) return;
-    let stale = false;
+    // No form yet means the learnset isn't known, not that it's empty
+    if (selectedForm === "") return;
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${learnsetForm}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (stale) return;
+    const learnable = new Set(learnableMoves.map((m) => m.name));
+    const dropped = moveListRef.current
+      .filter((m): m is string => m !== null && !learnable.has(m))
+      .map((n) => MOVE_BY_NAME.get(n)?.label ?? n);
 
-        const moves: MoveSummary[] = data.moves
-        .map((m: ApiMove) => MOVE_BY_NAME.get(m.move.name))
-        .filter((m:MoveSummary | undefined): m is MoveSummary => m !== undefined);
+    // Removing a move silently reads as a bug, so say what went and why
+    if (dropped.length > 0) {
+      notify(
+        `${formLabel(selectedForm)} can't learn ${dropped.join(", ")}, so ` +
+        `${dropped.length === 1 ? "it was" : "they were"} removed from the set.`,
+        "orange"
+      );
+    }
 
-        setLearnableMoves(moves);
-        
-        // A form change can invalidate moves the previous form knew
-        const learnable = new Set(moves.map((m) => m.name));
-        const dropped = moveListRef.current
-          .filter((m): m is string => m !== null && !learnable.has(m))
-          .map((n) => MOVE_BY_NAME.get(n)?.label ?? n);
-
-        // Removing a move silently reads as a bug, so say what went and why
-        if (dropped.length > 0) {
-          notify(
-            `${formLabel(learnsetForm)} can't learn ${dropped.join(", ")}, so ` +
-            `${dropped.length === 1 ? "it was" : "they were"} removed from the set.`,
-            "orange"
-          );
-        }
-
-        setMoveList((prev) => prev.map((m) => (m === null || learnable.has(m) ? m : null)));
-      })
-      .catch((error) => {console.log("Failed to load learnset: ", error)});
-      return () => {stale = true};
-  }, [learnsetForm, notify]);
+    setMoveList((prev) => prev.map((m) => (m === null || learnable.has(m) ? m : null)));
+    // selectedForm is left out on purpose: learnableMoves already changes with it,
+    // and listing both would only re-run this for the same answer
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [learnableMoves, notify]);
 
   
   const itemSprite = selectedItem === "" ? "" : itemSpritePath(selectedItem);
